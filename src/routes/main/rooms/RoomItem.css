@@ -1,0 +1,11 @@
+.roomItemContainer{
+  background-color: white;
+  border: 1px solid #e6e9f1;
+  border-radius: 12px;
+  box-shadow: 0 2px 7px rgba(20, 20, 43, 0.09);
+  height: 100px;
+}
+
+.roomItem{
+    background-color: white;
+}
