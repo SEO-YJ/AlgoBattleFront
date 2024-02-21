@@ -47,7 +47,7 @@ export default function TotalNavbar() {
             </Nav>
             <Nav className="justify-content-start flex-grow-1 pe-3">
               <Nav.Link href="#rank">
-                <div className="totalNavbarItem">rank</div>
+                <div className="totalNavbarItem">Rank</div>
               </Nav.Link>
             </Nav>
           </Offcanvas.Body>
