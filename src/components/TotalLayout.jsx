@@ -1,12 +1,11 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import TotalNavbar from './TotalNavbar/TotalNavbar'
 
 export default function TotalLayout() {
   return (
     <div>
-      <div style={{height:"80px", backgroundColor:"white", width:"100%"}}>
-        TotalLayout
-      </div>
+      <TotalNavbar/>
       <Outlet/>
     </div>
   )
