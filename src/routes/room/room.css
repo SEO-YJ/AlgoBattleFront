@@ -1,0 +1,72 @@
+.container-margin-top {
+  margin-top: 20px;
+}
+
+.image-size {
+  width: 64px;
+  height: 64px;
+}
+
+.font-bold-large {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.button-large {
+  padding: 4px 8px;
+  font-size: 24px;
+}
+
+.button-width {
+  width: 120px;
+}
+
+.card-custom {
+  border: none;
+  background: #ffffff;
+  width: 80%;
+  height: 200px;
+}
+
+.card-margin-left {
+  margin-left: auto;
+}
+
+.card-margin-right {
+  margin-right: auto;
+}
+
+.image-user {
+  width: 48px;
+  height: 48px;
+  margin-right: 10px;
+  background: #ffffff;
+}
+
+.card-title-large {
+  font-size: 30px;
+  background: #ffffff;
+}
+
+.card-text-large {
+  font-size: 18px;
+  margin-top: 20px;
+  background: #ffffff;
+}
+
+.button-bottom-right {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 2px 4px;
+  font-size: 20px;
+}
+
+.vs-section {
+  height: 100%;
+  font-size: 48px;
+}
+
+.d-flex.align-items-center.mb-3 {
+  background-color: #ffffff; /* 흰색 배경 추가 */
+}
