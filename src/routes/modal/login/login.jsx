@@ -2,8 +2,8 @@ import "./login.css";
 import React, { useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { handleClose } from "../store/reducers/modal/login";
-import { clientLogin } from "../store/reducers/user";
+import { handleClose } from "../../store/reducers/modal/login";
+import { clientLogin } from "../../store/reducers/user";
 
 export default function ModalLogin() {
   const { show } = useSelector((state) => state.showLogin);

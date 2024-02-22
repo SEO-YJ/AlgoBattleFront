@@ -1,12 +1,37 @@
 import './RoomItem.css'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { Col } from 'react-bootstrap'
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom'
+import EnterRoom from '~/routes/modal/room/enter';
 
 //TODO api을 통해 roomList 받아오게 될 경우, column명 수정
 export default function RoomItem({room}) {
+  const {bojNickname} = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  
+  const cancelShow = useCallback(() => {
+    setShow(false);
+  },[])
+
+  const enterGame = useCallback(() => {
+    if(!bojNickname){
+      alert("로그인하여 주세요!");
+      return;
+    }
+    if(room.password){
+      //TODO 비번 확인 과정
+      setShow(true);
+    } else {
+      //TODO 실제 데이터 받아올 때, 경로 수정(아마 room._id)
+      navigate("/room")
+    }
+  },[room, navigate, bojNickname])
+
   return (
-    <Col>
-      <div className='roomItem'>
+    <Col className='roomItemContainer'>
+      <div className='roomItem' onClick={()=>enterGame()}>
         <div className='roomItemTop'>
           <div className='roomItemTopLeft'>
             <img 
@@ -31,6 +56,9 @@ export default function RoomItem({room}) {
           </div>
         </div>
       </div>
+      {show ? 
+        <EnterRoom show={show} roomPassword={room.password} cancelShow={cancelShow}></EnterRoom> 
+      : <></>}
     </Col>
   )
 }

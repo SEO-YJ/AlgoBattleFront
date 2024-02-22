@@ -1,0 +1,32 @@
+.modalEnter{
+  background: rgb(255,255,255,0.6);
+  padding-top: 100px;
+}
+
+.modalEnter *{
+  background-color: white;
+}
+
+.modalEnterText{
+  color: #1f2d54;
+  margin-bottom: 10px;
+  font-weight: 500;
+  line-height: 1.286em;
+}
+
+.modalEnterInput{
+  margin-top: 5px;
+  width: 100%;
+  min-height: 40px;
+  color: #1f2d54;
+  background-color: #fff;
+  border: 1px solid #e6e9f1;
+  border-radius: 6px;
+  margin-bottom: 0;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.286em;
+  transition: color .3s, border-color .3s;
+  box-shadow: 0 0 4px rgba(20, 20, 43, .09);  
+}

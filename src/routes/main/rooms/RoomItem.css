@@ -1,3 +1,7 @@
+.roomItemContainer{
+  cursor: pointer;
+}
+
 .roomItem {
   background-color: white;
   border: 1px solid #e6e9f1;
