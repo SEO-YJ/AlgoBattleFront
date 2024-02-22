@@ -54,6 +54,14 @@
   background: #ffffff;
 }
 
+.button-bottom-left {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 2px 4px;
+  font-size: 20px;
+}
+
 .button-bottom-right {
   position: absolute;
   bottom: 10px;
@@ -65,10 +73,6 @@
 .vs-section {
   height: 100%;
   font-size: 48px;
-}
-
-.d-flex.align-items-center.mb-3 {
-  background-color: #ffffff; /* 흰색 배경 추가 */
 }
 
 .algoBtn {
@@ -112,4 +116,9 @@
   line-height: 1.286rem;
   text-decoration: none;
   font-size: 24px;
+}
+
+.button-bottom-right.ready,
+.button-bottom-left.ready {
+  background-color: red;
 }
