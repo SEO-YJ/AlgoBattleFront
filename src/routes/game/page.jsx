@@ -15,9 +15,8 @@ export default function GamePage() {
       condition: condition, // Todo: 맞았는지 틀렸는지로 받아올 예정.
     };
 
-    setCondition((prevCondition) => !prevCondition); // 임시로 토글로 설정해둠.
-
-    //Todo: setCondition을 맞았는지 여부로 받아와야 함
+    setCondition((prevCondition) => !prevCondition); /* 임시로 토글로 설정해둠. 
+    Todo: condition: 문제를 맞았는가? 여부로 받아와서 setCondition*/
 
     const maxCards = 4;
 

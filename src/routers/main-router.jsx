@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainPage from "../routes/main/page";
 import RoomPage from "../routes/room/page";
 import GamePage from "~/routes/game/page";
+import ResultPage from "~/routes/result/page";
 
 export const mainRouter = [
   {
@@ -23,6 +24,11 @@ export const mainRouter = [
       {
         path: "/room/game",
         element: <GamePage />,
+        index: true,
+      },
+      {
+        path: "/room/result",
+        element: <ResultPage />,
         index: true,
       },
     ],
