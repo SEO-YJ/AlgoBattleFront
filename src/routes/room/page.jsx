@@ -1,7 +1,8 @@
 import React from "react";
 import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
+import { Link } from "react-router-dom"; // react-router-dom에서 Link 임포트
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./room.css"; // room.css import
+import "./room.css";
 
 export default function RoomPage() {
   const imageUrl = "https://d2gd6pc034wcta.cloudfront.net/tier/11.svg";
@@ -15,12 +16,11 @@ export default function RoomPage() {
           <Image src={imageUrl} alt="Custom Image" className="image-size" />
         </Col>
         <Col className="d-flex justify-content-center">
-          <div className="font-bold-large mt-2">방 이름</div>{" "}
-          {/* Todo: 방 이름 받아와야함 */}
+          <div className="font-bold-large mt-2">방 이름</div>
         </Col>
         <Col className="d-flex justify-content-center">
-          <Button className="mt-2 button-large button-width" variant="primary">
-            버튼 {/* Todo: 알고리즘 이름 받아와야함 */}
+          <Button className="algoBtn" variant="primary">
+            알고리즘 이름
           </Button>
         </Col>
 
@@ -30,16 +30,16 @@ export default function RoomPage() {
             <Card className="p-3 card-custom card-margin-right">
               <div className="d-flex align-items-center mb-3">
                 <Image className="image-user" src={imageUrlleft} alt="User 1" />
-                <div>
-                  <Card.Title className="card-title-large">User 1</Card.Title>{" "}
-                  {/* Todo: 사용자  이름 받아와야함 */}
+                <div className="background-color: white">
+                  <Card.Title className="card-title-large">User 1</Card.Title>
                 </div>
               </div>
               <Card.Text className="card-text-large">
-                Info about User 1 {/* Todo: 사용자 승패 받아와야함 */}
+                전적: 15승 3패 {/* Todo: 유저 승패 받아와야함 */}
               </Card.Text>
               <Button className="button-bottom-right" variant="secondary">
                 Ready
+                {/* Todo: 아래 레디가 onClick 되었을때 불이 들어오거나 나타나거나...? */}
               </Button>
             </Card>
           </Col>
@@ -60,13 +60,11 @@ export default function RoomPage() {
                   src={imageUrlright}
                   alt="User 2"
                 />
-                <div>
+                <div className="background-color: white">
                   <Card.Title className="card-title-large">User 2</Card.Title>
                 </div>
               </div>
-              <Card.Text className="card-text-large">
-                Info about User 2
-              </Card.Text>
+              <Card.Text className="card-text-large"> 전적: 19승 2패</Card.Text>
               <Button className="button-bottom-right" variant="secondary">
                 Ready
               </Button>
@@ -74,18 +72,16 @@ export default function RoomPage() {
           </Col>
         </Row>
 
-        <Row className="mt-4">
-          <Col xs={3}>
-            <Button className="button-large" variant="danger">
-              Back
-            </Button>
+        <Row className="mt-4 w-100">
+          <Col className="d-flex justify-content-start">
+            {/* Link를 사용하여 Back 버튼을 클릭했을 때 '/'로 이동 */}
+            <Link to="/">
+              <Button className="backBtn">Back</Button>
+            </Link>
           </Col>
-          <Col xs={3}></Col>
-          <Col xs={3}></Col>
-          <Col xs={3} className="text-right">
-            <Button className="button-large" variant="success">
-              Ready
-            </Button>
+          <Col className="d-flex justify-content-end">
+            <Button className="readyBtn">Ready</Button>{" "}
+            {/* Todo: onClick -> 레디상태 되게 해야함 */}
           </Col>
         </Row>
       </Row>

@@ -44,12 +44,12 @@
 }
 
 .card-title-large {
-  font-size: 30px;
+  font-size: 40px;
   background: #ffffff;
 }
 
 .card-text-large {
-  font-size: 18px;
+  font-size: 28 px;
   margin-top: 20px;
   background: #ffffff;
 }
@@ -69,4 +69,47 @@
 
 .d-flex.align-items-center.mb-3 {
   background-color: #ffffff; /* 흰색 배경 추가 */
+}
+
+.algoBtn {
+  color: #fff;
+  text-align: center;
+  transform-style: preserve-3d;
+  background-color: rgba(0, 0, 0, 0);
+  background-image: linear-gradient(#3d7fff, #4b5dff);
+  border: 1px solid #3961d9;
+  border-radius: 76px;
+  padding: 8px 16px;
+  font-weight: 500;
+  line-height: 1.286rem;
+  text-decoration: none;
+  margin-top: 16px;
+}
+
+.backBtn {
+  color: #fff;
+  text-align: center;
+  transform-style: preserve-3d;
+  background-color: red;
+  border: 1px solid red;
+  border-radius: 76px;
+  padding: 8px 16px;
+  font-weight: 500;
+  line-height: 1.286rem;
+  text-decoration: none;
+  font-size: 24px;
+}
+
+.readyBtn {
+  color: #fff;
+  text-align: center;
+  transform-style: preserve-3d;
+  background-color: green;
+  border: 1px solid green;
+  border-radius: 76px;
+  padding: 8px 16px;
+  font-weight: 500;
+  line-height: 1.286rem;
+  text-decoration: none;
+  font-size: 24px;
 }
