@@ -1,7 +1,9 @@
 import "./TotalNavbar.css";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import ModalLogin from "~/routes/modal/login/login";
 import {handleShow } from "~/routes/store/reducers/modal/login";
 import { clientLogout } from "~/routes/store/reducers/user";
 
@@ -11,10 +13,17 @@ const BRANDTITLE = "AlgoBattle";
 export default function TotalNavbar() {
   const {bojNickname} = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const {pathname} = useLocation();
+  const navigate = useNavigate();
 
   const onLogout = () => {
     const action = clientLogout();
     dispatch(action);
+    //TODO 경로 수정할 시 아래 경로 수정
+    // 아래 기능은 만일 게임 중에 로그아웃을 할 경우에는 메인 페이지로 향하는 것
+    if(["/room", "/room/game", "/room/result"].includes(pathname)){
+      navigate('/');
+    }
   }
 
   return (
@@ -66,6 +75,7 @@ export default function TotalNavbar() {
           </Offcanvas.Body>
         </Navbar.Offcanvas>
       </Container>
+      <ModalLogin/>
     </Navbar>
   );
 }
