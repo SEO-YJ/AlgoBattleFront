@@ -1,8 +1,10 @@
 import React from "react";
 import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
-import { Link } from "react-router-dom"; // react-router-dom에서 Link 임포트
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./room.css";
+
+//Todo: 전체적인 백엔드와의 연결이 필요할거 같음
 
 export default function RoomPage() {
   const imageUrl = "https://d2gd6pc034wcta.cloudfront.net/tier/11.svg";
@@ -17,10 +19,11 @@ export default function RoomPage() {
         </Col>
         <Col className="d-flex justify-content-center">
           <div className="font-bold-large mt-2">방 이름</div>
+          {/* Todo: 방 이름 받아와야함 */}
         </Col>
         <Col className="d-flex justify-content-center">
           <Button className="algoBtn" variant="primary">
-            알고리즘 이름
+            알고리즘 이름 {/* Todo: 알고리즘 명 받아와야 함 */}
           </Button>
         </Col>
 
@@ -32,6 +35,7 @@ export default function RoomPage() {
                 <Image className="image-user" src={imageUrlleft} alt="User 1" />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">User 1</Card.Title>
+                  {/* Todo: 유저 이름 받아와야함 */}
                 </div>
               </div>
               <Card.Text className="card-text-large">
@@ -74,7 +78,6 @@ export default function RoomPage() {
 
         <Row className="mt-4 w-100">
           <Col className="d-flex justify-content-start">
-            {/* Link를 사용하여 Back 버튼을 클릭했을 때 '/'로 이동 */}
             <Link to="/">
               <Button className="backBtn">Back</Button>
             </Link>
