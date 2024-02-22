@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
   padding: 20px;
 }
 
@@ -62,4 +61,34 @@
   width: 32px;
   height: 32px;
   margin-right: 10px; /* 이미지와 텍스트 사이의 간격 조절을 위해 추가된 부분 */
+}
+.user-tabs {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-tab {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.card-percentage {
+  font-size: 1.5rem;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+}
+
+.card-subtitle {
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  margin-right: 1rem;
+}
+.user-image {
+  width: 32px; /* 이미지 너비 */
+  height: 32px; /* 이미지 높이 */
+  margin-right: 8px; /* 이미지와 텍스트 간격 조절 */
 }

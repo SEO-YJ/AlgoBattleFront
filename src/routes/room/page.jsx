@@ -83,7 +83,7 @@ export default function RoomPage() {
             </Link>
           </Col>
           <Col className="d-flex justify-content-end">
-            <Button className="readyBtn">Ready</Button>{" "}
+            <Button className="readyBtn">Ready</Button>
             {/* Todo: onClick -> 레디상태 되게 해야함 */}
           </Col>
         </Row>
