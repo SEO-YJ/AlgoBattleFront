@@ -8,11 +8,11 @@ export default function GamePage() {
   const [cards, setCards] = useState([]);
   const [condition, setCondition] = useState(true);
   const [probNum, setProbNum] = useState(1000);
-  const handleCheckButtonClick = () => {
-    // 채점하기 버튼 클릭 시 열릴 URL 설정
+  const handleCheckButtonClick = (e) => {
+    e.preventDefault();
+
     const checkUrl = "https://www.naver.com";
 
-    // 새 창에서 URL 열기
     window.open(checkUrl, "_blank");
   };
 
@@ -92,7 +92,7 @@ export default function GamePage() {
                 <div className="task-buttons">
                   <button
                     className="task-button default"
-                    onClick={handleCheckButtonClick}
+                    onClick={(e) => handleCheckButtonClick(e)}
                   >
                     채점하기
                   </button>

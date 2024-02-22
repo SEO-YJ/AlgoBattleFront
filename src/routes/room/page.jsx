@@ -8,7 +8,7 @@ export default function RoomPage() {
   /* 입장하는 순간, 각 유저의 Tier, 닉네임, 전적 + 방 이름, 알고리즘 이름을 받아오게 해야 함 */
   const imageUrl = "https://d2gd6pc034wcta.cloudfront.net/tier/27.svg";
   const imageUrlleft = "https://d2gd6pc034wcta.cloudfront.net/tier/28.svg";
-  const imageUrlright = "https://d2gd6pc034wcta.cloudfront.net/tier/26.svg";
+  const imageUrlright = "https://d2gd6pc034wcta.cloudfront.net/tier/26.svg"; // tier/$(usertier).svg가 되겠죠?
   const roomName = "방 이름입니다";
   const algoName = "알고리즘";
   const user1Name = "User 1";
@@ -16,7 +16,7 @@ export default function RoomPage() {
   const user1Career = "12승 3패";
   const user2Career = "15승 1패";
   const position = "1"; // Todo: 이 값들을 전부다 동적으로 받아오게 수정.
-  // position = user1이면 1p, user2이면 2p
+  // position = user1이면 1p, user2이면 2p로
 
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false);
