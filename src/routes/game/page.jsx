@@ -1,5 +1,3 @@
-// GamePage.js
-
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
@@ -8,6 +6,8 @@ export default function GamePage() {
   const [cards, setCards] = useState([]);
   const [condition, setCondition] = useState(true);
   const [probNum, setProbNum] = useState(1000);
+  const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
+
   const handleCheckButtonClick = (e) => {
     e.preventDefault();
 
@@ -16,21 +16,18 @@ export default function GamePage() {
     window.open(checkUrl, "_blank");
   };
 
-  /* Todo: 백엔드랑 같이 setProbNum 작성하기 */
-
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
   };
 
   const addCard = () => {
     const newCard = {
-      userid: "user 3", // Todo: 유저 아이디도 동적으로 받아올 예정.
-      solved: "번 문제 풀었음", // Todo: 문제번호를 동적으로 받아올 예정.
-      condition: condition, // Todo: 맞았는지 틀렸는지로 받아올 예정.
+      userid: "user 3",
+      solved: "번 문제 풀었음",
+      condition: condition,
     };
 
-    setCondition((prevCondition) => !prevCondition); /* 임시로 토글로 설정해둠. 
-    Todo: condition: 문제를 맞았는가? 여부로 받아와서 setCondition*/
+    setCondition((prevCondition) => !prevCondition);
 
     const maxCards = 4;
 
@@ -46,19 +43,47 @@ export default function GamePage() {
       return updatedCards;
     });
   };
+
   const [rotation, setRotation] = useState(0);
+
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    const rotationIntervalId = setInterval(() => {
       setRotation((prevRotation) => (prevRotation + 1) % 360);
     }, 50);
-    return () => clearInterval(intervalId);
+
+    const timerID = setInterval(() => {
+      setTime((prevTime) => {
+        if (prevTime === 0) {
+          clearInterval(timerID);
+          return 0;
+        } else {
+          return prevTime - 1;
+        }
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(rotationIntervalId);
+      clearInterval(timerID);
+    };
   }, []);
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
   return (
     <div className="container-fluid">
       <div className="row">
         <div className="col-lg-8 game-container">
           <img
-            src="https://media.forgecdn.net/avatars/284/604/637297967395646856.jpeg" // 임시 이미지입니다..
+            src="https://media.forgecdn.net/avatars/284/604/637297967395646856.jpeg"
             alt="Rotating"
             className="rotating-image"
             style={{
@@ -70,9 +95,9 @@ export default function GamePage() {
 
           <div className="timer-container">
             <span className="timer-icon">⏰</span>
-            <span className="timer-time">140:00</span>{" "}
-            {/* Todo: 타이머가 실시간으로 작동하도록. */}
+            <span className="timer-time">{formatTime(time)}</span>
           </div>
+
           <div className="task-details">
             <a
               href={`https://www.acmicpc.net/problem/${probNum}`}
@@ -102,16 +127,13 @@ export default function GamePage() {
           </div>
         </div>
 
-        {/* 동적으로 생성되는 카드들의 모음*/}
         <div className="col-lg-4">
           {cards.map((card, index) => (
             <div key={index} className="card mb-3">
-              {/* 맞았으면 True, 틀렸으면 False가 반환되겠죠? */}
               <div
                 className="card-body"
                 style={{ backgroundColor: getBackgroundColor(card.condition) }}
               >
-                {/* Todo: UserId에 따라 티어 동적으로 받아오도록. */}
                 <img
                   src={`https://d2gd6pc034wcta.cloudfront.net/tier/22.svg`}
                   alt={`err`}
@@ -149,7 +171,6 @@ export default function GamePage() {
 
           <button onClick={addCard} className="btn btn-primary">
             Add Card
-            {/* 임시로 설정함. 채점 결과에 따라 카드가 반환되면 제거 예정 */}
           </button>
         </div>
       </div>
