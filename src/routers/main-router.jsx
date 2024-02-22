@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainPage from "../routes/main/page";
 import RoomPage from "../routes/room/page";
 import GamePage from "~/routes/game/page";
+import ModalTestPage from "~/routes/test/modal/page";
 
 export const mainRouter = [
   {
@@ -25,6 +26,11 @@ export const mainRouter = [
         element: <GamePage />,
         index: true,
       },
+      {
+        path: "/test/modal",
+        element: <ModalTestPage/>,
+        index: true,
+      }
     ],
   },
 ];

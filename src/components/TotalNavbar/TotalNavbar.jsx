@@ -1,11 +1,22 @@
 import "./TotalNavbar.css";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import {handleShow } from "~/routes/store/reducers/modal/login";
+import { clientLogout } from "~/routes/store/reducers/user";
 
 const EXPAND_BREAKPOINT = "md";
 const BRANDTITLE = "AlgoBattle";
 
 export default function TotalNavbar() {
+  const {bojNickname} = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const onLogout = () => {
+    const action = clientLogout();
+    dispatch(action);
+  }
+
   return (
     <Navbar
       expand={EXPAND_BREAKPOINT}
@@ -39,10 +50,12 @@ export default function TotalNavbar() {
               className={`justify-content-around flex-row pb-4 pb-${EXPAND_BREAKPOINT}-0`}
             >
               <Nav.Link
-                href="#login"
                 className="flex-grow-1 text-center border-end-0"
               >
-                <div className="totalNavbarBtn">로그인</div>
+                {bojNickname ?
+                  <div className="totalNavbarBtn" onClick={()=>onLogout()}>로그아웃</div>
+                  : <div className="totalNavbarBtn" onClick={()=>dispatch(handleShow())}>로그인</div>
+                }
               </Nav.Link>
             </Nav>
             <Nav className="justify-content-start flex-grow-1 pe-3">
