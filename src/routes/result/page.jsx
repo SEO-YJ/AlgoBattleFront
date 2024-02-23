@@ -61,7 +61,7 @@ export default function ResultPage() {
                 />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {user1Name}
+                    {user2Name}
                   </Card.Title>
                 </div>
               </div>
