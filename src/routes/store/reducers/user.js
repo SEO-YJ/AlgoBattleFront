@@ -12,11 +12,9 @@ const userSlice = createSlice({
   reducers : {
     clientLogin(state, action){
       state.bojNickname = action.payload
-      localStorage.setItem(AUTH_KEY, action.payload)
     },
     clientLogout(state, action){
       state.bojNickname = null
-      localStorage.removeItem(AUTH_KEY);
     }
   }
 })
