@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
   const [condition, setCondition] = useState(false);
-  const [probNum, setProbNum] = useState(1000); //TODO: 문제번호를 받아와서 세팅할수 있게 해야할듯?
+
+  const { state } = useLocation();
+  const probNum = state?.probNum || 1001;
+  const randomProblem = state?.randomProblem || "질문";
+  const qTier = state?.qTier || 12;
+
   const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
   const navigate = useNavigate();
-
-  //const qTier = room에서 받아온거 그대로 쓰고싶은데...
 
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
@@ -118,11 +121,11 @@ export default function GamePage() {
               <div className="task-card">
                 <div className="task-number">
                   <img
-                    src="https://d2gd6pc034wcta.cloudfront.net/tier/22.svg" //TODO tier/$(qtier).svg
+                    src={`https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`} //TODO tier/$(qtier).svg
                     alt="Icon"
                     className="icon-image"
                   />
-                  문제 제목
+                  {randomProblem}
                 </div>
                 <div className="task-buttons">
                   <button
@@ -145,7 +148,7 @@ export default function GamePage() {
                 style={{ backgroundColor: getBackgroundColor(card.condition) }}
               >
                 <img
-                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/22.svg`} //TODO user 정보 받아와줘야함
+                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`} //TODO user 정보 받아와줘야함
                   alt={`err`}
                   className="user-image"
                   style={{

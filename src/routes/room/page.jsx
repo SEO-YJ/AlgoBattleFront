@@ -3,9 +3,10 @@ import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./room.css";
+import axios from "axios";
 
 export default function RoomPage() {
-  const qTier = "21"; // 방을 만들때 정해져 있음.
+  const qTier = "13"; // TODO 이건 들어오는 대로
   const user1Tier = "28";
   const user2Tier = "26"; // 동적으로 받아서 써야함 (주안점: 내가 방장이면 user2Tier = 0이어야함!)
   //TODO 방을 만든 사람이면 무조건 user1name / imageUrlLeft, user1career을 적용받고, 들어왔으면 2p걸 적용받게 하자
@@ -31,11 +32,25 @@ export default function RoomPage() {
     }
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (player1Ready && player2Ready) {
-      navigateTo("/room/game");
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/problem/12` //TODO API를 활용해서 동적으로 받아줘야함 근데 값을 동적으로 받으면 오류나는데..?
+        );
+        const randomProblem = response.data.ploblem;
+        const probNum = response.data.ploblemId;
+        const qTier = response.data.level;
+
+        navigateTo("/room/game", {
+          state: { randomProblem, probNum, qTier },
+        });
+      } catch (error) {
+        console.error("오류 발생!:", error);
+        alert("문제가 발생했어요.");
+      }
     } else {
-      alert("두 플레이어 모두 준비 상태가 아닙니다!");
+      alert("두 플레이어가 모두 레디 상태가 아닙니다.");
     }
   };
   // TODO: 꼭 필요하다까진 아닌데 시간여유있으면 게임시작할때 효과줘볼수도?
