@@ -5,7 +5,7 @@ import "./game.css";
 export default function GamePage() {
   const [cards, setCards] = useState([]);
   const [condition, setCondition] = useState(true);
-  const [probNum, setProbNum] = useState(1000); //Todo: 문제번호를 받아와서 세팅할수 있게 해야할듯?
+  const [probNum, setProbNum] = useState(1000); //TODO: 문제번호를 받아와서 세팅할수 있게 해야할듯?
   const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
 
   const handleCheckButtonClick = (e) => {

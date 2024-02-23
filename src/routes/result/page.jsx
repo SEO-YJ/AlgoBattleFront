@@ -5,8 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./result.css";
 
 export default function ResultPage() {
-  const imageUrlleft = "https://d2gd6pc034wcta.cloudfront.net/tier/28.svg";
-  const imageUrlright = "https://d2gd6pc034wcta.cloudfront.net/tier/26.svg";
+  const user1Tier = "28";
+  const user2Tier = "26"; // 동적으로 받아서, 아래선 그냥 정적으로 뿌릴 예정
+  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
+  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const user1Name = "User 1";
   const user2Name = "User 2"; //TODO username 1과 2를 받아와야함
   const winner = "1"; // 누가 이겼는지 받아와줘서 승/패를 띄우려고 함.
