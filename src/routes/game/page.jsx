@@ -1,35 +1,32 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
+import { useNavigate } from "react-router-dom";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
-  const [condition, setCondition] = useState(true);
+  const [condition, setCondition] = useState(false);
   const [probNum, setProbNum] = useState(1000); //TODO: 문제번호를 받아와서 세팅할수 있게 해야할듯?
   const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
-
-  const handleCheckButtonClick = (e) => {
-    e.preventDefault();
-
-    const checkUrl = "https://www.naver.com";
-
-    window.open(checkUrl, "_blank");
-  };
+  const navigate = useNavigate();
 
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
   };
 
-  const addCard = () => {
+  //TODO setProbNum 작성
+
+  const addCard = (e) => {
+    e.preventDefault();
     const newCard = {
-      userid: "user 3",
+      userid: "user 3", //TODO user ID 받아와야함
       solved: condition
         ? `${probNum}번 문제 맞았음`
         : `${probNum}번 문제 틀렸음`,
-      condition: condition,
+      condition: condition, // TODO 정답 여부를 반환하도록 해야 함 (백엔드 영역)
     };
 
-    setCondition((prevCondition) => !prevCondition);
+    setCondition((prevCondition) => !prevCondition); // 백엔드에서 정답여부 반환할수 있도록 되면 제거예정. dummy임
 
     const maxCards = 4;
 
@@ -41,10 +38,19 @@ export default function GamePage() {
       }
 
       updatedCards.push(newCard);
-
       return updatedCards;
-    });
+    }); // 4개 이상의 카드가 생성되면 이전의 카드부터 제거할 예정.
   };
+  useEffect(() => {
+    const lastCard = cards[cards.length - 1];
+    if (lastCard && lastCard.condition) {
+      setTimeout(() => {
+        alert("게임이 끝났습니다");
+        navigate("/room/result");
+      }, 300);
+    }
+  }, [cards]); //TODO 이게 뜨면 백엔드에서 승패판정해줘야함. 결과창갈때 변경된 전적을 반영해야 함
+  //TODO 이후 마지막 카드에서, userid를 분석해서 (누가 만든 카드인지) 승패판정 할 수 있을 듯
 
   const [rotation, setRotation] = useState(0);
 
@@ -110,7 +116,7 @@ export default function GamePage() {
               <div className="task-card">
                 <div className="task-number">
                   <img
-                    src="https://d2gd6pc034wcta.cloudfront.net/tier/22.svg"
+                    src="https://d2gd6pc034wcta.cloudfront.net/tier/22.svg" //TODO 문제의 난이도도 동적으로 받게할예정 변수정리좀하고..
                     alt="Icon"
                     className="icon-image"
                   />
@@ -119,7 +125,7 @@ export default function GamePage() {
                 <div className="task-buttons">
                   <button
                     className="task-button default"
-                    onClick={(e) => handleCheckButtonClick(e)}
+                    onClick={(e) => addCard(e)}
                   >
                     채점하기
                   </button>
@@ -170,10 +176,6 @@ export default function GamePage() {
               </div>
             </div>
           ))}
-
-          <button onClick={addCard} className="btn btn-primary">
-            Add Card
-          </button>
         </div>
       </div>
     </div>
