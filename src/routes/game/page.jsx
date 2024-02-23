@@ -10,6 +10,8 @@ export default function GamePage() {
   const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
   const navigate = useNavigate();
 
+  //const qTier = room에서 받아온거 그대로 쓰고싶은데...
+
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
   };
@@ -116,7 +118,7 @@ export default function GamePage() {
               <div className="task-card">
                 <div className="task-number">
                   <img
-                    src="https://d2gd6pc034wcta.cloudfront.net/tier/22.svg" //TODO 문제의 난이도도 동적으로 받게할예정 변수정리좀하고..
+                    src="https://d2gd6pc034wcta.cloudfront.net/tier/22.svg" //TODO tier/$(qtier).svg
                     alt="Icon"
                     className="icon-image"
                   />
