@@ -10,6 +10,8 @@ export default function GamePage() {
   const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
   const navigate = useNavigate();
 
+  //const qTier = room에서 받아온거 그대로 쓰고싶은데...
+
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
   };
@@ -20,10 +22,10 @@ export default function GamePage() {
     e.preventDefault();
     const newCard = {
       userid: "user 3", //TODO user ID 받아와야함
+      condition: condition, // TODO 정답 여부를 반환하도록 해야 함 (백엔드 영역)
       solved: condition
         ? `${probNum}번 문제 맞았음`
         : `${probNum}번 문제 틀렸음`,
-      condition: condition, // TODO 정답 여부를 반환하도록 해야 함 (백엔드 영역)
     };
 
     setCondition((prevCondition) => !prevCondition); // 백엔드에서 정답여부 반환할수 있도록 되면 제거예정. dummy임
@@ -91,7 +93,7 @@ export default function GamePage() {
       <div className="row">
         <div className="col-lg-8 game-container">
           <img
-            src="https://media.forgecdn.net/avatars/284/604/637297967395646856.jpeg"
+            src="/src/assets/imgs/sample_logo_transparent.png"
             alt="Rotating"
             className="rotating-image"
             style={{
@@ -116,7 +118,7 @@ export default function GamePage() {
               <div className="task-card">
                 <div className="task-number">
                   <img
-                    src="https://d2gd6pc034wcta.cloudfront.net/tier/22.svg" //TODO 문제의 난이도도 동적으로 받게할예정 변수정리좀하고..
+                    src="https://d2gd6pc034wcta.cloudfront.net/tier/22.svg" //TODO tier/$(qtier).svg
                     alt="Icon"
                     className="icon-image"
                   />
@@ -143,7 +145,7 @@ export default function GamePage() {
                 style={{ backgroundColor: getBackgroundColor(card.condition) }}
               >
                 <img
-                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/22.svg`}
+                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/22.svg`} //TODO user 정보 받아와줘야함
                   alt={`err`}
                   className="user-image"
                   style={{

@@ -20,7 +20,7 @@ export const mainRouter = [
       {
         path: "/room",
         element: <RoomPage />,
-        index: true,
+        index: true, //TODO roomid에 따른 room으로 이동되게 해야 할듯? (아래 전부다!)
       },
       {
         path: "/room/game",
@@ -34,9 +34,9 @@ export const mainRouter = [
       },
       {
         path: "/rank",
-        element: <RankPage/>,
+        element: <RankPage />,
         index: true,
-      }
+      },
     ],
   },
 ];

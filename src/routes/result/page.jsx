@@ -6,7 +6,7 @@ import "./result.css";
 
 export default function ResultPage() {
   const user1Tier = "28";
-  const user2Tier = "26"; // 동적으로 받아서, 아래선 그냥 정적으로 뿌릴 예정
+  const user2Tier = "26"; // Join 할때 고정되어있는게 맞겠죠?
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const user1Name = "User 1";
@@ -31,6 +31,7 @@ export default function ResultPage() {
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
                     {user1Name}
+                    {/* TODO winner=1이면 user1Name winner=2면 user2Name*/}
                   </Card.Title>
                 </div>
               </div>
@@ -41,6 +42,7 @@ export default function ResultPage() {
                 승리!
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>전적: {user1Career}</div>
+              {/* TODO winner=1이면 user1Career winner=2면 user2Career*/}
             </Card>
           </Col>
 
@@ -50,7 +52,7 @@ export default function ResultPage() {
           >
             VS
           </Col>
-
+          {/* TODO 승자칸과 동일*/}
           <Col xs={5} className="d-flex justify-content-end">
             <Card className="p-3 card-custom card-margin-left">
               <div className="d-flex align-items-center mb-3 background-color: white">
