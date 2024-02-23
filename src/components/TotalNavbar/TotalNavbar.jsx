@@ -11,7 +11,7 @@ const EXPAND_BREAKPOINT = "md";
 const BRANDTITLE = "AlgoBattle";
 
 export default function TotalNavbar() {
-  const {bojNickname} = useSelector((state) => state.user);
+  const {handle} = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const {pathname} = useLocation();
   const navigate = useNavigate();
@@ -61,10 +61,11 @@ export default function TotalNavbar() {
               <Nav.Link
                 className="flex-grow-1 text-center border-end-0"
               >
-                {bojNickname ?
+                {handle ?
                   <div className="totalNavbarBtn" onClick={()=>onLogout()}>로그아웃</div>
-                  : <div className="totalNavbarBtn" onClick={()=>dispatch(handleShow())}>로그인</div>
-                }
+                  :
+                  <div className="totalNavbarBtn" onClick={()=>dispatch(handleShow())}>로그인</div>
+                 }
               </Nav.Link>
             </Nav>
             <Nav className="justify-content-start flex-grow-1 pe-3">

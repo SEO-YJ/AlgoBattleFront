@@ -8,7 +8,7 @@ import CreateRoom from "../modal/room/create/create";
 
 export default function MainPage() {
   const [roomList, setRoomList] = useState(tempRoomList); //오타있어서 수정해드렸어여
-  const {bojNickname} = useSelector((state) => state.user);
+  const {handle} = useSelector((state) => state.user.user);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -20,12 +20,12 @@ export default function MainPage() {
   },[])
 
   const onClickCreateRoom = useCallback(() => {
-    if(!bojNickname){
+    if(!handle){
       alert("로그인하여 주세요!");
       return;
     }
     setShow(true);
-  }, [bojNickname])
+  }, [handle])
 
   return (
     <div className="mainPage">

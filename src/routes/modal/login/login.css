@@ -30,3 +30,12 @@
   transition: color .3s, border-color .3s;
   box-shadow: 0 0 4px rgba(20, 20, 43, .09);
 }
+
+.modalLoginSpinner{
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

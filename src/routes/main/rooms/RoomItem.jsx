@@ -7,7 +7,7 @@ import EnterRoom from '~/routes/modal/room/enter/enter';
 
 //TODO api을 통해 roomList 받아오게 될 경우, column명 수정
 export default function RoomItem({room}) {
-  const {bojNickname} = useSelector((state) => state.user);
+  const {handle} = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   
@@ -16,7 +16,7 @@ export default function RoomItem({room}) {
   },[])
 
   const enterGame = useCallback(() => {
-    if(!bojNickname){
+    if(!handle){
       alert("로그인하여 주세요!");
       return;
     }
@@ -27,7 +27,7 @@ export default function RoomItem({room}) {
       //TODO 실제 데이터 받아올 때, 경로 수정(아마 room._id)
       navigate("/room")
     }
-  },[room, navigate, bojNickname])
+  },[room, navigate, handle])
 
   return (
     <Col className='roomItemContainer'>
