@@ -11,7 +11,7 @@ const EXPAND_BREAKPOINT = "md";
 const BRANDTITLE = "AlgoBattle";
 
 export default function TotalNavbar() {
-  const {handle} = useSelector((state) => state.user.user);
+  const {handle, tier} = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const {pathname} = useLocation();
   const navigate = useNavigate();
@@ -56,8 +56,17 @@ export default function TotalNavbar() {
 
           <Offcanvas.Body className="flex-row-reverse">
             <Nav
-              className={`justify-content-around flex-row pb-4 pb-${EXPAND_BREAKPOINT}-0`}
+              className={`justify-content-around align-items-center flex-row pb-4 pb-${EXPAND_BREAKPOINT}-0`}
             >
+              {handle ?
+                <Nav.Link className="flex-grow-1 text-center border-end-0">
+                  <img 
+                    src={`https://d2gd6pc034wcta.cloudfront.net/tier/${tier}.svg`}
+                    style={{width:"20px", height:"20px", marginRight:"5px"}}
+                  /> {handle}
+                </Nav.Link>
+                :<></>
+              }
               <Nav.Link
                 className="flex-grow-1 text-center border-end-0"
               >
@@ -69,6 +78,9 @@ export default function TotalNavbar() {
               </Nav.Link>
             </Nav>
             <Nav className="justify-content-start flex-grow-1 pe-3">
+              <Nav.Link href="/">
+                <div className="totalNavbarItem">Home</div>
+              </Nav.Link>
               <Nav.Link href="/rank">
                 <div className="totalNavbarItem">Rank</div>
               </Nav.Link>
