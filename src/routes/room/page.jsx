@@ -8,7 +8,7 @@ export default function RoomPage() {
   const qTier = "21";
   const user1Tier = "28";
   const user2Tier = "26"; // 동적으로 받아서, 아래선 그냥 정적으로 뿌릴 예정
-
+  //TODO 방을 만든 사람이면 무조건 user1name / imageUrlLeft, user1career을 적용받고, 들어왔으면 2p걸 적용받게 하자
   const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`;
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
