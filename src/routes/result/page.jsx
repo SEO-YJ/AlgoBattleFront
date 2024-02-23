@@ -11,6 +11,8 @@ export default function ResultPage() {
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const user1Name = "User 1";
   const user2Name = "User 2"; //TODO username 1과 2를 받아와야함
+  const user1Career = "13승 3패"; //TODO: 백엔드에서 게임 결과 후 승패를 추가해주면 다시 받아오기..?
+  const user2Career = "15승 2패"; //TODO: 백엔드에서 게임 결과 후 승패를 추가해주면 다시 받아오기..?
   const winner = "1"; // 누가 이겼는지 받아와줘서 승/패를 띄우려고 함.
   const navigate = useNavigate();
 
@@ -32,7 +34,13 @@ export default function ResultPage() {
                   </Card.Title>
                 </div>
               </div>
-              <Card.Text className="card-text-large ">승리</Card.Text>
+              <Card.Text
+                className="card-text-large"
+                style={{ fontSize: "32px", marginBottom: "20px" }}
+              >
+                승리!
+              </Card.Text>
+              <div style={{ marginBottom: "20px" }}>전적: {user1Career}</div>
             </Card>
           </Col>
 
@@ -53,11 +61,17 @@ export default function ResultPage() {
                 />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {user2Name}
+                    {user1Name}
                   </Card.Title>
                 </div>
               </div>
-              <Card.Text className="card-text-large">패배</Card.Text>
+              <Card.Text
+                className="card-text-large"
+                style={{ fontSize: "32px", marginBottom: "20px" }}
+              >
+                패배..
+              </Card.Text>
+              <div style={{ marginBottom: "20px" }}>전적: {user2Career}</div>
             </Card>
           </Col>
         </Row>
@@ -72,7 +86,8 @@ export default function ResultPage() {
             <Button className="readyBtn" onClick={() => navigate("/room")}>
               한판 더 하기
             </Button>{" "}
-            {/* TODO: 한판 더 할때, 방 들어갈때와 유사하게 사용자 데이터 갱신시켜줘야 할거같음.*/}
+            {/* TODO: 한판 더 할때, 방 들어갈때와 유사하게 사용자 데이터 갱신시켜줘야 할거같음.
+            + 둘중에 한명이라도 나가기 누르면 자동으로 방이 터지고 로비로 돌아가도록 했으면 */}
           </Col>
         </Row>
       </Row>
