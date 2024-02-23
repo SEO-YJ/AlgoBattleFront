@@ -19,6 +19,7 @@ export default function CreateRoom({show, cancelShow}) {
       return;
     }
     //TODO 방 생성 api 연결
+
   }
   
   return (

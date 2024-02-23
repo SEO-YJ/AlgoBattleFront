@@ -5,6 +5,7 @@ import MainPage from "../routes/main/page";
 import RoomPage from "../routes/room/page";
 import GamePage from "~/routes/game/page";
 import ResultPage from "~/routes/result/page";
+import RankPage from "~/routes/rank/page";
 
 export const mainRouter = [
   {
@@ -31,6 +32,11 @@ export const mainRouter = [
         element: <ResultPage />,
         index: true,
       },
+      {
+        path: "/rank",
+        element: <RankPage/>,
+        index: true,
+      }
     ],
   },
 ];
