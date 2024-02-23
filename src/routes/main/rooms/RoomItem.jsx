@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { Col } from 'react-bootstrap'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
-import EnterRoom from '~/routes/modal/room/enter';
+import EnterRoom from '~/routes/modal/room/enter/enter';
 
 //TODO api을 통해 roomList 받아오게 될 경우, column명 수정
 export default function RoomItem({room}) {

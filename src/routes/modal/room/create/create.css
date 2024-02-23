@@ -1,0 +1,76 @@
+.modalCreate{
+    background: rgb(255,255,255,0.6);
+    padding-top: 100px;
+}
+  
+.modalCreate *{
+  background-color: white;
+}
+  
+.modalCreateText{
+    color: #1f2d54;
+    margin-bottom: 10px;
+    font-weight: 500;
+    line-height: 1.286em;
+}
+
+.modalBody{
+    display: flex;
+    flex-direction: column;
+    gap : 10px
+}
+
+.createRoomName{
+    display: flex;
+    align-items: center;
+    gap : 10px
+}
+
+.createRoomName div{
+    color: #1f2d54;
+    font-size : 24px;
+    font-weight: 700;
+    line-height: 1.167em;
+}
+
+.createRoomInput{
+    flex-grow: 1;
+    color: #1f2d54;
+    background-color: #fff;
+    border: 1px solid #e6e9f1;
+    border-radius: 6px;
+    margin-bottom: 0;
+    padding: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.286em;
+    transition: color .3s, border-color .3s;
+    box-shadow: 0 0 4px rgba(20, 20, 43, .09);  
+}
+
+.createRoomOpenFree{
+    display: flex;
+    gap: 30px;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.createRoomLevel{
+    display: flex;
+    align-items: center;
+    gap : 10px
+}
+
+.createRoomLevelText{
+    color: #1f2d54;
+    font-size : 24px;
+    font-weight: 700;
+    line-height: 1.167em;
+}
+
+.createRoomLevelSelection{
+    flex-grow: 1;
+}
+.createRoomLevelSelection option{
+    background-color: white;
+}
