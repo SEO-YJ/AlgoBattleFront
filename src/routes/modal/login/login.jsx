@@ -4,6 +4,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from "
 import { useDispatch, useSelector } from "react-redux";
 import { handleClose } from "../../store/reducers/modal/login";
 import { clientLogin } from "../../store/reducers/user";
+import { signIn } from "~/lib/apis/users";
 
 export default function ModalLogin() {
   const { show } = useSelector((state) => state.showLogin);
@@ -13,10 +14,15 @@ export default function ModalLogin() {
   const onLogin = () => {
     // TODO 입력된 닉네임 backjoon에 검증
     // 임시로 입력된 것 그대로 로그인 되도록 함
-    const action = clientLogin(nickname);
-    dispatch(action);
+    signIn(nickname).then(data => {
+      console.log(data);
+    }).catch(err => {
+      console.log(err);
+    })
+    // const action = clientLogin(nickname);
+    // dispatch(action);
     setNickname("");
-    dispatch(handleClose())
+    // dispatch(handleClose())
   }
 
   return (
