@@ -5,16 +5,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./room.css";
 
 export default function RoomPage() {
-  const imageUrl = "https://d2gd6pc034wcta.cloudfront.net/tier/27.svg";
-  const imageUrlleft = "https://d2gd6pc034wcta.cloudfront.net/tier/28.svg";
-  const imageUrlright = "https://d2gd6pc034wcta.cloudfront.net/tier/26.svg";
+  const qTier = "21";
+  const user1Tier = "28";
+  const user2Tier = "26"; // 동적으로 받아서, 아래선 그냥 정적으로 뿌릴 예정
+
+  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`;
+  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
+  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const roomName = "방 이름입니다";
   const algoName = "알고리즘";
   const user1Name = "User 1";
   const user2Name = "User 2";
   const user1Career = "12승 3패";
   const user2Career = "15승 1패";
-  const position = "1";
+  const position = "1"; //TODO 전부다 동적으로 받아와줘야함
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false);
@@ -34,6 +38,7 @@ export default function RoomPage() {
       alert("두 플레이어 모두 준비 상태가 아닙니다!");
     }
   };
+  // TODO: 꼭 필요하다까진 아닌데 시간여유있으면 게임시작할때 효과줘볼수도?
 
   return (
     <Container className="text-center container-margin-top">
@@ -63,6 +68,7 @@ export default function RoomPage() {
               </div>
               <Card.Text className="card-text-large ">
                 전적: {user1Career}
+                {/* TODO: 적절한 형식으로 전적을 파싱해야 함.*/}
               </Card.Text>
               <Button
                 className={`button-bottom-left ${player1Ready ? "ready" : ""}`}

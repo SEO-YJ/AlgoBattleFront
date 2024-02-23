@@ -5,7 +5,7 @@ import "./game.css";
 export default function GamePage() {
   const [cards, setCards] = useState([]);
   const [condition, setCondition] = useState(true);
-  const [probNum, setProbNum] = useState(1000);
+  const [probNum, setProbNum] = useState(1000); //Todo: 문제번호를 받아와서 세팅할수 있게 해야할듯?
   const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
 
   const handleCheckButtonClick = (e) => {
@@ -23,7 +23,9 @@ export default function GamePage() {
   const addCard = () => {
     const newCard = {
       userid: "user 3",
-      solved: "번 문제 풀었음",
+      solved: condition
+        ? `${probNum}번 문제 맞았음`
+        : `${probNum}번 문제 틀렸음`,
       condition: condition,
     };
 
@@ -103,7 +105,7 @@ export default function GamePage() {
               href={`https://www.acmicpc.net/problem/${probNum}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="noDecoration" //
+              className="noDecoration"
             >
               <div className="task-card">
                 <div className="task-number">
