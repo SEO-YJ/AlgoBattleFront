@@ -1,5 +1,79 @@
-import React from "react";
+import React, { useState } from "react";
+import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./result.css";
 
 export default function ResultPage() {
-  return <div>Game page에서 게임이 끝나면 결과창으로 이동</div>;
+  const imageUrlleft = "https://d2gd6pc034wcta.cloudfront.net/tier/28.svg";
+  const imageUrlright = "https://d2gd6pc034wcta.cloudfront.net/tier/26.svg";
+  const user1Name = "User 1";
+  const user2Name = "User 2"; //TODO username 1과 2를 받아와야함
+  const winner = "1"; // 누가 이겼는지 받아와줘서 승/패를 띄우려고 함.
+  const navigate = useNavigate();
+
+  return (
+    <Container className="text-center container-margin-top">
+      <Row className="flex-column align-items-center">
+        <Col className="d-flex justify-content-center">
+          <div className="font-bold-large mt-2">Battle Result</div>
+        </Col>
+
+        <Row className="mt-4 w-100">
+          <Col xs={5} className="d-flex justify-content-start">
+            <Card className="p-3 card-custom card-margin-right">
+              <div className="d-flex align-items-center mb-3 background-color: white">
+                <Image className="image-user" src={imageUrlleft} alt="User 1" />
+                <div className="background-color: white">
+                  <Card.Title className="card-title-large">
+                    {user1Name}
+                  </Card.Title>
+                </div>
+              </div>
+              <Card.Text className="card-text-large ">승리</Card.Text>
+            </Card>
+          </Col>
+
+          <Col
+            xs={2}
+            className="d-flex flex-column align-items-center justify-content-center vs-section"
+          >
+            VS
+          </Col>
+
+          <Col xs={5} className="d-flex justify-content-end">
+            <Card className="p-3 card-custom card-margin-left">
+              <div className="d-flex align-items-center mb-3 background-color: white">
+                <Image
+                  className="image-user"
+                  src={imageUrlright}
+                  alt="User 2"
+                />
+                <div className="background-color: white">
+                  <Card.Title className="card-title-large">
+                    {user2Name}
+                  </Card.Title>
+                </div>
+              </div>
+              <Card.Text className="card-text-large">패배</Card.Text>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row className="mt-4 w-100">
+          <Col className="d-flex justify-content-start">
+            <Button className="backBtn" onClick={() => navigate("/")}>
+              로비로 가기
+            </Button>
+          </Col>
+          <Col className="d-flex justify-content-end">
+            <Button className="readyBtn" onClick={() => navigate("/room")}>
+              한판 더 하기
+            </Button>{" "}
+            {/* TODO: 한판 더 할때, 방 들어갈때와 유사하게 사용자 데이터 갱신시켜줘야 할거같음.*/}
+          </Col>
+        </Row>
+      </Row>
+    </Container>
+  );
 }
