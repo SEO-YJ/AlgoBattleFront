@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import ModalLogin from "~/routes/modal/login/login";
 import {handleShow } from "~/routes/store/reducers/modal/login";
-import { clientLogout } from "~/routes/store/reducers/user";
+import { initClient } from "~/routes/store/reducers/user";
 
 const EXPAND_BREAKPOINT = "md";
 const BRANDTITLE = "AlgoBattle";
@@ -17,7 +17,7 @@ export default function TotalNavbar() {
   const navigate = useNavigate();
 
   const onLogout = () => {
-    const action = clientLogout();
+    const action = initClient();
     dispatch(action);
     //TODO 경로 수정할 시 아래 경로 수정
     // 아래 기능은 만일 게임 중에 로그아웃을 할 경우에는 메인 페이지로 향하는 것

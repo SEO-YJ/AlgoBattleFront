@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { handleClose } from "../../store/reducers/modal/login";
-import { clientLogin } from "../../store/reducers/user";
+import { clientLogin, initClient } from "../../store/reducers/user";
 
 export default function ModalLogin() {
   const { loading } = useSelector((state) => state.user);
@@ -28,6 +28,7 @@ export default function ModalLogin() {
       })
       .catch((err) => {
         alert("백준에 아이디가 존재하지 않습니다.");
+        dispatch(initClient());
       });
   };
 
@@ -51,7 +52,7 @@ export default function ModalLogin() {
             onChange={(e) => setNickname(e.target.value)}
           />
         </ModalBody>
-        {loading === "pending" ?
+        {loading == "pending" ?
           <Spinner variant="primary" className="modalLoginSpinner"></Spinner>
         :<></>}
         <ModalFooter>

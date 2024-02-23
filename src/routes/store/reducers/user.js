@@ -23,10 +23,7 @@ const userSlice = createSlice({
   name : "user",
   initialState : initialState,
   reducers : {
-    // clientLogin(state, action){
-    //   state.bojNickname = action.payload
-    // },
-    clientLogout(state, action){
+    initClient(state, action){
       state.loading = 'idle'
       state.user.handle = "",
       state.user.tier = 0
@@ -61,7 +58,7 @@ const userSlice = createSlice({
   }
 })
 
-export const {clientLogout} = userSlice.actions;
+export const {initClient} = userSlice.actions;
 
 export {clientLogin};
 
