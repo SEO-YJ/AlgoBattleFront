@@ -20,10 +20,10 @@ export default function GamePage() {
     e.preventDefault();
     const newCard = {
       userid: "user 3", //TODO user ID 받아와야함
+      condition: condition, // TODO 정답 여부를 반환하도록 해야 함 (백엔드 영역)
       solved: condition
         ? `${probNum}번 문제 맞았음`
         : `${probNum}번 문제 틀렸음`,
-      condition: condition, // TODO 정답 여부를 반환하도록 해야 함 (백엔드 영역)
     };
 
     setCondition((prevCondition) => !prevCondition); // 백엔드에서 정답여부 반환할수 있도록 되면 제거예정. dummy임
@@ -143,7 +143,7 @@ export default function GamePage() {
                 style={{ backgroundColor: getBackgroundColor(card.condition) }}
               >
                 <img
-                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/22.svg`}
+                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/22.svg`} //TODO user 정보 받아와줘야함
                   alt={`err`}
                   className="user-image"
                   style={{

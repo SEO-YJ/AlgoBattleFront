@@ -5,20 +5,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./room.css";
 
 export default function RoomPage() {
-  const qTier = "21";
+  const qTier = "21"; // 방을 만들때 정해져 있음.
   const user1Tier = "28";
-  const user2Tier = "26"; // 동적으로 받아서, 아래선 그냥 정적으로 뿌릴 예정
+  const user2Tier = "26"; // 동적으로 받아서 써야함 (주안점: 내가 방장이면 user2Tier = 0이어야함!)
   //TODO 방을 만든 사람이면 무조건 user1name / imageUrlLeft, user1career을 적용받고, 들어왔으면 2p걸 적용받게 하자
   const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`;
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const roomName = "방 이름입니다";
   const algoName = "알고리즘";
-  const user1Name = "User 1";
-  const user2Name = "User 2";
+  const position = "1"; // 내가 1P인지 2P인지 알아야함(ready 관리를 위해서)
+  const user1Name = "User 1"; //TODO : 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
+  const user2Name = "User 2"; // 내가 방장이면, 사람이 들어오기 전까지 NULL이여야하겠죠?
   const user1Career = "12승 3패";
-  const user2Career = "15승 1패";
-  const position = "1"; //TODO 전부다 동적으로 받아와줘야함
+  const user2Career = "15승 1패"; //TODO 전부다 동적으로 받아와줘야함
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false);
