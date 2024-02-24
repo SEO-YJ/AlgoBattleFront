@@ -8,7 +8,7 @@ import axios from "axios";
 export default function RoomPage() {
   const roomTier = "13"; // TODO [1]
   const user1Tier = "28";
-  const user2Tier = "26"; // 동적으로 받아서 써야함 (주안점: 내가 방장이면 user2Tier = 0이어야함!)
+  const user2Tier = "26"; // [2]동적으로 받아서 써야함 (주안점: 내가 방장이면 user2Tier = 0이어야함!)
   //TODO 방을 만든 사람이면 무조건 user1name / imageUrlLeft, user1career을 적용받고, 들어왔으면 2p걸 적용받게 하자
 
   const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`;
@@ -38,6 +38,7 @@ export default function RoomPage() {
     if (player1Ready && player2Ready) {
       try {
         // 알고리즘 이름이 '랜덤'이면 쿼리 문자열을 생성하지 않음
+        // TODO 추천알고리즘 api가 오작동하는거같음 queryString에 뭘 넣어도 통랜덤으로 받아오는데?
         const queryString =
           algoName === "랜덤" ? "" : `?aliase=${encodeURIComponent(algoName)}`;
 
@@ -50,7 +51,7 @@ export default function RoomPage() {
         const qTier = response.data.level;
 
         navigateTo("/room/game", {
-          state: { randomProblem, probNum, qTier, position },
+          state: { randomProblem, probNum, qTier, position }, //TODO 받으면 username도 같이 넘겨줄 예정
         });
       } catch (error) {
         console.error("오류 발생!:", error);
