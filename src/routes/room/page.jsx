@@ -6,20 +6,22 @@ import "./room.css";
 import axios from "axios";
 
 export default function RoomPage() {
-  const qTier = "13"; // TODO 이건 들어오는 대로
+  const roomTier = "13"; // TODO [1]
   const user1Tier = "28";
   const user2Tier = "26"; // 동적으로 받아서 써야함 (주안점: 내가 방장이면 user2Tier = 0이어야함!)
   //TODO 방을 만든 사람이면 무조건 user1name / imageUrlLeft, user1career을 적용받고, 들어왔으면 2p걸 적용받게 하자
-  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`;
+
+  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`;
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const roomName = "방 이름입니다";
-  const algoName = "알고리즘";
-  const position = "1"; // 내가 1P인지 2P인지 알아야함(ready 관리를 위해서)
-  const user1Name = "User 1"; //TODO : 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
+  [2];
+  const algoName = "랜덤"; // TODO [3]
+  const position = "1"; // [4]내가 1P인지 2P인지 알아야함(ready 관리를 위해서)
+  const user1Name = "User 1"; //TODO : [5] 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
   const user2Name = "User 2"; // 내가 방장이면, 사람이 들어오기 전까지 NULL이여야하겠죠?
   const user1Career = "12승 3패";
-  const user2Career = "15승 1패"; //TODO 전부다 동적으로 받아와줘야함
+  const user2Career = "15승 1패"; //TODO [1]~[5]은 전부 방 생성 시에 동적으로 받아와야 하는 값
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false);
@@ -35,26 +37,29 @@ export default function RoomPage() {
   const handleStart = async () => {
     if (player1Ready && player2Ready) {
       try {
+        // 알고리즘 이름이 '랜덤'이면 쿼리 문자열을 생성하지 않음
+        const queryString =
+          algoName === "랜덤" ? "" : `?aliase=${encodeURIComponent(algoName)}`;
+
         const response = await axios.get(
-          `http://localhost:3000/api/problem/12` //TODO API를 활용해서 동적으로 받아줘야함 근데 값을 동적으로 받으면 오류나는데..?
+          `http://localhost:3000/api/problem/${roomTier}${queryString}`
         );
+
         const randomProblem = response.data.ploblem;
         const probNum = response.data.ploblemId;
         const qTier = response.data.level;
 
         navigateTo("/room/game", {
-          state: { randomProblem, probNum, qTier },
+          state: { randomProblem, probNum, qTier, position },
         });
       } catch (error) {
         console.error("오류 발생!:", error);
         alert("문제가 발생했어요.");
       }
     } else {
-      alert("두 플레이어가 모두 레디 상태가 아닙니다.");
+      alert("플레이어가 레디 상태가 아닙니다.");
     }
   };
-  // TODO: 꼭 필요하다까진 아닌데 시간여유있으면 게임시작할때 효과줘볼수도?
-
   return (
     <Container className="text-center container-margin-top">
       <Row className="flex-column align-items-center">
