@@ -6,34 +6,40 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function GamePage() {
   const [cards, setCards] = useState([]);
   const [condition, setCondition] = useState(false);
-
   const { state } = useLocation();
-  const probNum = state?.probNum || 1001;
-  const randomProblem = state?.randomProblem || "질문";
-  const qTier = state?.qTier || 12;
+  const probNum = state?.probNum || 1000;
+  const randomProblem = state?.randomProblem || "A+B";
+  const qTier = state?.qTier || 1; // 오류 방지용 기본값
+  //TODO 여기에 user1name이랑 user2name 받아올거임
 
-  const [time, setTime] = useState(60 * 60); // 초 단위로 1시간
+  // TODO? redux로 하려다가 오버엔지니어링같아서 세션스토리지썼음
+  const [time, setTime] = useState(() => {
+    const savedTime = sessionStorage.getItem("timer");
+    return savedTime ? Number(savedTime) : 60 * 60;
+  });
+
   const navigate = useNavigate();
 
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
   };
 
-  //TODO setProbNum 작성
-
   const addCard = (e) => {
+    const position = state?.position;
+    console.log(position);
     e.preventDefault();
     const newCard = {
-      userid: "user 3", //TODO user ID 받아와야함
-      condition: condition, // TODO 정답 여부를 반환하도록 해야 함 (백엔드 영역)
+      userid: position == 1 ? "user 1" : "user 2", // 형태 다른데 값만 같으면 돼서 일부러 === 말고 == 씀. 오류의 여지가 있을지도?
+      //TODO userid를 동적으로 받아와서 구현해야함.
+      condition: condition,
       solved: condition
         ? `${probNum}번 문제 맞았음`
         : `${probNum}번 문제 틀렸음`,
     };
 
-    setCondition((prevCondition) => !prevCondition); // 백엔드에서 정답여부 반환할수 있도록 되면 제거예정. dummy임
+    setCondition((prevCondition) => !prevCondition); // TODO 이게 채점 알고리즘이 되지 않을까?
 
-    const maxCards = 4;
+    const maxCards = 4; //최대 4개까지 보이게
 
     setCards((prevCards) => {
       let updatedCards = [...prevCards];
@@ -44,18 +50,19 @@ export default function GamePage() {
 
       updatedCards.push(newCard);
       return updatedCards;
-    }); // 4개 이상의 카드가 생성되면 이전의 카드부터 제거할 예정.
+    });
   };
+
   useEffect(() => {
     const lastCard = cards[cards.length - 1];
     if (lastCard && lastCard.condition) {
       setTimeout(() => {
         alert("게임이 끝났습니다");
+        sessionStorage.removeItem("timer"); // TODO? 문제 여러개 할거면 알고리즘자체를 다시짜야할거같은데 아니라고했으니..
         navigate("/room/result");
       }, 300);
     }
-  }, [cards]); //TODO 이게 뜨면 백엔드에서 승패판정해줘야함. 결과창갈때 변경된 전적을 반영해야 함
-  //TODO 이후 마지막 카드에서, userid를 분석해서 (누가 만든 카드인지) 승패판정 할 수 있을 듯
+  }, [cards]);
 
   const [rotation, setRotation] = useState(0);
 
@@ -68,9 +75,13 @@ export default function GamePage() {
       setTime((prevTime) => {
         if (prevTime === 0) {
           clearInterval(timerID);
+          sessionStorage.removeItem("timer"); //시간이 끝나도 삭제
+          //TODO: 끝났다고 알림창 울리게 하고 로비로 강제 이동시키기. 승패 반영 x?
           return 0;
         } else {
-          return prevTime - 1;
+          const nextTime = prevTime - 1;
+          sessionStorage.setItem("timer", nextTime);
+          return nextTime;
         }
       });
     }, 1000);
@@ -121,7 +132,7 @@ export default function GamePage() {
               <div className="task-card">
                 <div className="task-number">
                   <img
-                    src={`https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`} //TODO tier/$(qtier).svg
+                    src={`https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`}
                     alt="Icon"
                     className="icon-image"
                   />
@@ -130,7 +141,7 @@ export default function GamePage() {
                 <div className="task-buttons">
                   <button
                     className="task-button default"
-                    onClick={(e) => addCard(e)}
+                    onClick={(e) => addCard(e)} // TODO 채점 알고리즘으로 연동되게해야함. 채점 알고리즘에 addCard도 합쳐줘야함
                   >
                     채점하기
                   </button>
