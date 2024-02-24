@@ -10,7 +10,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { handleClose } from "../../store/reducers/modal/login";
+import { handleClose } from "../../store/reducers/login";
 import { clientLogin, initClient } from "../../store/reducers/user";
 
 export default function ModalLogin() {

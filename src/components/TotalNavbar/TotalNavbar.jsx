@@ -4,7 +4,7 @@ import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import ModalLogin from "~/routes/modal/login/login";
-import {handleShow } from "~/routes/store/reducers/modal/login";
+import {handleShow } from "~/routes/store/reducers/login";
 import { initClient } from "~/routes/store/reducers/user";
 
 const EXPAND_BREAKPOINT = "md";

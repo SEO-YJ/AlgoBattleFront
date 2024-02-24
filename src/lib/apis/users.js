@@ -9,3 +9,12 @@ export async function signIn(bojNickname){
         return Promise.reject(err);
     }
 }
+
+export async function fetchRanking(){
+    try{
+        const data = await instance.get('/users/ranking');
+        return data
+    }catch(err){
+        return Promise.reject(err);
+    }
+}

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { signIn } from "~/lib/apis/users"
+import { fetchRanking, signIn } from "~/lib/apis/users"
 
 const initialState = {
   loading : "idle",
@@ -16,6 +16,14 @@ const clientLogin = createAsyncThunk(
   async(data, thunkAPI) => {
     const user = await signIn(data.nickname);
     return user
+  }
+)
+
+const fetchUserRanking = createAsyncThunk(
+  "user/fetchUserRanking",
+  async(data, thunkAPI) => {
+    const users = await fetchRanking();
+    return users
   }
 )
 
@@ -38,7 +46,9 @@ const userSlice = createSlice({
           if(action.type === "user/clientLogin/fulfilled"){
             state.user.handle = action.payload.handle;
             state.user.tier = action.payload.tier;
-          } else {
+          } else if(action.type === "user/fetchUserRanking/fulfilled"){
+            return
+          }else {
             state.user = null
           }
         }
@@ -60,6 +70,6 @@ const userSlice = createSlice({
 
 export const {initClient} = userSlice.actions;
 
-export {clientLogin};
+export {clientLogin, fetchUserRanking};
 
 export default userSlice.reducer;

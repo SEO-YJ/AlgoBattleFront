@@ -1,7 +1,24 @@
 import './page.css'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserRanking } from '../store/reducers/user';
+import { Spinner } from 'react-bootstrap';
 
 export default function RankPage() {
+  const { loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [users, setUsers] = useState([]);
+
+  useEffect(()=>{
+    const action = fetchUserRanking();
+    dispatch(action).then(data => {
+      console.log(data.payload)
+      setUsers(data.payload);
+    }).catch(err => {
+      console.log(err);
+    })
+  }, [dispatch]);
+
   return (
     <div className='rankPage'>
       <div className='rankPageTitle'>전체 랭킹</div>
@@ -16,21 +33,22 @@ export default function RankPage() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td className='rankUser'>홍길동</td>
-            <td>2승 1무</td>
-            <td>66.6%</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td className='rankUser'>홍길동</td>
-            <td>1승 1무</td>
-            <td>50%</td>
-          </tr>
+          {
+            users.map((user, index) => (
+              <tr key={user._id}>
+                <td>{index+1}</td>
+                <td className='rankUser'>{user.handle}</td>
+                <td>{user.winCount||0}승 {user.loseCount||0}패</td>
+                <td>{(user.winCount||0+user.loseCount||0 ? ((user.winCount||0) /(user.winCount||0+user.loseCount||0))*100 : 0).toFixed(2)}%</td>
+              </tr>
+            ))
+          }
         </tbody>
       </table>
       </div>
+      {loading == "pending" ?
+        <Spinner variant="primary" className="rankingPageSpinner"></Spinner>
+      :<></>}
     </div>
   )
 }

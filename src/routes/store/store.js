@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import userReducer from './reducers/user'
-import showLoginReducer from './reducers/modal/login'
+import showLoginReducer from './reducers/login'
 import { configureStore } from "@reduxjs/toolkit";
 import persistReducer from "redux-persist/es/persistReducer";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist";
