@@ -36,7 +36,7 @@ export default function RoomPage() {
   };
 
   const handleStart = async () => {
-    if (player1Ready) {
+    if (player1Ready && player2Ready) {
       try {
         // 알고리즘 이름이 '랜덤'이면 쿼리 문자열을 생성하지 않음
         // TODO 추천알고리즘 api가 오작동하는거같음 queryString에 뭘 넣어도 통랜덤으로 받아오는데?
