@@ -15,13 +15,14 @@ export default function RoomPage() {
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const roomName = "방 이름입니다";
-  [2];
   const algoName = "랜덤"; // TODO [3]
   const position = "1"; // [4]내가 1P인지 2P인지 알아야함(ready 관리를 위해서)
-  const user1Name = "User 1"; //TODO : [5] 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
-  const user2Name = "User 2"; // 내가 방장이면, 사람이 들어오기 전까지 NULL이여야하겠죠?
-  const user1Career = "12승 3패";
-  const user2Career = "15승 1패"; //TODO [1]~[5]은 전부 방 생성 시에 동적으로 받아와야 하는 값
+  const user1Name = "허상진"; //TODO : [5] 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
+  const user2Name = "권기현"; // 내가 방장이면, 사람이 들어오기 전까지 NULL이여야하겠죠?
+  const user1win = "12";
+  const user1lose = "4";
+  const user2win = "15"; //TODO [1]~[5]은 전부 방 생성 시에 동적으로 받아와야 하는 값
+  const user2lose = "1";
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false);
@@ -35,7 +36,7 @@ export default function RoomPage() {
   };
 
   const handleStart = async () => {
-    if (player1Ready && player2Ready) {
+    if (player1Ready) {
       try {
         // 알고리즘 이름이 '랜덤'이면 쿼리 문자열을 생성하지 않음
         // TODO 추천알고리즘 api가 오작동하는거같음 queryString에 뭘 넣어도 통랜덤으로 받아오는데?
@@ -51,7 +52,14 @@ export default function RoomPage() {
         const qTier = response.data.level;
 
         navigateTo("/room/game", {
-          state: { randomProblem, probNum, qTier, position }, //TODO 받으면 username도 같이 넘겨줄 예정
+          state: {
+            randomProblem,
+            probNum,
+            qTier,
+            position,
+            user1Name,
+            user2Name,
+          }, //TODO 받으면 username도 같이 넘겨줄 예정
         });
       } catch (error) {
         console.error("오류 발생!:", error);
@@ -88,7 +96,7 @@ export default function RoomPage() {
                 </div>
               </div>
               <Card.Text className="card-text-large ">
-                전적: {user1Career}
+                전적: {`${user1win}승 ${user1lose}패`}
                 {/* TODO: 적절한 형식으로 전적을 파싱해야 함.*/}
               </Card.Text>
               <Button
@@ -131,7 +139,7 @@ export default function RoomPage() {
                 </div>
               </div>
               <Card.Text className="card-text-large">
-                전적: {user2Career}
+                전적: {`${user2win}승 ${user2lose}패`}
               </Card.Text>
               <Button
                 className={`button-bottom-right ${player2Ready ? "ready" : ""}`}

@@ -10,7 +10,9 @@ export default function GamePage() {
   const probNum = state?.probNum || 1000;
   const randomProblem = state?.randomProblem || "A+B";
   const qTier = state?.qTier || 1; // 오류 방지용 기본값
-  //TODO 여기에 user1name이랑 user2name 받아올거임
+  const user1Name = state?.user1Name;
+  const user2Name = state?.user2Name;
+  //TODO 결과창으로 다시한번 navigate 써서 넘겨줘야함(한번더 후술)
 
   // TODO? redux로 하려다가 오버엔지니어링같아서 세션스토리지썼음
   const [time, setTime] = useState(() => {
@@ -29,8 +31,8 @@ export default function GamePage() {
     console.log(position);
     e.preventDefault();
     const newCard = {
-      userid: position == 1 ? "user 1" : "user 2", // 형태 다른데 값만 같으면 돼서 일부러 === 말고 == 씀. 오류의 여지가 있을지도?
-      //TODO userid를 동적으로 받아와서 구현해야함.
+      userid: position == 1 ? `${user1Name}` : `${user2Name}`, // 형태 다른데 값만 같으면 돼서 일부러 === 말고 == 씀. 오류의 여지가 있을지도?
+      //TODO user1name를 동적으로 받아와서 구현해야함.
       condition: condition,
       solved: condition
         ? `${probNum}번 문제 맞았음`
@@ -57,9 +59,9 @@ export default function GamePage() {
     const lastCard = cards[cards.length - 1];
     if (lastCard && lastCard.condition) {
       setTimeout(() => {
-        alert("게임이 끝났습니다");
+        alert("문제를 풀어 게임이 끝났습니다");
         sessionStorage.removeItem("timer"); // TODO? 문제 여러개 할거면 알고리즘자체를 다시짜야할거같은데 아니라고했으니..
-        navigate("/room/result");
+        navigate("/room/result"); //TODO 여기서 winner, user1name, user2name 넘겨줘야함
       }, 300);
     }
   }, [cards]);
@@ -74,10 +76,10 @@ export default function GamePage() {
     const timerID = setInterval(() => {
       setTime((prevTime) => {
         if (prevTime === 0) {
+          alert("시간이 지나 게임이 끝났습니다");
           clearInterval(timerID);
           sessionStorage.removeItem("timer"); //시간이 끝나도 삭제
-          //TODO: 끝났다고 알림창 울리게 하고 로비로 강제 이동시키기. 승패 반영 x?
-          return 0;
+          navigate("/"); //바로 로비로 이동(기획과 다르면 수정하겠음)
         } else {
           const nextTime = prevTime - 1;
           sessionStorage.setItem("timer", nextTime);
