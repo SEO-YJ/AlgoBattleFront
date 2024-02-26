@@ -33,8 +33,8 @@ export default function ResultPage() {
                 <Image className="image-user" src={imageUrlleft} alt="User 1" />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {winner == 1 ? `${user1Name}` : `${user2Name}`}
-                    {/* TODO winner=1이면 user1Name winner=2면 user2Name*/}
+                    {winner == 1 ? `${user1Name}` : `${user2Name}`}{" "}
+                    {/* 전부다 의도적인 ==임 */}
                   </Card.Title>
                 </div>
               </div>
@@ -46,9 +46,9 @@ export default function ResultPage() {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user1win}` : `${user2win}`} 승{" "}
-                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패
+                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패{" "}
+                {/* 전부다 의도적인 ==임 */}
               </div>
-              {/* TODO winner=1이면 user1Career winner=2면 user2Career*/}
             </Card>
           </Col>
 
@@ -58,7 +58,6 @@ export default function ResultPage() {
           >
             VS
           </Col>
-          {/* TODO 승자칸과 동일*/}
           <Col xs={5} className="d-flex justify-content-end">
             <Card className="p-3 card-custom card-margin-left">
               <div className="d-flex align-items-center mb-3 background-color: white">
@@ -69,7 +68,8 @@ export default function ResultPage() {
                 />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {winner == 1 ? `${user2Name}` : `${user1Name}`}
+                    {winner == 1 ? `${user2Name}` : `${user1Name}`}{" "}
+                    {/* 전부다 의도적인 ==임 */}
                   </Card.Title>
                 </div>
               </div>
@@ -81,7 +81,8 @@ export default function ResultPage() {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user2win}` : `${user1win}`} 승{" "}
-                {winner == 1 ? `${user2lose}` : `${user1lose}`} 패
+                {winner == 1 ? `${user2lose}` : `${user1lose}`} 패{" "}
+                {/* 전부다 의도적인 ==임 */}
               </div>
             </Card>
           </Col>
@@ -96,7 +97,7 @@ export default function ResultPage() {
           <Col className="d-flex justify-content-end">
             <Button className="readyBtn" onClick={() => navigate("/room")}>
               한판 더 하기
-            </Button>{" "}
+            </Button>
             {/* TODO: 한판 더 할때, 방 들어갈때와 유사하게 사용자 데이터 갱신시켜줘야 할거같음.
             + 둘중에 한명이라도 나가기 누르면 자동으로 방이 터지고 로비로 돌아가도록 했으면 */}
           </Col>

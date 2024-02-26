@@ -19,7 +19,7 @@ export const mainRouter = [
         index: true,
       },
       {
-        path: "/room",
+        path: "/room", //TODO room -> :roomId가 좋을듯? 의견있으면 알려주세요
         element: <RoomPage />,
         index: true, //TODO roomid에 따른 room으로 이동되게 해야 할듯? (아래 전부다!)
       },
@@ -40,9 +40,9 @@ export const mainRouter = [
       },
       {
         path: "/socket/test",
-        element: <SocketTestPage/>,
+        element: <SocketTestPage />,
         index: true,
-      }
+      },
     ],
   },
 ];
