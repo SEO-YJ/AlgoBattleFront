@@ -1,24 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./room.css";
 import axios from "axios";
 
+import io from "socket.io-client";
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
   // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는 값
 
+  const { roomId } = useParams();
+  const socket = io(import.meta.env.VITE_SOCKET_URL);
   const { handle, tier } = useSelector((state) => state.user.user);
-
-  const roomName = "방 이름입니다"; // [1]
-  const algoName = "전체"; // [1]
-  const roomTier = "12"; // [1]
-  const user1Name = "durid"; // [1]
-  const user1win = "12"; // [1]
-  const user1lose = "4"; // [1]
-  const user1Tier = "28"; // [1]
+  socket.on("getRoom", (data) => {
+    console.log(data);
+  });
+  const [roomName, setRoomName] = useState("방 이름입니다");
+  const [algoName, setAlgoName] = useState("전체");
+  const [roomTier, setRoomTier] = useState("0");
+  const [user1Name, setUser1Name] = useState("0");
+  const [user1win, setUser1win] = useState("0");
+  const [user1lose, setUser1lose] = useState("0");
+  const [user1Tier, setUser1Tier] = useState("0");
   const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`; // [1]
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`; // [1]
 
@@ -31,6 +37,31 @@ export default function RoomPage() {
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
+  useEffect(() => {
+    socket.emit("getRoom", { roomId: roomId });
+
+    socket.on("getRoom", (data) => {
+      setRoomName(data.roomName);
+      setAlgoName(data.algorithm);
+      setRoomTier(data.level);
+      setUser1Name(data.player1.handle);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (user1Name) {
+      axios
+        .get(`http://localhost:3000/api/users/${user1Name}`) // 여기에 실제 API 경로를 입력해주세요.
+        .then((res) => {
+          setUser1win(res.data.winCount);
+          setUser1lose(res.data.loseCount);
+          setUser1Tier(res.data.tier);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  }, [user1Name]);
 
   const handleReady = () => {
     if (handle === user1Name) {
