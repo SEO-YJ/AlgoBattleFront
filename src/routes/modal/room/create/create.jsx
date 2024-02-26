@@ -14,6 +14,7 @@ import { levelList } from "./levelList";
 import { algorithmList } from "./algorithmList";
 import io from "socket.io-client";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const socket = io(import.meta.env.VITE_SOCKET_URL);
 
@@ -28,8 +29,8 @@ const createRoom = (room, player1Id) => {
 }
 
 export default function CreateRoom({ show, cancelShow }) {
-  //TODO 추후에 Id로 변경
   const playerId = useSelector((state) => state.user.user._id);
+  const navigate = useNavigate();
 
   const [room, setRoom] = useState({
     name: "",
@@ -51,6 +52,11 @@ export default function CreateRoom({ show, cancelShow }) {
     }
     createRoom(room, playerId);
     cancelShow();
+    socket.on("getRoomId", (roomId) => {
+      // console.log(rooms);
+      navigate(`/room/${roomId}`);
+    });
+    // getRoomId
     // console.log(room, playerId);
   };
 

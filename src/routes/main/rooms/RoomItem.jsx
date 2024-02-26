@@ -21,10 +21,9 @@ export default function RoomItem({room}) {
       return;
     }
     if(room.password){
-      //TODO 비번 확인 과정
       setShow(true);
     } else {
-      //TODO 실제 데이터 받아올 때, 경로 수정(아마 room._id)
+      //TODO room player2 업데이트
       navigate(`/room/${room._id}`)
     }
   },[room, navigate, handle])
@@ -52,7 +51,7 @@ export default function RoomItem({room}) {
             <div className='roomItemBtn white'>{room.status}</div> 
           </div>
           <div className='roomItemPerson'>
-            {room.state === "모집중" ? ('1/2') : ('2/2')}
+            {room.player2 === null ? ('1/2') : ('2/2')}
           </div>
         </div>
       </div>

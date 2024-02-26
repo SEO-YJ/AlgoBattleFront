@@ -14,7 +14,6 @@ export default function MainPage() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    //TODO roomList 받아오기
     socket.emit("getRooms");
 
     socket.on("getsRooms", (rooms) => {

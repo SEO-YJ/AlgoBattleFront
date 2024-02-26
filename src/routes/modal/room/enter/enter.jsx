@@ -12,7 +12,7 @@ export default function EnterRoom({show, roomPassword, cancelShow, roomId}) {
         alert("비밀번호가 틀립니다. 다시 입력해주세요.");
         return;
     }
-    //TODO room api 경로 설정
+    //TODO room player2 업데이트
     navigate(`/room/${roomId}`)
   }
 
