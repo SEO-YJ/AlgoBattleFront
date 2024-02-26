@@ -34,37 +34,44 @@ export default function RoomPage() {
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
-  
+
   useEffect(() => {
     socket.emit("getRoom", { roomId: roomId });
 
     socket.on("getRoom", (data) => {
+      console.log("data : ", data);
       setRoomName(data.name);
       setAlgoName(data.algorithm);
       setRoomTier(data.level);
 
       setUser1Name(data.player1.handle);
-      const action = fetchUser({userName: data.player1.handle});
-      dispatch(action).then(data =>{
-        const user = data.payload;
-        setUser1Tier(user.tier);
-        setUser1win(user.winCount);
-        setUser1lose(user.loseCount);
-      })
 
       if(data.player2){
         setUser2Name(data.player2.handle);
-        const action = fetchUser({userName: data.player2.handle});
-        dispatch(action).then(data => {
-          const user = data.payload;
-          setUser2Tier(user.tier);
-          setUser2win(user.winCount);
-          setUser2lose(user.loseCount);
-        })
       }
 
     });
-  }, [roomId, dispatch]);
+  }, [roomId]);
+
+  useEffect(()=>{
+    const action = fetchUser({userName: user1Name});
+    dispatch(action).then(data =>{
+      const user = data.payload;
+      setUser1Tier(user.tier);
+      setUser1win(user.winCount);
+      setUser1lose(user.loseCount);
+    })
+  },[user1Name, dispatch])
+
+  useEffect(()=>{
+    const action = fetchUser({userName: user2Name});
+    dispatch(action).then(data => {
+      const user = data.payload;
+      setUser2Tier(user.tier);
+      setUser2win(user.winCount);
+      setUser2lose(user.loseCount);
+    })
+  }, [user2Name, dispatch])
 
   const handleReady = () => {
     if (handle === user1Name) {
@@ -105,6 +112,7 @@ export default function RoomPage() {
       alert("플레이어가 레디 상태가 아닙니다.");
     }
   };
+
   return (
     <Container className="text-center container-margin-top">
       <Row className="flex-column align-items-center">

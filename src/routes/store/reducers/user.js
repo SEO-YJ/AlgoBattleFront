@@ -31,7 +31,7 @@ const fetchUserRanking = createAsyncThunk(
 const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async(data, thunkAPI) => {
-    console.log(data);
+    // console.log(data);
     const user = await fetchUserData(data.userName);
     return user
   }
