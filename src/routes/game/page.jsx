@@ -31,12 +31,13 @@ export default function GamePage() {
     const position = state?.position;
     const encodedUser1Name = encodeURIComponent(user1Name);
     const encodedUser2Name = encodeURIComponent(user2Name);
-    const userName = position == 1 ? encodedUser1Name : encodedUser2Name; // 오타 아님. 의도적으로 친 ==임
+    const userName = position == 1 ? encodedUser1Name : encodedUser2Name;
 
     try {
       const response = await fetch(
         `http://localhost:3000/api/users/${userName}/solvedStatus`
       );
+
       if (!response.ok) {
         throw new Error(`채점에 오류가 발생했어요`);
       }
@@ -44,11 +45,11 @@ export default function GamePage() {
       const data = await response.json();
       const result = data.result;
 
-      setCondition(result === "맞았습니다");
+      setCondition((prevCondition) => result === "맞았습니다");
 
       const newCard = {
         userid: userName,
-        condition: condition,
+        condition: result === "맞았습니다",
         solved:
           result === "맞았습니다"
             ? `${probNum}번 문제 맞았음`
@@ -81,7 +82,6 @@ export default function GamePage() {
         const winner = lastCard.userid === user1Name ? 1 : 2;
         //setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
         try {
-          // API 호출
           const response = await fetch(
             `http://localhost:3000/api/users/${lastCard.userid}`,
             {
