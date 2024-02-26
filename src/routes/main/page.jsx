@@ -9,20 +9,21 @@ import io from 'socket.io-client';
 const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 export default function MainPage() {
-  const [roomList, setRoomList] = useState([]); //오타있어서 수정해드렸어여
+  const [roomList, setRoomList] = useState([]);
   const {handle} = useSelector((state) => state.user.user);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     //TODO roomList 받아오기
-    socket.on("gameRooms", (rooms) => {
-      setRoomList(rooms);
-    });
-
+    socket.emit("getRooms")
     return () => {
-      socket.off("gameRooms");
+      socket.off("getRooms");
     }
   }, []);
+
+  socket.on("getsRooms", (rooms) => {
+    setRoomList(rooms);
+  });
 
   const cancelShow = useCallback(() => {
     setShow(false);

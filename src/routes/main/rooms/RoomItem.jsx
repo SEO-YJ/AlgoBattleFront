@@ -39,7 +39,7 @@ export default function RoomItem({room}) {
               style={{width:"35px", height:"35px"}}
             />
             <div className='roomItemTitle'>{room.name}</div>
-            <div className='roomItemPlayer'>{room.player1}</div>
+            <div className='roomItemPlayer'>{room.player1.handle}</div>
           </div>
           {room.password === '' ?
             <img src='/src/assets/imgs/unlock.png' style={{width:"20px", height:"25px"}}/>:
@@ -49,7 +49,7 @@ export default function RoomItem({room}) {
         <div className='roomItemBottom'>
           <div className='roomItemBottomLeft'>
             <div className='roomItemBtn'>{room.algorithm}</div>
-            <div className='roomItemBtn white'>{"모집중"}</div> 
+            <div className='roomItemBtn white'>{room.status}</div> 
           </div>
           <div className='roomItemPerson'>
             {room.state === "모집중" ? ('1/2') : ('2/2')}
