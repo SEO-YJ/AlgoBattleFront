@@ -6,7 +6,7 @@ import { algorithmList } from './algorithmList';
 import io from 'socket.io-client'
 import { useSelector } from 'react-redux';
 
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_SOCKET_URL);
 
 const createRoom = (room, player1Id) => {
   socket.emit("createRoom", {
