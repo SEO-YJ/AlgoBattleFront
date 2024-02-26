@@ -4,9 +4,7 @@ import Search from "./search/Search";
 import RoomList from "./rooms/RoomList";
 import { useSelector } from "react-redux";
 import CreateRoom from "../modal/room/create/create";
-import io from 'socket.io-client';
-
-const socket = io(import.meta.env.VITE_SOCKET_URL);
+import socket from "~/lib/sockets/socket";
 
 export default function MainPage() {
   const [roomList, setRoomList] = useState([]);

@@ -12,11 +12,9 @@ import {
 } from "react-bootstrap";
 import { levelList } from "./levelList";
 import { algorithmList } from "./algorithmList";
-import io from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-const socket = io(import.meta.env.VITE_SOCKET_URL);
+import socket from "~/lib/sockets/socket";
 
 const createRoom = (room, player1Id) => {
   socket.emit("createRoom", {
