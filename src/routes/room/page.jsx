@@ -17,7 +17,7 @@ export default function RoomPage() {
   const roomName = "방 이름입니다";
   const algoName = "전체"; // TODO [3]
   const position = "1"; // [4]내가 1P인지 2P인지 알아야함(ready 관리를 위해서)
-  const user1Name = "허상진"; //TODO : [5] 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
+  const user1Name = "durid"; //TODO : [5] 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
   const user2Name = "권기현"; // 내가 방장이면, 사람이 들어오기 전까지 NULL이여야하겠죠?
   const user1win = "12";
   const user1lose = "4";
@@ -25,7 +25,7 @@ export default function RoomPage() {
   const user2lose = "1";
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
-  const [player2Ready, setPlayer2Ready] = useState(false);
+  const [player2Ready, setPlayer2Ready] = useState(true);
 
   const handleReady = () => {
     if (position === "1") {
@@ -39,7 +39,7 @@ export default function RoomPage() {
     if (player1Ready && player2Ready) {
       try {
         const queryString =
-          algoName === "전체" ? "" : `?eliase=${encodeURIComponent(algoName)}`;
+          algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
 
         const response = await axios.get(
           `http://localhost:3000/api/problem/${roomTier}${queryString}`
