@@ -10,7 +10,7 @@ import { fetchUser } from "../store/reducers/user";
 
 export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
-  // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는 
+  // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는
   const { roomId } = useParams();
   const { handle, tier } = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ export default function RoomPage() {
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
-  
+
   useEffect(() => {
     socket.emit("getRoom", { roomId: roomId });
 
@@ -44,25 +44,24 @@ export default function RoomPage() {
       setRoomTier(data.level);
 
       setUser1Name(data.player1.handle);
-      const action = fetchUser({userName: data.player1.handle});
-      dispatch(action).then(data =>{
+      const action = fetchUser({ userName: data.player1.handle });
+      dispatch(action).then((data) => {
         const user = data.payload;
         setUser1Tier(user.tier);
         setUser1win(user.winCount);
         setUser1lose(user.loseCount);
-      })
+      });
 
-      if(data.player2){
+      if (data.player2) {
         setUser2Name(data.player2.handle);
-        const action = fetchUser({userName: data.player2.handle});
-        dispatch(action).then(data => {
+        const action = fetchUser({ userName: data.player2.handle });
+        dispatch(action).then((data) => {
           const user = data.payload;
           setUser2Tier(user.tier);
           setUser2win(user.winCount);
           setUser2lose(user.loseCount);
-        })
+        });
       }
-
     });
   }, [roomId, dispatch]);
 
@@ -86,7 +85,7 @@ export default function RoomPage() {
         const probNum = response.data.ploblemId;
         const qTier = response.data.level;
 
-        navigateTo("/room/game", {
+        navigateTo(`/room/${roomId}/game`, {
           state: {
             randomProblem,
             probNum,
