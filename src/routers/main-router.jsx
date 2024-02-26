@@ -6,6 +6,7 @@ import RoomPage from "../routes/room/page";
 import GamePage from "~/routes/game/page";
 import ResultPage from "~/routes/result/page";
 import RankPage from "~/routes/rank/page";
+import SocketTestPage from "~/routes/socket/testPage";
 
 export const mainRouter = [
   {
@@ -37,6 +38,11 @@ export const mainRouter = [
         element: <RankPage />,
         index: true,
       },
+      {
+        path: "/socket/test",
+        element: <SocketTestPage/>,
+        index: true,
+      }
     ],
   },
 ];
