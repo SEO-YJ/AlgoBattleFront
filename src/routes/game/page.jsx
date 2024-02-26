@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
@@ -14,7 +15,7 @@ export default function GamePage() {
   const user2Name = state?.user2Name;
   const user1Tier = state?.user1Tier;
   const user2Tier = state?.user2Tier;
-
+  const { handle } = useSelector((state) => state.user.user);
   const [time, setTime] = useState(() => {
     const savedTime = sessionStorage.getItem("timer");
     return savedTime ? Number(savedTime) : 60 * 60;
@@ -27,11 +28,9 @@ export default function GamePage() {
   };
   const addCard = async (e) => {
     e.preventDefault();
-
-    const position = state?.position;
     const encodedUser1Name = encodeURIComponent(user1Name);
     const encodedUser2Name = encodeURIComponent(user2Name);
-    const userName = position == 1 ? encodedUser1Name : encodedUser2Name;
+    const userName = handle === user1Name ? encodedUser1Name : encodedUser2Name;
 
     try {
       const response = await fetch(
@@ -54,7 +53,7 @@ export default function GamePage() {
           result === "맞았습니다"
             ? `${probNum}번 문제 맞았음`
             : `${probNum}번 문제 틀렸음`,
-        tierinfo: position == 1 ? `${user1Tier}` : `${user2Tier}`,
+        tierinfo: handle === user1Name ? `${user1Tier}` : `${user2Tier}`,
       };
 
       const maxCards = 4;
