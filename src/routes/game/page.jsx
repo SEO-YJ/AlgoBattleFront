@@ -26,51 +26,93 @@ export default function GamePage() {
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
   };
-
-  const addCard = (e) => {
-    const position = state?.position;
-
+  const addCard = async (e) => {
     e.preventDefault();
-    setCondition((prevCondition) => !prevCondition); // TODO 이게 채점 알고리즘
-    // 이자리에 채점알고리즘 들어가야됨 (condition 생성용)
 
-    const newCard = {
-      userid: position == 1 ? `${user1Name}` : `${user2Name}`, // 형태 다른데 값만 같으면 돼서 일부러 === 말고 == 씀. 오류의 여지가 있을지도?
-      condition: condition,
-      solved: condition
-        ? `${probNum}번 문제 맞았음`
-        : `${probNum}번 문제 틀렸음`,
-      tierinfo: position == 1 ? `${user1Tier}` : `${user2Tier}`,
-    };
-    const maxCards = 4;
+    const position = state?.position;
+    const encodedUser1Name = encodeURIComponent(user1Name);
+    const encodedUser2Name = encodeURIComponent(user2Name);
+    const userName = position == 1 ? encodedUser1Name : encodedUser2Name;
 
-    setCards((prevCards) => {
-      let updatedCards = [...prevCards];
-
-      if (updatedCards.length >= maxCards) {
-        updatedCards = updatedCards.slice(1);
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/users/${userName}/solvedStatus`
+      );
+      if (!response.ok) {
+        throw new Error(`채점에 오류가 발생했어요`);
       }
 
-      updatedCards.push(newCard);
-      return updatedCards;
-    });
+      const data = await response.json();
+      const result = data.result;
+
+      setCondition(result === "맞았습니다");
+
+      const newCard = {
+        userid: userName,
+        condition: condition,
+        solved:
+          result === "맞았습니다"
+            ? `${probNum}번 문제 맞았음`
+            : `${probNum}번 문제 틀렸음`,
+        tierinfo: position == 1 ? `${user1Tier}` : `${user2Tier}`,
+      };
+
+      const maxCards = 4;
+
+      setCards((prevCards) => {
+        let updatedCards = [...prevCards];
+
+        if (updatedCards.length >= maxCards) {
+          updatedCards = updatedCards.slice(1);
+        }
+
+        updatedCards.push(newCard);
+        return updatedCards;
+      });
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
   };
 
   useEffect(() => {
     const lastCard = cards[cards.length - 1];
     if (lastCard && lastCard.condition) {
-      setTimeout(() => {
+      setTimeout(async () => {
         alert("문제를 풀어 게임이 끝났습니다");
         const winner = lastCard.userid === user1Name ? 1 : 2;
-        console.log(winner);
         sessionStorage.removeItem("timer");
-        navigate("/room/result", {
-          state: { user1Name, user2Name, user1Tier, user2Tier, winner },
-        });
+
+        try {
+          // API 호출
+          const response = await fetch(
+            `http://localhost:3000/api/users/${lastCard.userid}`,
+            {
+              method: "POST",
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`사용자 정보 업데이트에 오류가 발생했어요`);
+          }
+
+          const updatedUserData = await response.json();
+
+          navigate("/room/result", {
+            state: {
+              user1Name,
+              user2Name,
+              user1Tier,
+              user2Tier,
+              winner,
+              updatedUserData,
+            },
+          });
+        } catch (error) {
+          console.error("Error:", error.message);
+        }
       }, 300);
     }
   }, [cards]);
-
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -148,7 +190,7 @@ export default function GamePage() {
                 <div className="task-buttons">
                   <button
                     className="task-button default"
-                    onClick={(e) => addCard(e)} // TODO 채점 알고리즘으로 연동되게해야함. 채점 알고리즘에 addCard도 합쳐줘야함
+                    onClick={(e) => addCard(e)} // TODO add카드 안에 채점 알고리즘을 추가
                   >
                     채점하기
                   </button>
