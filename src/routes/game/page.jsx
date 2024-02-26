@@ -114,6 +114,10 @@ export default function GamePage() {
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
+    const rotationIntervalId = setInterval(() => {
+      setRotation((prevRotation) => (prevRotation + 1) % 360);
+    }, 50);
+
     const timerID = setInterval(() => {
       setTime((prevTime) => {
         if (prevTime === 0) {
@@ -130,6 +134,7 @@ export default function GamePage() {
     }, 1000);
 
     return () => {
+      clearInterval(rotationIntervalId);
       clearInterval(timerID);
     };
   }, [time, navigate]);
