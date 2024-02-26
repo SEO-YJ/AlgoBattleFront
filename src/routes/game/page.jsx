@@ -81,7 +81,7 @@ export default function GamePage() {
         alert("문제를 풀어 게임이 끝났습니다");
         const winner = lastCard.userid === user1Name ? 1 : 2;
         sessionStorage.removeItem("timer");
-
+        setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
         try {
           // API 호출
           const response = await fetch(
@@ -116,16 +116,13 @@ export default function GamePage() {
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
-    const rotationIntervalId = setInterval(() => {
-      setRotation((prevRotation) => (prevRotation + 1) % 360);
-    }, 50);
-
     const timerID = setInterval(() => {
       setTime((prevTime) => {
         if (prevTime === 0) {
           alert("시간이 지나 게임이 끝났습니다");
           clearInterval(timerID);
           sessionStorage.removeItem("timer");
+          setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
           navigate("/"); //바로 로비로 이동(기획과 다르면 수정하겠음)
         } else {
           const nextTime = prevTime - 1;
@@ -136,10 +133,9 @@ export default function GamePage() {
     }, 1000);
 
     return () => {
-      clearInterval(rotationIntervalId);
       clearInterval(timerID);
     };
-  }, []);
+  }, [time, navigate]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
