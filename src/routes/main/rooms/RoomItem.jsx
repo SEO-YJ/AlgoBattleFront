@@ -25,7 +25,7 @@ export default function RoomItem({room}) {
       setShow(true);
     } else {
       //TODO 실제 데이터 받아올 때, 경로 수정(아마 room._id)
-      navigate("/room")
+      navigate(`/room/${room._id}`)
     }
   },[room, navigate, handle])
 
@@ -41,7 +41,7 @@ export default function RoomItem({room}) {
             <div className='roomItemTitle'>{room.name}</div>
             <div className='roomItemPlayer'>{room.player1.handle}</div>
           </div>
-          {room.password === '' ?
+          {room.password === '' || !room.password ?
             <img src='/src/assets/imgs/unlock.png' style={{width:"20px", height:"25px"}}/>:
             <img src='/src/assets/imgs/lock.png' style={{width:"20px", height:"25px"}}/>
           }
@@ -57,7 +57,7 @@ export default function RoomItem({room}) {
         </div>
       </div>
       {show ? 
-        <EnterRoom show={show} roomPassword={room.password} cancelShow={cancelShow}></EnterRoom> 
+        <EnterRoom show={show} roomPassword={room.password} cancelShow={cancelShow} roomId={room._id}></EnterRoom> 
       : <></>}
     </Col>
   )

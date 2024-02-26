@@ -19,7 +19,8 @@ export const mainRouter = [
         index: true,
       },
       {
-        path: "/room", //TODO room -> :roomId가 좋을듯? 의견있으면 알려주세요
+        // path: "/room", //TODO room -> :roomId가 좋을듯? 의견있으면 알려주세요
+        path: "/room/:roomId",
         element: <RoomPage />,
         index: true, //TODO roomid에 따른 room으로 이동되게 해야 할듯? (아래 전부다!)
       },

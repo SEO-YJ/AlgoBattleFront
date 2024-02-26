@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-export default function EnterRoom({show, roomPassword, cancelShow}) {
+export default function EnterRoom({show, roomPassword, cancelShow, roomId}) {
   const [inputPassword, setInputPassword] = useState("");
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ export default function EnterRoom({show, roomPassword, cancelShow}) {
         return;
     }
     //TODO room api 경로 설정
-    navigate("/room")
+    navigate(`/room/${roomId}`)
   }
 
   return (

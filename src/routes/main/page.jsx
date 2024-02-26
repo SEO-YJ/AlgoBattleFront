@@ -15,15 +15,17 @@ export default function MainPage() {
 
   useEffect(() => {
     //TODO roomList 받아오기
-    socket.emit("getRooms")
+    socket.emit("getRooms");
+
+    socket.on("getsRooms", (rooms) => {
+      console.log(rooms);
+      setRoomList(rooms);
+    });
+
     return () => {
       socket.off("getRooms");
     }
-  }, []);
-
-  socket.on("getsRooms", (rooms) => {
-    setRoomList(rooms);
-  });
+  }, []); 
 
   const cancelShow = useCallback(() => {
     setShow(false);
