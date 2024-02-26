@@ -1,36 +1,40 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./room.css";
 import axios from "axios";
 
 export default function RoomPage() {
-  const roomTier = "12"; // TODO [1]
-  const user1Tier = "28";
-  const user2Tier = "26"; // [2]동적으로 받아서 써야함 (주안점: 내가 방장이면 user2Tier = 0이어야함!)
-  //TODO 방을 만든 사람이면 무조건 user1name / imageUrlLeft, user1career을 적용받고, 들어왔으면 2p걸 적용받게 하자
+  //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
+  // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는 값
 
-  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`;
-  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
-  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
-  const roomName = "방 이름입니다";
-  const algoName = "전체"; // TODO [3]
-  const position = "1"; // [4]내가 1P인지 2P인지 알아야함(ready 관리를 위해서)
-  const user1Name = "durid"; //TODO : [5] 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
-  const user2Name = "권기현"; // 내가 방장이면, 사람이 들어오기 전까지 NULL이여야하겠죠?
-  const user1win = "12";
-  const user1lose = "4";
-  const user2win = "15"; //TODO [1]~[5]은 전부 방 생성 시에 동적으로 받아와야 하는 값
-  const user2lose = "1";
+  const { handle } = useSelector((state) => state.user.user);
+
+  const roomTier = "12"; // [1]
+  const user1Tier = "28"; // [1]
+  const user2Tier = "26"; // [2]
+  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`; // [1]
+  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`; // [1]
+  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`; // [2]
+  const roomName = "방 이름입니다"; // [1]
+  const algoName = "전체"; // [1]
+  const user1Name = "durid"; // [1]
+  const user2Name = "권기현"; // [2]
+  const user1win = "12"; // [1]
+  const user1lose = "4"; // [1]
+  const user2win = "15"; // [2]
+  const user2lose = "1"; // [2]
+
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
   const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
 
   const handleReady = () => {
-    if (position === "1") {
+    if (handle === user1Name) {
       setPlayer1Ready(!player1Ready);
-    } else if (position === "2") {
+    } else if (handle === user2Name) {
       setPlayer2Ready(!player2Ready);
     }
   };
@@ -52,7 +56,6 @@ export default function RoomPage() {
             randomProblem,
             probNum,
             qTier,
-            position,
             user1Name,
             user2Name,
             user1Tier,
@@ -110,7 +113,7 @@ export default function RoomPage() {
             className="d-flex flex-column align-items-center justify-content-center vs-section"
           >
             VS
-            {position === "1" && (
+            {handle === user1Name && (
               <Button
                 className="algoBtn mt-2"
                 variant="primary"
