@@ -5,14 +5,26 @@ import { tempRoomList } from "./data/tempRoomList";
 import RoomList from "./rooms/RoomList";
 import { useSelector } from "react-redux";
 import CreateRoom from "../modal/room/create/create";
+import io from 'socket.io-client'
+
+const socket = io("http://localhost:3000");
 
 export default function MainPage() {
-  const [roomList, setRoomList] = useState(tempRoomList); //오타있어서 수정해드렸어여
+  const [roomList, setRoomList] = useState([]); //오타있어서 수정해드렸어여
   const {handle} = useSelector((state) => state.user.user);
   const [show, setShow] = useState(false);
 
+  // console.log(roomList);
+
   useEffect(() => {
     //TODO roomList 받아오기
+    socket.on("gameRooms", (rooms) => {
+      setRoomList(rooms);
+    });
+
+    return () => {
+      socket.off("gameRooms");
+    }
   }, []);
 
   const cancelShow = useCallback(() => {

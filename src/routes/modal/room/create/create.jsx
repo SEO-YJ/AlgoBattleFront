@@ -3,8 +3,25 @@ import React, { useState } from 'react'
 import { Button, FormCheck, FormSelect, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { levelList } from './levelList';
 import { algorithmList } from './algorithmList';
+import io from 'socket.io-client'
+import { useSelector } from 'react-redux';
+
+const socket = io("http://localhost:3000");
+
+const createRoom = (room, player1Id) => {
+  socket.emit("createRoom", {
+    roomName : room.name,
+    roomPassword : room.password,
+    roomLevel : room.level,
+    roomAlgorithm : room.algorithm,
+    player1Id : player1Id,
+  })
+}
 
 export default function CreateRoom({show, cancelShow}) {
+  //TODO 추후에 Id로 변경
+  const playerId = useSelector((state) => state.user.user.handle);
+
   const [room, setRoom] = useState({
     name : "",
     password: "",
@@ -18,7 +35,7 @@ export default function CreateRoom({show, cancelShow}) {
       alert("전부 선택해주세요");
       return;
     }
-    //TODO 방 생성 api 연결
+    createRoom(room, playerId);
 
   }
   

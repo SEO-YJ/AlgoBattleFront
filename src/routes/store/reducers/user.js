@@ -7,6 +7,7 @@ const initialState = {
   user : {
     handle : "",
     tier: 0,
+    _id : ""
   }
 }
 
@@ -35,6 +36,7 @@ const userSlice = createSlice({
       state.loading = 'idle'
       state.user.handle = "",
       state.user.tier = 0
+      state.user._id = ""
     }
   },
   extraReducers: (builder) => {
@@ -46,6 +48,7 @@ const userSlice = createSlice({
           if(action.type === "user/clientLogin/fulfilled"){
             state.user.handle = action.payload.handle;
             state.user.tier = action.payload.tier;
+            state.user._id = action.payload._id;
           } else if(action.type === "user/fetchUserRanking/fulfilled"){
             return
           }else {
