@@ -6,7 +6,7 @@ import "./room.css";
 import axios from "axios";
 
 export default function RoomPage() {
-  const roomTier = "13"; // TODO [1]
+  const roomTier = "12"; // TODO [1]
   const user1Tier = "28";
   const user2Tier = "26"; // [2]동적으로 받아서 써야함 (주안점: 내가 방장이면 user2Tier = 0이어야함!)
   //TODO 방을 만든 사람이면 무조건 user1name / imageUrlLeft, user1career을 적용받고, 들어왔으면 2p걸 적용받게 하자
@@ -25,7 +25,7 @@ export default function RoomPage() {
   const user2lose = "1";
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
-  const [player2Ready, setPlayer2Ready] = useState(true);
+  const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
 
   const handleReady = () => {
     if (position === "1") {
@@ -40,11 +40,9 @@ export default function RoomPage() {
       try {
         const queryString =
           algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
-
         const response = await axios.get(
           `http://localhost:3000/api/problem/${roomTier}${queryString}`
         );
-
         const randomProblem = response.data.ploblem;
         const probNum = response.data.ploblemId;
         const qTier = response.data.level;

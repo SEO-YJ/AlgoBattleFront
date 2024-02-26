@@ -33,7 +33,8 @@ export default function ResultPage() {
                 <Image className="image-user" src={imageUrlleft} alt="User 1" />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {winner == 1 ? `${user1Name}` : `${user2Name}`}
+                    {winner == 1 ? `${user1Name}` : `${user2Name}`}{" "}
+                    {/* 전부다 의도적인 ==임 */}
                   </Card.Title>
                 </div>
               </div>
@@ -45,7 +46,8 @@ export default function ResultPage() {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user1win}` : `${user2win}`} 승{" "}
-                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패
+                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패{" "}
+                {/* 전부다 의도적인 ==임 */}
               </div>
             </Card>
           </Col>
@@ -66,7 +68,8 @@ export default function ResultPage() {
                 />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {winner == 1 ? `${user2Name}` : `${user1Name}`}
+                    {winner == 1 ? `${user2Name}` : `${user1Name}`}{" "}
+                    {/* 전부다 의도적인 ==임 */}
                   </Card.Title>
                 </div>
               </div>
@@ -78,7 +81,8 @@ export default function ResultPage() {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user2win}` : `${user1win}`} 승{" "}
-                {winner == 1 ? `${user2lose}` : `${user1lose}`} 패
+                {winner == 1 ? `${user2lose}` : `${user1lose}`} 패{" "}
+                {/* 전부다 의도적인 ==임 */}
               </div>
             </Card>
           </Col>

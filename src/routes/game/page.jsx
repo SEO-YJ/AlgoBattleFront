@@ -31,7 +31,7 @@ export default function GamePage() {
     const position = state?.position;
     const encodedUser1Name = encodeURIComponent(user1Name);
     const encodedUser2Name = encodeURIComponent(user2Name);
-    const userName = position == 1 ? encodedUser1Name : encodedUser2Name;
+    const userName = position == 1 ? encodedUser1Name : encodedUser2Name; // 오타 아님. 의도적으로 친 ==임
 
     try {
       const response = await fetch(
@@ -125,6 +125,7 @@ export default function GamePage() {
           clearInterval(timerID);
           sessionStorage.removeItem("timer");
           navigate("/"); //바로 로비로 이동(기획과 다르면 수정하겠음)
+          //window.location.reload(); <-- 새로고침 필요하면 이거 추가해주면됨
         } else {
           const nextTime = prevTime - 1;
           sessionStorage.setItem("timer", nextTime);
