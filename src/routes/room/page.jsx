@@ -10,20 +10,21 @@ export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
   // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는 값
 
-  const { handle } = useSelector((state) => state.user.user);
+  const { handle, tier } = useSelector((state) => state.user.user);
 
-  const roomTier = "12"; // [1]
-  const user1Tier = "28"; // [1]
-  const user2Tier = "26"; // [2]
-  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`; // [1]
-  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`; // [1]
-  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`; // [2]
   const roomName = "방 이름입니다"; // [1]
   const algoName = "전체"; // [1]
+  const roomTier = "12"; // [1]
   const user1Name = "durid"; // [1]
-  const user2Name = "권기현"; // [2]
   const user1win = "12"; // [1]
   const user1lose = "4"; // [1]
+  const user1Tier = "28"; // [1]
+  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`; // [1]
+  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`; // [1]
+
+  const user2Tier = tier; // [2]
+  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`; // [2]
+  const user2Name = handle; // [2] TODO: 받는 방식 협의
   const user2win = "15"; // [2]
   const user2lose = "1"; // [2]
 
