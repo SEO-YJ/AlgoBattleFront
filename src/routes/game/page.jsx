@@ -14,7 +14,6 @@ export default function GamePage() {
   const user2Name = state?.user2Name;
   const user1Tier = state?.user1Tier;
   const user2Tier = state?.user2Tier;
-  //TODO 결과창으로 다시한번 navigate 써서 넘겨줘야함(한번더 후술)
 
   const [time, setTime] = useState(() => {
     const savedTime = sessionStorage.getItem("timer");
@@ -80,8 +79,7 @@ export default function GamePage() {
       setTimeout(async () => {
         alert("문제를 풀어 게임이 끝났습니다");
         const winner = lastCard.userid === user1Name ? 1 : 2;
-        sessionStorage.removeItem("timer");
-        setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
+        //setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
         try {
           // API 호출
           const response = await fetch(
@@ -96,7 +94,7 @@ export default function GamePage() {
           }
 
           const updatedUserData = await response.json();
-
+          sessionStorage.removeItem("timer");
           navigate("/room/result", {
             state: {
               user1Name,
@@ -122,7 +120,6 @@ export default function GamePage() {
           alert("시간이 지나 게임이 끝났습니다");
           clearInterval(timerID);
           sessionStorage.removeItem("timer");
-          setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
           navigate("/"); //바로 로비로 이동(기획과 다르면 수정하겠음)
         } else {
           const nextTime = prevTime - 1;

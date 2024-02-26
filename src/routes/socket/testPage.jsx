@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import io from 'socket.io-client'
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
 
 const socket = io("http://localhost:3000");
 
 export default function SocketTestPage() {
   const [gameRooms, setGameRooms] = useState([]);
 
-  useEffect(()=>{
-    socket.on("gameRooms",(rooms) => {
-        setGameRooms(rooms);
+  useEffect(() => {
+    socket.on("gameRooms", (rooms) => {
+      setGameRooms(rooms);
     });
 
     return () => {
-        socket.off("gameRooms");
-    }
+      socket.off("gameRooms");
+    };
   }, []);
 
   const createRoom = () => {
@@ -22,12 +22,12 @@ export default function SocketTestPage() {
     const roomLevel = prompt("Enter room level:");
     const roomAlgorithm = prompt("Enter room algorithm:");
     const player1Id = "123";
-    socket.emit("createRoom",{
-        roomName,
-        roomPassword,
-        roomLevel,
-        roomAlgorithm,
-        player1Id,
+    socket.emit("createRoom", {
+      roomName,
+      roomPassword,
+      roomLevel,
+      roomAlgorithm,
+      player1Id,
     });
   };
 
@@ -38,18 +38,16 @@ export default function SocketTestPage() {
   return (
     <div>
       <h1>Game Rooms</h1>
-      <button onClick={()=>createRoom()}>Create Room</button>
+      <button onClick={() => createRoom()}>Create Room</button>
       <ul>
         {gameRooms.map((room, index) => (
           <li key={index}>
-             * 방 이름 : {room.name}
-             * 방 레벨 : {room.level}
-             * 방 알고리즘 : {room.algorithm}
-             * 방장 : {room.player1}
-             <button onClick={() => leaveRoom(index)}>Leave Room</button>
+            * 방 이름 : {room.name}* 방 레벨 : {room.level}* 방 알고리즘 :{" "}
+            {room.algorithm}* 방장 : {room.player1}
+            <button onClick={() => leaveRoom(index)}>Leave Room</button>
           </li>
         ))}
       </ul>
     </div>
-  )
+  );
 }
