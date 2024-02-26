@@ -15,7 +15,7 @@ export default function RoomPage() {
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const roomName = "방 이름입니다";
-  const algoName = "랜덤"; // TODO [3]
+  const algoName = "전체"; // TODO [3]
   const position = "1"; // [4]내가 1P인지 2P인지 알아야함(ready 관리를 위해서)
   const user1Name = "허상진"; //TODO : [5] 내가 만약에 들어온 방이면, user1이 이미 저장되어있어야함.
   const user2Name = "권기현"; // 내가 방장이면, 사람이 들어오기 전까지 NULL이여야하겠죠?
@@ -38,10 +38,8 @@ export default function RoomPage() {
   const handleStart = async () => {
     if (player1Ready && player2Ready) {
       try {
-        // 알고리즘 이름이 '랜덤'이면 쿼리 문자열을 생성하지 않음
-        // TODO 추천알고리즘 api가 오작동하는거같음 queryString에 뭘 넣어도 통랜덤으로 받아오는데?
         const queryString =
-          algoName === "랜덤" ? "" : `?aliase=${encodeURIComponent(algoName)}`;
+          algoName === "전체" ? "" : `?eliase=${encodeURIComponent(algoName)}`;
 
         const response = await axios.get(
           `http://localhost:3000/api/problem/${roomTier}${queryString}`
@@ -59,7 +57,9 @@ export default function RoomPage() {
             position,
             user1Name,
             user2Name,
-          }, //TODO 받으면 username도 같이 넘겨줄 예정
+            user1Tier,
+            user2Tier,
+          },
         });
       } catch (error) {
         console.error("오류 발생!:", error);
@@ -97,7 +97,6 @@ export default function RoomPage() {
               </div>
               <Card.Text className="card-text-large ">
                 전적: {`${user1win}승 ${user1lose}패`}
-                {/* TODO: 적절한 형식으로 전적을 파싱해야 함.*/}
               </Card.Text>
               <Button
                 className={`button-bottom-left ${player1Ready ? "ready" : ""}`}
@@ -155,6 +154,8 @@ export default function RoomPage() {
           <Col className="d-flex justify-content-start">
             <Link to="/">
               <Button className="backBtn">Back</Button>
+              {/* TODO 이거 뒤로갈때 position에 따라 user1이면 방을 폭파,
+              user2이면 user2와 관련된 모든 정보들을 null로 만들어줘야 한다. */}
             </Link>
           </Col>
           <Col className="d-flex justify-content-end">

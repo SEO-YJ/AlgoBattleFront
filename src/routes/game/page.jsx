@@ -12,9 +12,10 @@ export default function GamePage() {
   const qTier = state?.qTier || 1; // 오류 방지용 기본값
   const user1Name = state?.user1Name;
   const user2Name = state?.user2Name;
+  const user1Tier = state?.user1Tier;
+  const user2Tier = state?.user2Tier;
   //TODO 결과창으로 다시한번 navigate 써서 넘겨줘야함(한번더 후술)
 
-  // TODO? redux로 하려다가 오버엔지니어링같아서 세션스토리지썼음
   const [time, setTime] = useState(() => {
     const savedTime = sessionStorage.getItem("timer");
     return savedTime ? Number(savedTime) : 60 * 60;
@@ -28,20 +29,20 @@ export default function GamePage() {
 
   const addCard = (e) => {
     const position = state?.position;
-    console.log(position);
+
     e.preventDefault();
+    setCondition((prevCondition) => !prevCondition); // TODO 이게 채점 알고리즘
+    // 이자리에 채점알고리즘 들어가야됨 (condition 생성용)
+
     const newCard = {
       userid: position == 1 ? `${user1Name}` : `${user2Name}`, // 형태 다른데 값만 같으면 돼서 일부러 === 말고 == 씀. 오류의 여지가 있을지도?
-      //TODO user1name를 동적으로 받아와서 구현해야함.
       condition: condition,
       solved: condition
         ? `${probNum}번 문제 맞았음`
         : `${probNum}번 문제 틀렸음`,
+      tierinfo: position == 1 ? `${user1Tier}` : `${user2Tier}`,
     };
-
-    setCondition((prevCondition) => !prevCondition); // TODO 이게 채점 알고리즘이 되지 않을까?
-
-    const maxCards = 4; //최대 4개까지 보이게
+    const maxCards = 4;
 
     setCards((prevCards) => {
       let updatedCards = [...prevCards];
@@ -60,8 +61,12 @@ export default function GamePage() {
     if (lastCard && lastCard.condition) {
       setTimeout(() => {
         alert("문제를 풀어 게임이 끝났습니다");
-        sessionStorage.removeItem("timer"); // TODO? 문제 여러개 할거면 알고리즘자체를 다시짜야할거같은데 아니라고했으니..
-        navigate("/room/result"); //TODO 여기서 winner, user1name, user2name 넘겨줘야함
+        const winner = lastCard.userid === user1Name ? 1 : 2;
+        console.log(winner);
+        sessionStorage.removeItem("timer");
+        navigate("/room/result", {
+          state: { user1Name, user2Name, user1Tier, user2Tier, winner },
+        });
       }, 300);
     }
   }, [cards]);
@@ -78,7 +83,7 @@ export default function GamePage() {
         if (prevTime === 0) {
           alert("시간이 지나 게임이 끝났습니다");
           clearInterval(timerID);
-          sessionStorage.removeItem("timer"); //시간이 끝나도 삭제
+          sessionStorage.removeItem("timer");
           navigate("/"); //바로 로비로 이동(기획과 다르면 수정하겠음)
         } else {
           const nextTime = prevTime - 1;
@@ -161,7 +166,7 @@ export default function GamePage() {
                 style={{ backgroundColor: getBackgroundColor(card.condition) }}
               >
                 <img
-                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/${qTier}.svg`} //TODO user 정보 받아와줘야함
+                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/${card.tierinfo}.svg`} //TODO user 정보 받아와줘야함
                   alt={`err`}
                   className="user-image"
                   style={{

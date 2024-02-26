@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./result.css";
 
 export default function ResultPage() {
-  const user1Tier = "28";
-  const user2Tier = "26"; // Join 할때 고정되어있는게 맞겠죠?
+  const { state } = useLocation();
+  const user1Tier = state?.user1Tier;
+  const user2Tier = state?.user2Tier;
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
-  const user1Name = "User 1";
-  const user2Name = "User 2"; //TODO username 1/2를 navigate state로 받아올거임
+  const user1Name = state?.user1Name;
+  const user2Name = state?.user2Name;
   const user1win = "12";
   const user1lose = "4";
   const user2win = "15";
   const user2lose = "1"; // TODO navigate로 받아와서 넘길지 결과처리할때 서버에서 통신해서 할지 고민중임
-  const winner = "1"; // 누가 이겼는지 받아와줘서 승/패를 띄우려고 함.
+  const winner = state?.winner;
   const navigate = useNavigate();
 
   return (
@@ -32,7 +33,7 @@ export default function ResultPage() {
                 <Image className="image-user" src={imageUrlleft} alt="User 1" />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {user1Name}
+                    {winner == 1 ? `${user1Name}` : `${user2Name}`}
                     {/* TODO winner=1이면 user1Name winner=2면 user2Name*/}
                   </Card.Title>
                 </div>
@@ -44,7 +45,8 @@ export default function ResultPage() {
                 승리!
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
-                전적: {`${user1win}승 ${user1lose}패`}
+                전적: {winner == 1 ? `${user1win}` : `${user2win}`} 승{" "}
+                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패
               </div>
               {/* TODO winner=1이면 user1Career winner=2면 user2Career*/}
             </Card>
@@ -67,7 +69,7 @@ export default function ResultPage() {
                 />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {user2Name}
+                    {winner == 1 ? `${user2Name}` : `${user1Name}`}
                   </Card.Title>
                 </div>
               </div>
@@ -78,7 +80,8 @@ export default function ResultPage() {
                 패배..
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
-                전적: 전적: {`${user2win}승 ${user2lose}패`}
+                전적: {winner == 1 ? `${user2win}` : `${user1win}`} 승{" "}
+                {winner == 1 ? `${user2lose}` : `${user1lose}`} 패
               </div>
             </Card>
           </Col>
