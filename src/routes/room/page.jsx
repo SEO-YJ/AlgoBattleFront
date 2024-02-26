@@ -10,7 +10,7 @@ import { fetchUser } from "../store/reducers/user";
 
 export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
-  // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는 
+  // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는
   const { roomId } = useParams();
   const { handle, tier } = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -46,10 +46,9 @@ export default function RoomPage() {
 
       setUser1Name(data.player1.handle);
 
-      if(data.player2){
+      if (data.player2) {
         setUser2Name(data.player2.handle);
       }
-
     });
   }, [roomId]);
 
@@ -93,7 +92,7 @@ export default function RoomPage() {
         const probNum = response.data.ploblemId;
         const qTier = response.data.level;
 
-        navigateTo("/room/game", {
+        navigateTo(`/room/${roomId}/game`, {
           state: {
             randomProblem,
             probNum,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export default function GamePage() {
@@ -16,6 +16,7 @@ export default function GamePage() {
   const user1Tier = state?.user1Tier;
   const user2Tier = state?.user2Tier;
   const { handle } = useSelector((state) => state.user.user);
+  const { roomId } = useParams();
   const [time, setTime] = useState(() => {
     const savedTime = sessionStorage.getItem("timer");
     return savedTime ? Number(savedTime) : 60 * 60;
@@ -94,7 +95,7 @@ export default function GamePage() {
 
           const updatedUserData = await response.json();
           sessionStorage.removeItem("timer");
-          navigate("/room/result", {
+          navigate(`/room/${roomId}/result`, {
             state: {
               user1Name,
               user2Name,
