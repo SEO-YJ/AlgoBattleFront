@@ -75,6 +75,7 @@ export default function GamePage() {
 
         updatedCards.push(newCard);
 
+        console.log("두번?");
         // 내가 채점을 하고 상대방에게 내 배열도 보내주고
         socket.emit("updatedCard", { updatedCards, roomId });
 
@@ -88,8 +89,10 @@ export default function GamePage() {
   };
 
   socket.on("updatedCard", (data) => {
-    // data가 상대가 보낸 배열
-    setCards(data);
+    console.log("여기 오냐?");
+    if (data && Array.isArray(data)) {
+      setCards(data);
+    }
   });
 
   useEffect(() => {
@@ -118,31 +121,37 @@ export default function GamePage() {
       }, 300);
     }
   }, [cards]);
+  useEffect(() => {
+    const finishGameHandler = (winner) => {
+      alert("문제를 푼 플레이어가 있어 게임이 끝났습니다!");
+      sessionStorage.removeItem("timer");
 
-  socket.on("finishGame", (winner) => {
-    alert("문제를 푼 플레이어가 있어 게임이 끝났습니다!");
-    sessionStorage.removeItem("timer");
+      const newuser1win = winner == 1 ? user1win + 1 : user1win;
+      const newuser1lose = winner == 1 ? user1lose : user1lose + 1;
+      const newuser2win = winner == 2 ? user2win + 1 : user2win;
+      const newuser2lose = winner == 2 ? user2lose : user2lose + 1;
 
-    const newuser1win = winner == 1 ? user1win + 1 : user1win;
-    const newuser1lose = winner == 1 ? user1lose : user1lose + 1;
-    const newuser2win = winner == 2 ? user2win + 1 : user2win;
-    const newuser2lose = winner == 2 ? user2lose : user2lose + 1;
+      navigate(`/room/${roomId}/result`, {
+        state: {
+          user1Name,
+          user2Name,
+          user1Tier,
+          user2Tier,
+          winner,
+          newuser1win,
+          newuser1lose,
+          newuser2win,
+          newuser2lose,
+        },
+      });
+    };
 
-    navigate(`/room/${roomId}/result`, {
-      state: {
-        user1Name,
-        user2Name,
-        user1Tier,
-        user2Tier,
-        winner,
-        newuser1win,
-        newuser1lose,
-        newuser2win,
-        newuser2lose,
-      },
-    });
-  });
+    socket.on("finishGame", finishGameHandler);
 
+    return () => {
+      socket.off("finishGame", finishGameHandler);
+    };
+  }, [user1win, user1lose, user2win, user2lose, roomId, navigate]);
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -183,13 +192,13 @@ export default function GamePage() {
   const handleBack = async () => {
     const exituser = handle === user1Name ? user1Name : user2Name;
     const result = exituser === user1Name ? 2 : 1;
-    await axios.put("http://localhost:3000/api/updateResult", {
+    await axios.put("http://localhost:3000/api/users/updateResult", {
       user1: user1Name,
       user2: user2Name,
       result: result.toString(),
     });
 
-    socket.emit("exitGame", { roomId });
+    socket.emit("exitGame", { roomId }); // 여기가 문제임.
     navigate("/");
   };
 
@@ -239,7 +248,7 @@ export default function GamePage() {
                 <div className="task-buttons">
                   <button
                     className="task-button default"
-                    onClick={(e) => addCard(e)} // TODO add카드 안에 채점 알고리즘을 추가
+                    onClick={(e) => addCard(e)}
                   >
                     채점하기
                   </button>
@@ -262,7 +271,7 @@ export default function GamePage() {
                 style={{ backgroundColor: getBackgroundColor(card.condition) }}
               >
                 <img
-                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/${card.tierinfo}.svg`} //TODO user 정보 받아와줘야함
+                  src={`https://d2gd6pc034wcta.cloudfront.net/tier/${card.tierinfo}.svg`}
                   alt={`err`}
                   className="user-image"
                   style={{
