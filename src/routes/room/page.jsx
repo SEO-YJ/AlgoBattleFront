@@ -120,7 +120,8 @@ export default function RoomPage() {
 
         getProblem(queryString, roomTier, users)
           .then((data) => {
-            if (data && data.problem != null) {
+            if (data && data.problem !== null) {
+              // console.log(data);
               const randomProblem = data.ploblem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
               const probNum = data.ploblemId;
               const qTier = data.level;
@@ -143,6 +144,7 @@ export default function RoomPage() {
               });
               navigateToGame(state);
             } else {
+              //TODO 문제 조건 수정할 수 있게 고치자
               alert("문제를 가져오는 중에 오류가 발생했어요.");
             }
           })
