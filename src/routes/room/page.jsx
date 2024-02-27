@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
   // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는
   const { roomId } = useParams();
-  const { handle, tier } = useSelector((state) => state.user.user);
+  const { handle} = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const [roomName, setRoomName] = useState("방 이름입니다");
@@ -48,6 +48,11 @@ export default function RoomPage() {
 
       if (data.player2) {
         setUser2Name(data.player2.handle);
+      } else {
+        setUser2Name(null);
+        setUser2Tier(0);
+        setUser2win("0");
+        setUser2lose("0");
       }
     });
   }, [roomId]);
@@ -97,11 +102,11 @@ export default function RoomPage() {
     })
   },[])
 
-  const navigateToGame = (state) => {
+  const navigateToGame = useCallback((state) => {
     navigateTo(`/room/${roomId}/game`, {
       state: state
     });
-  }
+  }, [navigateTo, roomId])
 
   const handleStart = async () => {
     if (player1Ready && player2Ready) {
@@ -140,6 +145,31 @@ export default function RoomPage() {
   useEffect(()=>{
     socket.on("receiveGameInfo", (state) => {
       navigateToGame(state);
+    })
+  }, [navigateToGame])
+
+  const leaveRoom = () => {
+    if(handle === user1Name){
+      socket.emit("sendLeavePlayer1", {roomId : roomId, player : handle})
+    } else if(handle === user2Name){
+      socket.emit("sendLeavePlayer2", {roomId : roomId, player : handle})
+      navigateTo('/');
+      socket.leave(roomId);
+    }
+  }
+
+  useEffect(()=>{
+    socket.on("receiveLeavePlayer1", (player) => {
+      if(player !== handle){
+        alert("방이 없어졌습니다.");
+      }
+      navigateTo('/');
+      socket.leave(roomId);
+    })
+    socket.on("receiveLeavePlayer2", (player) => {
+      if(player !== handle){
+        alert("상대방이 방이 나갔습니다.")
+      }
     })
   }, [])
 
@@ -226,11 +256,11 @@ export default function RoomPage() {
 
         <Row className="mt-4 w-100">
           <Col className="d-flex justify-content-start">
-            <Link to="/">
-              <Button className="backBtn">Back</Button>
+            {/* <Link to="/"> */}
+              <Button className="backBtn" onClick={() => leaveRoom()}>Back</Button>
               {/* TODO 이거 뒤로갈때 position에 따라 user1이면 방을 폭파,
               user2이면 user2와 관련된 모든 정보들을 null로 만들어줘야 한다. */}
-            </Link>
+            {/* </Link> */}
           </Col>
           <Col className="d-flex justify-content-end">
             <Button className="readyBtn" onClick={handleReady}>

@@ -21,6 +21,10 @@ export default function RoomItem({room}) {
       alert("로그인하여 주세요!");
       return;
     }
+    if(room.player1.handle === handle){
+      navigate(`/room/${room._id}`);
+      return;
+    }
     if(room.player2){
       alert("제한 인원 초과입니다.")
       return;
@@ -35,7 +39,6 @@ export default function RoomItem({room}) {
         handle : handle
       })
       socket.on("enterRoomId", (roomId) => {
-        // console.log(roomId);
         navigate(`/room/${roomId}`)
       })
     }
