@@ -205,8 +205,8 @@ export default function GamePage() {
   useEffect(() => {
     const exitGameHandler = (data) => {
       const roomId = data;
-      socket.emit("leaveGame", roomId);
       alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+      socket.emit("leaveGame", roomId);
       navigate("/");
     };
 
