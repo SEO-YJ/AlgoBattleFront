@@ -224,7 +224,8 @@ export default function RoomPage() {
           >
             <Image src={imageUrl} alt="error" className="image-size" />
           </Button>
-
+        </Col>
+        <Col className="d-flex justify-content-center">
           {activeModify ? (
             <FormSelect
               onChange={(e) => {
@@ -342,7 +343,10 @@ export default function RoomPage() {
               Back
             </Button>
           </Col>
-          <Col className="d-flex justify-content-end">
+          <Col
+            className="d-flex justify-content-end"
+            style={{ display: "flex", gap: "5%" }}
+          >
             {activeModify ? (
               <Button className="" onClick={changeRoom}>
                 수정하기
