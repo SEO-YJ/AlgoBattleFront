@@ -32,7 +32,6 @@ export default function RoomItem({room}) {
     if(room.password){
       setShow(true);
     } else {
-      //TODO room player2 업데이트
       socket.emit("enterPlayer", {
         roomId : room._id,
         player2_Id : _id,
@@ -42,7 +41,7 @@ export default function RoomItem({room}) {
         navigate(`/room/${roomId}`)
       })
     }
-  },[room, navigate, handle, _id])
+  },[room])
 
   return (
     <Col className='roomItemContainer'>
