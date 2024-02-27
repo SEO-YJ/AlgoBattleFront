@@ -12,10 +12,10 @@ export default function ResultPage() {
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
   const user1Name = state?.user1Name;
   const user2Name = state?.user2Name;
-  const user1win = "12";
-  const user1lose = "4";
-  const user2win = "15";
-  const user2lose = "1"; // TODO navigate로 받아와서 넘길지 결과처리할때 서버에서 통신해서 할지 고민중임
+  const user1win = state?.newuser1win;
+  const user1lose = state?.newuser1lose;
+  const user2win = state?.newuser2win;
+  const user2lose = state?.newuser2lose;
   const winner = state?.winner;
   const navigate = useNavigate();
 

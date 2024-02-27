@@ -1,9 +1,12 @@
 import './enter.css'
 import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import socket from '~/lib/sockets/socket';
 
 export default function EnterRoom({show, roomPassword, cancelShow, roomId}) {
+  const {handle, _id} = useSelector((state) => state.user.user);
   const [inputPassword, setInputPassword] = useState("");
   const navigate = useNavigate();
 
@@ -12,8 +15,15 @@ export default function EnterRoom({show, roomPassword, cancelShow, roomId}) {
         alert("비밀번호가 틀립니다. 다시 입력해주세요.");
         return;
     }
-    //TODO room player2 업데이트
-    navigate(`/room/${roomId}`)
+    socket.emit("enterPlayer", {
+      roomId : roomId,
+      roomPassword : inputPassword,
+      player2_Id : _id,
+      handle : handle
+    })
+    socket.on("enterRoomId", (roomId) => {
+      navigate(`/room/${roomId}`)
+    })
   }
 
   return (

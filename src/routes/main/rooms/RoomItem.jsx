@@ -21,6 +21,10 @@ export default function RoomItem({room}) {
       alert("로그인하여 주세요!");
       return;
     }
+    if(room.player1.handle === handle){
+      navigate(`/room/${room._id}`);
+      return;
+    }
     if(room.player2){
       alert("제한 인원 초과입니다.")
       return;
@@ -28,15 +32,16 @@ export default function RoomItem({room}) {
     if(room.password){
       setShow(true);
     } else {
-      //TODO room player2 업데이트
-      socket.emit("joinRoom", {
+      socket.emit("enterPlayer", {
         roomId : room._id,
         player2_Id : _id,
         handle : handle
       })
-      navigate(`/room/${room._id}`)
+      socket.on("enterRoomId", (roomId) => {
+        navigate(`/room/${roomId}`)
+      })
     }
-  },[room, navigate, handle, _id])
+  },[room])
 
   return (
     <Col className='roomItemContainer'>
