@@ -113,7 +113,6 @@ export default function RoomPage() {
       try {
         const queryString =
           algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
-
         const users = {
           user1: user1Name,
           user2: user2Name,
@@ -121,27 +120,31 @@ export default function RoomPage() {
 
         getProblem(queryString, roomTier, users)
           .then((data) => {
-            const randomProblem = data.ploblem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
-            const probNum = data.ploblemId;
-            const qTier = data.level;
-            const state = {
-              randomProblem,
-              probNum,
-              qTier,
-              user1Name,
-              user2Name,
-              user1Tier,
-              user2Tier,
-              user1win,
-              user1lose,
-              user2win,
-              user2lose,
-            };
-            socket.emit("sendGameInfo", {
-              roomId: roomId,
-              state: state,
-            });
-            navigateToGame(state);
+            if (data && data.problem != null) {
+              const randomProblem = data.ploblem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
+              const probNum = data.ploblemId;
+              const qTier = data.level;
+              const state = {
+                randomProblem,
+                probNum,
+                qTier,
+                user1Name,
+                user2Name,
+                user1Tier,
+                user2Tier,
+                user1win,
+                user1lose,
+                user2win,
+                user2lose,
+              };
+              socket.emit("sendGameInfo", {
+                roomId: roomId,
+                state: state,
+              });
+              navigateToGame(state);
+            } else {
+              alert("문제를 가져오는 중에 오류가 발생했어요.");
+            }
           })
           .catch((err) => {
             console.log(err);
