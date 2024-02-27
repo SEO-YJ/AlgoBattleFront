@@ -26,6 +26,10 @@ export default function RoomItem({room}) {
       return;
     }
     if(room.player2){
+      if(room.player2.handle === handle){
+        navigate(`/room/${room._id}`);
+        return;
+      }
       alert("제한 인원 초과입니다.")
       return;
     }
@@ -41,7 +45,7 @@ export default function RoomItem({room}) {
         navigate(`/room/${roomId}`)
       })
     }
-  },[room])
+  },[room, handle])
 
   return (
     <Col className='roomItemContainer'>
@@ -53,12 +57,25 @@ export default function RoomItem({room}) {
               style={{width:"35px", height:"35px"}}
             />
             <div className='roomItemTitle'>{room.name}</div>
-            <div className='roomItemPlayer'>{room.player1.handle}</div>
+            {/* <div className='roomItemPlayer'>{room.player1.handle}</div>
+            {room.player2 ? 
+              <div className='roomItemPlayer'>
+                <span style={{color:"black"}}>vs</span> {room.player2.handle}
+              </div> 
+            : <></>} */}
           </div>
           {room.password === '' || !room.password ?
             <img src='/src/assets/imgs/unlock.png' style={{width:"20px", height:"25px"}}/>:
             <img src='/src/assets/imgs/lock.png' style={{width:"20px", height:"25px"}}/>
           }
+        </div>
+        <div className='roomItemMiddle'>
+          <div className='roomItemPlayer'>{room.player1.handle}</div>
+          {room.player2 ? 
+            <div className='roomItemPlayer'>
+              <span style={{color:"black"}}>vs</span> {room.player2.handle}
+            </div> 
+          : <></>}
         </div>
         <div className='roomItemBottom'>
           <div className='roomItemBottomLeft'>

@@ -7,10 +7,10 @@
   border: 1px solid #e6e9f1;
   border-radius: 12px;
   box-shadow: 0 2px 7px rgba(20, 20, 43, 0.09);
-  height: 100px;
-  padding: 5px;
-  padding-top: 8px;
-  padding-right: 8px;
+  height: 120px;
+  padding: 8px;
+  padding-top: 12px;
+  padding-right: 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,12 +36,16 @@
   font-weight: 700;
 }
 
+.roomItemMiddle{
+  display: flex;
+  align-items: center;
+  padding-left: 2px;
+}
+
 .roomItemPlayer{
   color: gray;
   font-size: 12px;
-  padding-left: 2px;
-  position: relative;
-  top: 5px;
+  padding-left: 3px;
 }
 
 .roomItemBottom{

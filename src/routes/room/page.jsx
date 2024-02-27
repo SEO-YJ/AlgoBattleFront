@@ -48,7 +48,7 @@ export default function RoomPage() {
     socket.emit("joinRoom", { roomId: roomId });
 
     socket.on("getRoom", (data) => {
-      console.log("data : ", data);
+      // console.log("data : ", data);
       setRoomName(data.name);
       setAlgoName(data.algorithm);
       setRoomTier(data.level);
@@ -142,7 +142,7 @@ export default function RoomPage() {
 
         getProblem(queryString, roomTier, users)
           .then((data) => {
-            if (data && data.problem !== null) {
+            if ((typeof data).toString() === "object") {
               // console.log(data);
               const randomProblem = data.ploblem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
               const probNum = data.ploblemId;
@@ -341,9 +341,6 @@ export default function RoomPage() {
             <Button className="backBtn" onClick={() => leaveRoom()}>
               Back
             </Button>
-            {/* TODO 이거 뒤로갈때 position에 따라 user1이면 방을 폭파,
-              user2이면 user2와 관련된 모든 정보들을 null로 만들어줘야 한다. */}
-            {/* </Link> */}
           </Col>
           <Col className="d-flex justify-content-end">
             {activeModify ? (
