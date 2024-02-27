@@ -20,8 +20,8 @@ export default function Search({changeSearchCondition}) {
           onChange={(e) => setCondition({...condition, status:e.target.value})}
         >
           <option value={""}>상태</option>
-          <option value={"준비중"}>준비중</option>
           <option value={"대기중"}>대기중</option>
+          <option value={"준비중"}>준비중</option>
           <option value={"게임중"}>게임중</option>
         </FormSelect>
       </div>
