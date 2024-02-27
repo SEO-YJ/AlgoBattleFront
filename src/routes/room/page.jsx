@@ -18,7 +18,7 @@ export default function RoomPage() {
   const [roomName, setRoomName] = useState("방 이름입니다");
   const [algoName, setAlgoName] = useState("전체");
   const [roomTier, setRoomTier] = useState("0");
-  const [user1Name, setUser1Name] = useState("0");
+  const [user1Name, setUser1Name] = useState(null);
   const [user1win, setUser1win] = useState("0");
   const [user1lose, setUser1lose] = useState("0");
   const [user1Tier, setUser1Tier] = useState("0");
@@ -27,7 +27,7 @@ export default function RoomPage() {
 
   const [user2Tier, setUser2Tier] = useState(0); // [2]
   const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`; // [2]
-  const [user2Name, setUser2Name] = useState("미정"); // [2] TODO: 받는 방식 협의
+  const [user2Name, setUser2Name] = useState(null); // [2] TODO: 받는 방식 협의
   const [user2win, setUser2win] = useState("0"); // [2]
   const [user2lose, setUser2lose] = useState("0"); // [2]
 
@@ -36,7 +36,7 @@ export default function RoomPage() {
   const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
 
   useEffect(() => {
-    socket.emit("getRoom", { roomId: roomId });
+    socket.emit("joinRoom", {roomId:roomId});
 
     socket.on("getRoom", (data) => {
       console.log("data : ", data);
@@ -52,25 +52,29 @@ export default function RoomPage() {
     });
   }, [roomId]);
 
-  useEffect(()=>{
-    const action = fetchUser({userName: user1Name});
-    dispatch(action).then(data =>{
-      const user = data.payload;
-      setUser1Tier(user.tier);
-      setUser1win(user.winCount);
-      setUser1lose(user.loseCount);
-    })
-  },[user1Name, dispatch])
+  useEffect(() => {
+    if (user1Name) {
+      const action = fetchUser({ userName: user1Name });
+      dispatch(action).then((data) => {
+        const user = data.payload;
+        setUser1Tier(user.tier);
+        setUser1win(user.winCount);
+        setUser1lose(user.loseCount);
+      });
+    }
+  }, [user1Name, dispatch]);
 
-  useEffect(()=>{
-    const action = fetchUser({userName: user2Name});
-    dispatch(action).then(data => {
-      const user = data.payload;
-      setUser2Tier(user.tier);
-      setUser2win(user.winCount);
-      setUser2lose(user.loseCount);
-    })
-  }, [user2Name, dispatch])
+  useEffect(() => {
+    if (user2Name) {
+      const action = fetchUser({ userName: user2Name });
+      dispatch(action).then((data) => {
+        const user = data.payload;
+        setUser2Tier(user.tier);
+        setUser2win(user.winCount);
+        setUser2lose(user.loseCount);
+      });
+    }
+  }, [user2Name, dispatch]);
 
   const handleReady = () => {
     if (handle === user1Name) {
@@ -78,7 +82,20 @@ export default function RoomPage() {
     } else if (handle === user2Name) {
       setPlayer2Ready(!player2Ready);
     }
+    const socketData = {
+      roomId : roomId,
+      player1Ready : handle === user1Name ? !player1Ready : player1Ready,
+      player2Ready : handle === user2Name ? !player2Ready : player2Ready
+    }
+    socket.emit("send_ready_data", socketData);
   };
+
+  useEffect(()=>{
+    socket.on("receive_ready_data", (data) => {
+      setPlayer1Ready(data.player1Ready);
+      setPlayer2Ready(data.player2Ready);
+    })
+  },[])
 
   const handleStart = async () => {
     if (player1Ready && player2Ready) {

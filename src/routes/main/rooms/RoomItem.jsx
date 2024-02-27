@@ -29,12 +29,15 @@ export default function RoomItem({room}) {
       setShow(true);
     } else {
       //TODO room player2 업데이트
-      socket.emit("joinRoom", {
+      socket.emit("enterPlayer", {
         roomId : room._id,
         player2_Id : _id,
         handle : handle
       })
-      navigate(`/room/${room._id}`)
+      socket.on("enterRoomId", (roomId) => {
+        // console.log(roomId);
+        navigate(`/room/${roomId}`)
+      })
     }
   },[room, navigate, handle, _id])
 
