@@ -36,7 +36,7 @@ export default function RoomPage() {
   const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
 
   useEffect(() => {
-    socket.emit("joinRoom", {roomId:roomId});
+    socket.emit("joinRoom", { roomId: roomId });
 
     socket.on("getRoom", (data) => {
       console.log("data : ", data);
@@ -88,51 +88,58 @@ export default function RoomPage() {
       setPlayer2Ready(!player2Ready);
     }
     const socketData = {
-      roomId : roomId,
-      player1Ready : handle === user1Name ? !player1Ready : player1Ready,
-      player2Ready : handle === user2Name ? !player2Ready : player2Ready
-    }
+      roomId: roomId,
+      player1Ready: handle === user1Name ? !player1Ready : player1Ready,
+      player2Ready: handle === user2Name ? !player2Ready : player2Ready,
+    };
     socket.emit("send_ready_data", socketData);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     socket.on("receive_ready_data", (data) => {
       setPlayer1Ready(data.player1Ready);
       setPlayer2Ready(data.player2Ready);
-    })
-  },[])
+    });
+  }, []);
 
   const navigateToGame = useCallback((state) => {
     navigateTo(`/room/${roomId}/game`, {
-      state: state
+      state: state,
     });
-  }, [navigateTo, roomId])
+  }, [])
 
   const handleStart = async () => {
     if (player1Ready && player2Ready) {
       try {
-        const queryString = algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
-        getProblem(queryString, roomTier).then(data => {
-          const randomProblem = data.ploblem;
-          const probNum = data.ploblemId;
-          const qTier = data.level;
-          const state = {
-            randomProblem,
-            probNum,
-            qTier,
-            user1Name,
-            user2Name,
-            user1Tier,
-            user2Tier,
-          }
-          socket.emit("sendGameInfo", {
-            roomId : roomId,
-            state : state
+        const queryString =
+          algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
+        getProblem(queryString, roomTier)
+          .then((data) => {
+            const randomProblem = data.ploblem;
+            const probNum = data.ploblemId;
+            const qTier = data.level;
+            const state = {
+              randomProblem,
+              probNum,
+              qTier,
+              user1Name,
+              user2Name,
+              user1Tier,
+              user2Tier,
+              user1win,
+              user1lose,
+              user2win,
+              user2lose,
+            };
+            socket.emit("sendGameInfo", {
+              roomId: roomId,
+              state: state,
+            });
+            navigateToGame(state);
           })
-          navigateToGame(state);
-        }).catch(err => {
-          console.log(err);
-        })
+          .catch((err) => {
+            console.log(err);
+          });
       } catch (error) {
         console.error("오류 발생!:", error);
         alert("문제가 발생했어요.");
@@ -142,7 +149,7 @@ export default function RoomPage() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     socket.on("receiveGameInfo", (state) => {
       navigateToGame(state);
     })
