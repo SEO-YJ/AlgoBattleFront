@@ -1,23 +1,43 @@
+import { Button, FormSelect } from 'react-bootstrap'
 import './Search.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { algorithmList } from '~/routes/modal/room/create/algorithmList'
 
-function Search() {
-  const changeInput = (inputText) => {
-    //TODO 검색어가 변함에 따라서 방 리스트가 달라지게 설정
-    //main > page.jsx에서 roomList을 변경시키는 함수를 받아오게 해야할 것 같음
-  }
+export default function Search({changeSearchCondition}) {
+  const [condition, setCondition] = useState({
+    status : "",
+    algorithm : ""
+  })
+
+  useEffect(()=>{
+    changeSearchCondition(condition);
+  }, [condition])
 
   return (
     <div className='search'>
-      <input
-        placeholder='원하는 방 이름을 입력해주세요'
-        onChange={(e)=>changeInput(e.target.value)}
-      />
-      <img
-        src='/src/assets/svgs/input_search.svg'
-      />
+      <div className='searchStatus'>
+        <FormSelect
+          onChange={(e) => setCondition({...condition, status:e.target.value})}
+        >
+          <option value={""}>상태</option>
+          <option value={"준비중"}>준비중</option>
+          <option value={"대기중"}>대기중</option>
+          <option value={"게임중"}>게임중</option>
+        </FormSelect>
+      </div>
+      <div className='searchAlgorithm'>
+        <FormSelect
+          onChange={(e) => setCondition({...condition, algorithm:e.target.value})}
+        >
+          <option value={""}>알고리즘 선택</option>
+          {algorithmList.map((level, index) => (
+            <option value={level.name} key={index}>
+              {level.name}
+            </option>
+          ))}
+        </FormSelect>
+      </div>
+      <div className='searchButton'>검색</div>
     </div>
   )
 }
-
-export default Search

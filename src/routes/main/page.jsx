@@ -10,19 +10,42 @@ export default function MainPage() {
   const [roomList, setRoomList] = useState([]);
   const {handle} = useSelector((state) => state.user.user);
   const [show, setShow] = useState(false);
+  const [searchCondition, setSearchCondition] = useState({
+    status : "",
+    algorithm : ""
+  })
+  const [viewRoomList, setViewRoomList] = useState([]);
 
   useEffect(() => {
     socket.emit("getRooms");
 
     socket.on("getsRooms", (rooms) => {
-      console.log(rooms);
+      // console.log(rooms);
       setRoomList(rooms);
     });
 
     return () => {
       socket.off("getRooms");
     }
-  }, []); 
+  }, []);
+
+  const changeSearchCondition = (condition) => {
+    setSearchCondition(condition);
+  }
+
+  useEffect(()=>{
+    setViewRoomList(roomList.filter(room => {
+      if(searchCondition.status === "" && searchCondition.algorithm === ""){
+        return room;
+      } else if(searchCondition.status === ""){
+        return room.algorithm === searchCondition.algorithm
+      } else if(searchCondition.algorithm === ""){
+        return room.status === searchCondition.status
+      } else {
+        return room.algorithm === searchCondition.algorithm && room.status === searchCondition.status
+      }
+    }))
+  },[roomList, searchCondition])
 
   const cancelShow = useCallback(() => {
     setShow(false);
@@ -38,16 +61,12 @@ export default function MainPage() {
 
   return (
     <div className="mainPage">
-      <Search />
-      <RoomList roomList={roomList} />
-      <div className="createRoom" onClick={() => onClickCreateRoom()}>
-        방 생성
-      </div>
-      {show ? (
-        <CreateRoom show={show} cancelShow={cancelShow}></CreateRoom>
-      ) : (
-        <></>
-      )}
+      <Search changeSearchCondition={changeSearchCondition}/>
+      <RoomList roomList={viewRoomList} />
+      <div className="createRoom" onClick={()=>onClickCreateRoom()}>방 생성</div>
+      {show ? 
+        <CreateRoom show={show} cancelShow={cancelShow}></CreateRoom> 
+      : <></>}
     </div>
   );
 }
