@@ -245,9 +245,15 @@ export default function GamePage() {
 
           <div className="task-details">
             <a
-              href={`https://www.acmicpc.net/problem/${probNum}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#"
+              onClick={(event) => {
+                event.preventDefault();
+                window.open(
+                  `https://www.acmicpc.net/problem/${probNum}`,
+                  "newWindow",
+                  "width=1280,height=1020"
+                );
+              }}
               className="noDecoration"
             >
               <div className="task-card">
