@@ -245,15 +245,9 @@ export default function GamePage() {
 
           <div className="task-details">
             <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                window.open(
-                  `https://www.acmicpc.net/problem/${probNum}`,
-                  "newWindow",
-                  "width=1280,height=1020"
-                );
-              }}
+              href={`https://www.acmicpc.net/problem/${probNum}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="noDecoration"
             >
               <div className="task-card">
@@ -268,7 +262,10 @@ export default function GamePage() {
                 <div className="task-buttons">
                   <button
                     className="task-button default"
-                    onClick={(e) => addCard(e)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addCard(e);
+                    }}
                   >
                     채점하기
                   </button>
