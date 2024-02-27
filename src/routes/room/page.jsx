@@ -113,10 +113,16 @@ export default function RoomPage() {
       try {
         const queryString =
           algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
-        getProblem(queryString, roomTier)
+
+        const users = {
+          user1: user1Name,
+          user2: user2Name,
+        };
+
+        getProblem(queryString, roomTier, users)
           .then((data) => {
-            const randomProblem = data.ploblem;
-            const probNum = data.ploblemId;
+            const randomProblem = data.problem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
+            const probNum = data.problemId;
             const qTier = data.level;
             const state = {
               randomProblem,
