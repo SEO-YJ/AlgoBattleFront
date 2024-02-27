@@ -18,6 +18,10 @@ export default function GamePage() {
   const user2Name = state?.user2Name;
   const user1Tier = state?.user1Tier;
   const user2Tier = state?.user2Tier;
+  const user1win = parseInt(state?.user1win, 10);
+  const user1lose = parseInt(state?.user1lose, 10);
+  const user2win = parseInt(state?.user2win, 10);
+  const user2lose = parseInt(state?.user2lose, 10);
   const { handle } = useSelector((state) => state.user.user);
   const { roomId } = useParams();
   const [time, setTime] = useState(() => {
@@ -107,11 +111,6 @@ export default function GamePage() {
 
           const updatedUserData = await response.json();
 
-          // 1. 게임 끝났으니까 게임이 끝났다는 거를 상대에게 보냄
-          // 2. 내 쪽에서는 밑에거 그래도 실행
-          // 3. 상대도 끝났다는 것을 받으면 밑에거 그대로 실행
-
-          // 1. 상대에게 끝났다는 거를 보냄
           socket.emit("finishGame", { winner, roomId });
         } catch (error) {
           console.error("Error:", error.message);
@@ -123,6 +122,12 @@ export default function GamePage() {
   socket.on("finishGame", (winner) => {
     alert("문제를 푼 플레이어가 있어 게임이 끝났습니다!");
     sessionStorage.removeItem("timer");
+
+    const newuser1win = winner == 1 ? user1win + 1 : user1win;
+    const newuser1lose = winner == 1 ? user1lose : user1lose + 1;
+    const newuser2win = winner == 2 ? user2win + 1 : user2win;
+    const newuser2lose = winner == 2 ? user2lose : user2lose + 1;
+
     navigate(`/room/${roomId}/result`, {
       state: {
         user1Name,
@@ -130,6 +135,10 @@ export default function GamePage() {
         user1Tier,
         user2Tier,
         winner,
+        newuser1win,
+        newuser1lose,
+        newuser2win,
+        newuser2lose,
       },
     });
   });
@@ -173,23 +182,23 @@ export default function GamePage() {
   };
   const handleBack = async () => {
     const exituser = handle === user1Name ? user1Name : user2Name;
-    const result = exituser === user1Name ? 2 : 1
+    const result = exituser === user1Name ? 2 : 1;
     await axios.put("http://localhost:3000/api/updateResult", {
       user1: user1Name,
       user2: user2Name,
       result: result.toString(),
     });
 
-    socket.emit("exitGame", {roomId});
-    navigate('/');
+    socket.emit("exitGame", { roomId });
+    navigate("/");
   };
 
   socket.on("exitGame", (data) => {
     const roomId = data;
-    socket.emit("leaveGame", {roomId});
+    socket.emit("leaveGame", { roomId });
     alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
-    navigate('/');
-  })
+    navigate("/");
+  });
 
   return (
     <div className="container-fluid">
