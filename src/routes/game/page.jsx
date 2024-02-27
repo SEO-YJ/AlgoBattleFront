@@ -5,6 +5,7 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import socket from "~/lib/sockets/socket";
 import { Col, Button } from "react-bootstrap";
+import axios from "axios";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
@@ -170,10 +171,25 @@ export default function GamePage() {
       "0"
     )}`;
   };
-  const handleBack = () => {
-    // TODO: 플레이어 나갔을때 나갔는지 판정 + 승패계산+ 나간놈은 로비로 안나간놈은 결과창으로
-    navigate("/");
+  const handleBack = async () => {
+    const exituser = handle === user1Name ? user1Name : user2Name;
+    const result = exituser === user1Name ? 2 : 1
+    await axios.put("http://localhost:3000/api/updateResult", {
+      user1: user1Name,
+      user2: user2Name,
+      result: result.toString(),
+    });
+
+    socket.emit("exitGame", {roomId});
+    navigate('/');
   };
+
+  socket.on("exitGame", (data) => {
+    const roomId = data;
+    socket.emit("leaveGame", {roomId});
+    alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+    navigate('/');
+  })
 
   return (
     <div className="container-fluid">
