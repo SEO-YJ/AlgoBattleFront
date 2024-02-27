@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import socket from "~/lib/sockets/socket";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
@@ -67,7 +68,13 @@ export default function GamePage() {
         }
 
         updatedCards.push(newCard);
+
+        // 내가 채점을 하고 상대방에게 내 배열도 보내주고
+        socket.emit("updatedCard", { updatedCards, roomId });
+
         return updatedCards;
+        // 1. emit으로 우리가 푼거를 전송을 하고 return
+        // 2. on으로 상대가 보낸거를 받고 그 배열을 return
       });
     } catch (error) {
       console.error("Error:", error.message);
@@ -75,6 +82,11 @@ export default function GamePage() {
   };
 
   useEffect(() => {
+    socket.on("updatedCard", (data) => {
+      // data가 상대가 보낸 배열
+      setCards(data);
+    });
+
     const lastCard = cards[cards.length - 1];
     if (lastCard && lastCard.condition) {
       setTimeout(async () => {
