@@ -265,7 +265,15 @@ export default function GamePage() {
               </div>
             </a>
           </div>
-          <Col className="d-flex justify-content-start">
+          <Col
+            className="d-flex justify-content-start"
+            style={{
+              position: "absolute",
+              bottom: "0",
+              left: "0",
+              margin: "10px",
+            }}
+          >
             <Button className="backBtn" onClick={handleBack}>
               나가기
             </Button>
