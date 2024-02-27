@@ -1,5 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Image,
+  Card,
+  FormSelect,
+} from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -7,14 +15,15 @@ import "./room.css";
 import socket from "~/lib/sockets/socket";
 import { fetchUser } from "../store/reducers/user";
 import { getProblem } from "~/lib/apis/problem";
-
+import { algorithmList } from "../modal/room/create/algorithmList";
+import { levelList } from "../modal/room/create/levelList";
 export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
   // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는
   const { roomId } = useParams();
   const { handle } = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-
+  const [activeModify, setActiveModify] = useState(false);
   const [roomName, setRoomName] = useState("방 이름입니다");
   const [algoName, setAlgoName] = useState("전체");
   const [roomTier, setRoomTier] = useState("0");
@@ -93,6 +102,19 @@ export default function RoomPage() {
       player2Ready: handle === user2Name ? !player2Ready : player2Ready,
     };
     socket.emit("send_ready_data", socketData);
+  };
+
+  // useEffect(() => {
+  //   socket.on("receiveChangeAlgo");
+  // });
+
+  const changeRoom = () => {
+    socket.emit("sendChangeAlgo", {
+      roomId: roomId,
+      level: roomTier,
+      algorithm: algoName,
+    });
+    setActiveModify(false);
   };
 
   useEffect(() => {
@@ -195,15 +217,56 @@ export default function RoomPage() {
     <Container className="text-center container-margin-top">
       <Row className="flex-column align-items-center">
         <Col className="mb-2 d-flex justify-content-center">
-          <Image src={imageUrl} alt="error" className="image-size" />
+          <Button
+            size="xs"
+            className="button-size"
+            onClick={() => setActiveModify(true)}
+          >
+            <Image src={imageUrl} alt="error" className="image-size" />
+          </Button>
+
+          {activeModify ? (
+            <FormSelect
+              onChange={(e) => {
+                setRoomTier(e.target.value);
+              }}
+            >
+              {levelList.map((level) => (
+                <option value={level.value} key={level.value}>
+                  {level.name}
+                  {console.log(levelList)}
+                </option>
+              ))}
+            </FormSelect>
+          ) : (
+            <></>
+          )}
         </Col>
         <Col className="d-flex justify-content-center">
           <div className="font-bold-large mt-2">{roomName}</div>
         </Col>
         <Col className="d-flex justify-content-center">
-          <Button className="algoBtn" variant="primary">
+          <FormSelect
+            onChange={(e) => {
+              setActiveModify(true);
+              setAlgoName(e.target.value);
+            }}
+          >
+            <option value={""}>{algoName}</option>
+            {algorithmList.map((level, index) =>
+              level.name !== algoName ? (
+                <option value={level.name} key={index}>
+                  {level.name}
+                </option>
+              ) : (
+                <></>
+              )
+            )}
+          </FormSelect>
+
+          {/* <Button className="algoBtn" variant="primary">
             {algoName}
-          </Button>
+          </Button> */}
         </Col>
 
         <Row className="mt-4 w-100">
@@ -283,6 +346,13 @@ export default function RoomPage() {
             {/* </Link> */}
           </Col>
           <Col className="d-flex justify-content-end">
+            {activeModify ? (
+              <Button className="" onClick={changeRoom}>
+                수정하기
+              </Button>
+            ) : (
+              <></>
+            )}
             <Button className="readyBtn" onClick={handleReady}>
               Ready
             </Button>
