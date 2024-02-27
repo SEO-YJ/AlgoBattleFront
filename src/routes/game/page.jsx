@@ -198,6 +198,9 @@ export default function GamePage() {
       result: result.toString(),
     });
 
+    setTime(60 * 60);
+    sessionStorage.setItem("timer", 60 * 60);
+
     socket.emit("exitGame", roomId);
     navigate("/");
   };
@@ -206,6 +209,8 @@ export default function GamePage() {
     const exitGameHandler = (data) => {
       const roomId = data;
       alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+      setTime(60 * 60);
+      sessionStorage.setItem("timer", 60 * 60);
       socket.emit("leaveGame", roomId);
       navigate("/");
     };
