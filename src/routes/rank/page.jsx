@@ -38,8 +38,8 @@ export default function RankPage() {
               <tr key={user._id}>
                 <td>{index+1}</td>
                 <td className='rankUser'>{user.handle}</td>
-                <td>{user.winCount||0}승 {user.loseCount||0}패</td>
-                <td>{(user.winCount||0+user.loseCount||0 ? ((user.winCount||0) /(user.winCount||0+user.loseCount||0))*100 : 0).toFixed(2)}%</td>
+                <td>{user.winCount}승 {user.loseCount}패</td>
+                <td>{(user.winCount+user.loseCount ? ((user.winCount) /(user.winCount+user.loseCount))*100 : 0).toFixed(2)}%</td>
               </tr>
             ))
           }

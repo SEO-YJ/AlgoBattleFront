@@ -21,7 +21,7 @@ export default function TotalNavbar() {
     dispatch(action);
     //TODO 경로 수정할 시 아래 경로 수정
     // 아래 기능은 만일 게임 중에 로그아웃을 할 경우에는 메인 페이지로 향하는 것
-    if(["/room", "/room/game", "/room/result"].includes(pathname)){
+    if(pathname.startsWith("/room")){
       navigate('/');
     }
   }
@@ -67,15 +67,17 @@ export default function TotalNavbar() {
                 </Nav.Link>
                 :<></>
               }
-              <Nav.Link
-                className="flex-grow-1 text-center border-end-0"
-              >
-                {handle ?
-                  <div className="totalNavbarBtn" onClick={()=>onLogout()}>로그아웃</div>
-                  :
-                  <div className="totalNavbarBtn" onClick={()=>dispatch(handleShow())}>로그인</div>
-                 }
-              </Nav.Link>
+              {!pathname.startsWith("/room") ?
+                <Nav.Link
+                  className="flex-grow-1 text-center border-end-0"
+                >
+                  {handle ?
+                    <div className="totalNavbarBtn" onClick={()=>onLogout()}>로그아웃</div>
+                    :
+                    <div className="totalNavbarBtn" onClick={()=>dispatch(handleShow())}>로그인</div>
+                  }
+                </Nav.Link>
+              :<></>}
             </Nav>
             <Nav className="justify-content-start flex-grow-1 pe-3">
               <Nav.Link href="/">

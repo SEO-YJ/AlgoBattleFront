@@ -87,21 +87,6 @@ export default function ResultPage() {
             </Card>
           </Col>
         </Row>
-
-        <Row className="mt-4 w-100">
-          <Col className="d-flex justify-content-start">
-            <Button className="backBtn" onClick={() => navigate("/")}>
-              로비로 가기
-            </Button>
-          </Col>
-          <Col className="d-flex justify-content-end">
-            <Button className="readyBtn" onClick={() => navigate("/room")}>
-              한판 더 하기
-            </Button>
-            {/* TODO: 한판 더 할때, 방 들어갈때와 유사하게 사용자 데이터 갱신시켜줘야 할거같음.
-            + 둘중에 한명이라도 나가기 누르면 자동으로 방이 터지고 로비로 돌아가도록 했으면 */}
-          </Col>
-        </Row>
       </Row>
     </Container>
   );

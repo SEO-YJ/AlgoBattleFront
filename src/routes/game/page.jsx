@@ -198,16 +198,25 @@ export default function GamePage() {
       result: result.toString(),
     });
 
-    socket.emit("exitGame", { roomId }); // 여기가 문제임.
+    socket.emit("exitGame", roomId);
     navigate("/");
   };
 
-  socket.on("exitGame", (data) => {
-    const roomId = data;
-    socket.emit("leaveGame", { roomId });
-    alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
-    navigate("/");
-  });
+  useEffect(() => {
+    const exitGameHandler = (data) => {
+      const roomId = data;
+      socket.emit("leaveGame", roomId);
+      alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+      navigate("/");
+    };
+
+    socket.on("exitGame", exitGameHandler);
+
+    // Clean up function
+    return () => {
+      socket.off("exitGame", exitGameHandler);
+    };
+  }, [navigate]);
 
   return (
     <div className="container-fluid">
