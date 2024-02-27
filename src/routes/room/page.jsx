@@ -121,8 +121,8 @@ export default function RoomPage() {
 
         getProblem(queryString, roomTier, users)
           .then((data) => {
-            const randomProblem = data.problem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
-            const probNum = data.problemId;
+            const randomProblem = data.ploblem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
+            const probNum = data.ploblemId;
             const qTier = data.level;
             const state = {
               randomProblem,

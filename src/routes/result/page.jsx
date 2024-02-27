@@ -1,11 +1,16 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Button, Image, Card } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Container, Row, Col, Card, Image } from "react-bootstrap";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./result.css";
+import axios from "axios";
 
-export default function ResultPage() {
+const ResultPage = () => {
+  const handle = useSelector((state) => state.user.user.handle);
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const { roomId } = useParams();
   const user1Tier = state?.user1Tier;
   const user2Tier = state?.user2Tier;
   const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
@@ -17,7 +22,33 @@ export default function ResultPage() {
   const user2win = state?.newuser2win;
   const user2lose = state?.newuser2lose;
   const winner = state?.winner;
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    const updateResultAndRedirect = async () => {
+      try {
+        if (handle === user1Name) {
+          // user1을 대표로 한 API 호출
+          await axios.put("http://localhost:3000/api/users/updateResult", {
+            user1: user1Name,
+            user2: user2Name,
+            result: winner.toString(),
+          });
+        }
+
+        // Wait for 5 seconds before redirecting
+        setTimeout(() => {
+          // After API call and delay, redirect to the room
+          navigate(`/room/${roomId}`);
+        }, 5000); // 5000 milliseconds = 5 seconds
+      } catch (error) {
+        console.error("Error updating result:", error);
+        // Handle error if needed
+      }
+    };
+
+    // Call the async function
+    updateResultAndRedirect();
+  }, [navigate, roomId, user1Name, user2Name, winner, handle]);
 
   return (
     <Container className="text-center container-margin-top">
@@ -33,8 +64,7 @@ export default function ResultPage() {
                 <Image className="image-user" src={imageUrlleft} alt="User 1" />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {winner == 1 ? `${user1Name}` : `${user2Name}`}{" "}
-                    {/* 전부다 의도적인 ==임 */}
+                    {winner == 1 ? `${user1Name}` : `${user2Name}`}
                   </Card.Title>
                 </div>
               </div>
@@ -46,8 +76,7 @@ export default function ResultPage() {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user1win}` : `${user2win}`} 승{" "}
-                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패{" "}
-                {/* 전부다 의도적인 ==임 */}
+                {winner == 1 ? `${user1lose}` : `${user2lose}`}
               </div>
             </Card>
           </Col>
@@ -58,6 +87,7 @@ export default function ResultPage() {
           >
             VS
           </Col>
+
           <Col xs={5} className="d-flex justify-content-end">
             <Card className="p-3 card-custom card-margin-left">
               <div className="d-flex align-items-center mb-3 background-color: white">
@@ -68,8 +98,7 @@ export default function ResultPage() {
                 />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
-                    {winner == 1 ? `${user2Name}` : `${user1Name}`}{" "}
-                    {/* 전부다 의도적인 ==임 */}
+                    {winner == 1 ? `${user2Name}` : `${user1Name}`}
                   </Card.Title>
                 </div>
               </div>
@@ -81,8 +110,7 @@ export default function ResultPage() {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user2win}` : `${user1win}`} 승{" "}
-                {winner == 1 ? `${user2lose}` : `${user1lose}`} 패{" "}
-                {/* 전부다 의도적인 ==임 */}
+                {winner == 1 ? `${user2lose}` : `${user1lose}`}
               </div>
             </Card>
           </Col>
@@ -90,4 +118,6 @@ export default function ResultPage() {
       </Row>
     </Container>
   );
-}
+};
+
+export default ResultPage;
