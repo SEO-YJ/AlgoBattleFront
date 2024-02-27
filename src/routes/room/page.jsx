@@ -4,9 +4,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./room.css";
-import axios from "axios";
 import socket from "~/lib/sockets/socket";
 import { fetchUser } from "../store/reducers/user";
+import { getProblem } from "~/lib/apis/problem";
 
 export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
@@ -97,20 +97,21 @@ export default function RoomPage() {
     })
   },[])
 
+  const navigateToGame = (state) => {
+    navigateTo(`/room/${roomId}/game`, {
+      state: state
+    });
+  }
+
   const handleStart = async () => {
     if (player1Ready && player2Ready) {
       try {
-        const queryString =
-          algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
-        const response = await axios.get(
-          `http://localhost:3000/api/problem/${roomTier}${queryString}`
-        );
-        const randomProblem = response.data.ploblem;
-        const probNum = response.data.ploblemId;
-        const qTier = response.data.level;
-
-        navigateTo(`/room/${roomId}/game`, {
-          state: {
+        const queryString = algoName === "전체" ? `` : `?aliase=${encodeURIComponent(algoName)}`;
+        getProblem(queryString, roomTier).then(data => {
+          const randomProblem = data.ploblem;
+          const probNum = data.ploblemId;
+          const qTier = data.level;
+          const state = {
             randomProblem,
             probNum,
             qTier,
@@ -118,8 +119,15 @@ export default function RoomPage() {
             user2Name,
             user1Tier,
             user2Tier,
-          },
-        });
+          }
+          socket.emit("sendGameInfo", {
+            roomId : roomId,
+            state : state
+          })
+          navigateToGame(state);
+        }).catch(err => {
+          console.log(err);
+        })
       } catch (error) {
         console.error("오류 발생!:", error);
         alert("문제가 발생했어요.");
@@ -128,6 +136,12 @@ export default function RoomPage() {
       alert("플레이어가 레디 상태가 아닙니다.");
     }
   };
+
+  useEffect(()=>{
+    socket.on("receiveGameInfo", (state) => {
+      navigateToGame(state);
+    })
+  }, [])
 
   return (
     <Container className="text-center container-margin-top">
