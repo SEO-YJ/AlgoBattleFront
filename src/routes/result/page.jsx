@@ -76,7 +76,7 @@ const ResultPage = () => {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user1win}` : `${user2win}`} 승{" "}
-                {winner == 1 ? `${user1lose}` : `${user2lose}`}
+                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패
               </div>
             </Card>
           </Col>
@@ -110,7 +110,7 @@ const ResultPage = () => {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user2win}` : `${user1win}`} 승{" "}
-                {winner == 1 ? `${user2lose}` : `${user1lose}`}
+                {winner == 1 ? `${user2lose}` : `${user1lose}`} 패
               </div>
             </Card>
           </Col>
