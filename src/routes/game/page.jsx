@@ -3,6 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import socket from "~/lib/sockets/socket";
+import { Col, Button } from "react-bootstrap";
+import axios from "axios";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
@@ -67,20 +70,29 @@ export default function GamePage() {
         }
 
         updatedCards.push(newCard);
+
+        // 내가 채점을 하고 상대방에게 내 배열도 보내주고
+        socket.emit("updatedCard", { updatedCards, roomId });
+
         return updatedCards;
+        // 1. emit으로 우리가 푼거를 전송을 하고 return
+        // 2. on으로 상대가 보낸거를 받고 그 배열을 return
       });
     } catch (error) {
       console.error("Error:", error.message);
     }
   };
 
+  socket.on("updatedCard", (data) => {
+    // data가 상대가 보낸 배열
+    setCards(data);
+  });
+
   useEffect(() => {
     const lastCard = cards[cards.length - 1];
     if (lastCard && lastCard.condition) {
       setTimeout(async () => {
-        alert("문제를 풀어 게임이 끝났습니다");
         const winner = lastCard.userid === user1Name ? 1 : 2;
-        //setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
         try {
           const response = await fetch(
             `http://localhost:3000/api/users/${lastCard.userid}`,
@@ -94,23 +106,34 @@ export default function GamePage() {
           }
 
           const updatedUserData = await response.json();
-          sessionStorage.removeItem("timer");
-          navigate(`/room/${roomId}/result`, {
-            state: {
-              user1Name,
-              user2Name,
-              user1Tier,
-              user2Tier,
-              winner,
-              updatedUserData,
-            },
-          });
+
+          // 1. 게임 끝났으니까 게임이 끝났다는 거를 상대에게 보냄
+          // 2. 내 쪽에서는 밑에거 그래도 실행
+          // 3. 상대도 끝났다는 것을 받으면 밑에거 그대로 실행
+
+          // 1. 상대에게 끝났다는 거를 보냄
+          socket.emit("finishGame", { winner, roomId });
         } catch (error) {
           console.error("Error:", error.message);
         }
       }, 300);
     }
   }, [cards]);
+
+  socket.on("finishGame", (winner) => {
+    alert("문제를 푼 플레이어가 있어 게임이 끝났습니다!");
+    sessionStorage.removeItem("timer");
+    navigate(`/room/${roomId}/result`, {
+      state: {
+        user1Name,
+        user2Name,
+        user1Tier,
+        user2Tier,
+        winner,
+      },
+    });
+  });
+
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -124,8 +147,7 @@ export default function GamePage() {
           alert("시간이 지나 게임이 끝났습니다");
           clearInterval(timerID);
           sessionStorage.removeItem("timer");
-          navigate("/"); //바로 로비로 이동(기획과 다르면 수정하겠음)
-          //window.location.reload(); <-- 새로고침 필요하면 이거 추가해주면됨
+          navigate("/");
         } else {
           const nextTime = prevTime - 1;
           sessionStorage.setItem("timer", nextTime);
@@ -149,6 +171,25 @@ export default function GamePage() {
       "0"
     )}`;
   };
+  const handleBack = async () => {
+    const exituser = handle === user1Name ? user1Name : user2Name;
+    const result = exituser === user1Name ? 2 : 1
+    await axios.put("http://localhost:3000/api/updateResult", {
+      user1: user1Name,
+      user2: user2Name,
+      result: result.toString(),
+    });
+
+    socket.emit("exitGame", {roomId});
+    navigate('/');
+  };
+
+  socket.on("exitGame", (data) => {
+    const roomId = data;
+    socket.emit("leaveGame", {roomId});
+    alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+    navigate('/');
+  })
 
   return (
     <div className="container-fluid">
@@ -197,6 +238,11 @@ export default function GamePage() {
               </div>
             </a>
           </div>
+          <Col className="d-flex justify-content-start">
+            <Button className="backBtn" onClick={handleBack}>
+              나가기
+            </Button>
+          </Col>
         </div>
 
         <div className="col-lg-4">
