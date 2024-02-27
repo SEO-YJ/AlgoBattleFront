@@ -45,7 +45,7 @@ export default function RoomItem({room}) {
         navigate(`/room/${roomId}`)
       })
     }
-  },[room])
+  },[room, handle])
 
   return (
     <Col className='roomItemContainer'>
