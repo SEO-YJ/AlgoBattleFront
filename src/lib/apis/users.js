@@ -18,3 +18,12 @@ export async function fetchRanking(){
         return Promise.reject(err);
     }
 }
+
+export async function fetchUserData(userId){
+    try{
+        const data = await instance.get(`/users/${userId}`);
+        return data
+    }catch(err){
+        return Promise.reject(err);
+    }
+}

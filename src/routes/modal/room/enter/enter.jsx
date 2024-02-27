@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-export default function EnterRoom({show, roomPassword, cancelShow}) {
+export default function EnterRoom({show, roomPassword, cancelShow, roomId}) {
   const [inputPassword, setInputPassword] = useState("");
   const navigate = useNavigate();
 
@@ -12,8 +12,8 @@ export default function EnterRoom({show, roomPassword, cancelShow}) {
         alert("비밀번호가 틀립니다. 다시 입력해주세요.");
         return;
     }
-    //TODO room api 경로 설정
-    navigate("/room")
+    //TODO room player2 업데이트
+    navigate(`/room/${roomId}`)
   }
 
   return (

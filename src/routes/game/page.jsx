@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./game.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
@@ -14,7 +15,8 @@ export default function GamePage() {
   const user2Name = state?.user2Name;
   const user1Tier = state?.user1Tier;
   const user2Tier = state?.user2Tier;
-
+  const { handle } = useSelector((state) => state.user.user);
+  const { roomId } = useParams();
   const [time, setTime] = useState(() => {
     const savedTime = sessionStorage.getItem("timer");
     return savedTime ? Number(savedTime) : 60 * 60;
@@ -27,16 +29,15 @@ export default function GamePage() {
   };
   const addCard = async (e) => {
     e.preventDefault();
-
-    const position = state?.position;
     const encodedUser1Name = encodeURIComponent(user1Name);
     const encodedUser2Name = encodeURIComponent(user2Name);
-    const userName = position == 1 ? encodedUser1Name : encodedUser2Name; // 오타 아님. 의도적으로 친 ==임
+    const userName = handle === user1Name ? encodedUser1Name : encodedUser2Name;
 
     try {
       const response = await fetch(
         `http://localhost:3000/api/users/${userName}/solvedStatus`
       );
+
       if (!response.ok) {
         throw new Error(`채점에 오류가 발생했어요`);
       }
@@ -44,16 +45,16 @@ export default function GamePage() {
       const data = await response.json();
       const result = data.result;
 
-      setCondition(result === "맞았습니다");
+      setCondition((prevCondition) => result === "맞았습니다");
 
       const newCard = {
         userid: userName,
-        condition: condition,
+        condition: result === "맞았습니다",
         solved:
           result === "맞았습니다"
             ? `${probNum}번 문제 맞았음`
             : `${probNum}번 문제 틀렸음`,
-        tierinfo: position == 1 ? `${user1Tier}` : `${user2Tier}`,
+        tierinfo: handle === user1Name ? `${user1Tier}` : `${user2Tier}`,
       };
 
       const maxCards = 4;
@@ -81,7 +82,6 @@ export default function GamePage() {
         const winner = lastCard.userid === user1Name ? 1 : 2;
         //setTime(60 * 60); // 새로운 게임을 위해 타이머 상태를 초기화
         try {
-          // API 호출
           const response = await fetch(
             `http://localhost:3000/api/users/${lastCard.userid}`,
             {
@@ -95,7 +95,7 @@ export default function GamePage() {
 
           const updatedUserData = await response.json();
           sessionStorage.removeItem("timer");
-          navigate("/room/result", {
+          navigate(`/room/${roomId}/result`, {
             state: {
               user1Name,
               user2Name,

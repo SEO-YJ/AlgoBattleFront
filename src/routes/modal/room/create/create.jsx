@@ -12,24 +12,23 @@ import {
 } from "react-bootstrap";
 import { levelList } from "./levelList";
 import { algorithmList } from "./algorithmList";
-import io from "socket.io-client";
 import { useSelector } from "react-redux";
-
-const socket = io(import.meta.env.VITE_SOCKET_URL);
+import { useNavigate } from "react-router-dom";
+import socket from "~/lib/sockets/socket";
 
 const createRoom = (room, player1Id) => {
   socket.emit("createRoom", {
-    roomName: room.name,
-    roomPassword: room.password,
-    roomLevel: room.level,
-    roomAlgorithm: room.algorithm,
-    player1Id: player1Id,
-  });
-};
+    player1_id : player1Id,
+    name : room.name,
+    password : room.password,
+    level : room.level,
+    algorithm : room.algorithm,
+  })
+}
 
 export default function CreateRoom({ show, cancelShow }) {
-  //TODO 추후에 Id로 변경
-  const playerId = useSelector((state) => state.user.user.handle);
+  const playerId = useSelector((state) => state.user.user._id);
+  const navigate = useNavigate();
 
   const [room, setRoom] = useState({
     name: "",
@@ -50,7 +49,13 @@ export default function CreateRoom({ show, cancelShow }) {
       return;
     }
     createRoom(room, playerId);
-    console.log(room, playerId);
+    cancelShow();
+    socket.on("getRoomId", (roomId) => {
+      // console.log(rooms);
+      navigate(`/room/${roomId}`);
+    });
+    // getRoomId
+    // console.log(room, playerId);
   };
 
   return (
