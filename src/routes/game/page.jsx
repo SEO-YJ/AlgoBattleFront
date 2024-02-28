@@ -237,7 +237,7 @@ export default function GamePage() {
       <div className="row">
         <div className="col-lg-8 game-container">
           <img
-            src="/src/assets/imgs/sample_logo_transparent.png"
+            src="https://raw.githubusercontent.com/jkl0124/AlgoBattleFront/main/src/assets/imgs/sample_logo_transparent.png"
             alt="Rotating"
             className="rotating-image"
             style={{
