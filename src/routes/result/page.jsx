@@ -27,7 +27,6 @@ const ResultPage = () => {
     const updateResultAndRedirect = async () => {
       try {
         if (handle === user1Name) {
-          // user1을 대표로 한 API 호출
           await axios.put("http://localhost:3000/api/users/updateResult", {
             user1: user1Name,
             user2: user2Name,
@@ -35,18 +34,14 @@ const ResultPage = () => {
           });
         }
 
-        // Wait for 5 seconds before redirecting
         setTimeout(() => {
-          // After API call and delay, redirect to the room
           navigate(`/room/${roomId}`);
-        }, 5000); // 5000 milliseconds = 5 seconds
+        }, 5000);
       } catch (error) {
         console.error("Error updating result:", error);
-        // Handle error if needed
       }
     };
 
-    // Call the async function
     updateResultAndRedirect();
   }, [navigate, roomId, user1Name, user2Name, winner, handle]);
 
