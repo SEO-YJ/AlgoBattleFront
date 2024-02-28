@@ -24,8 +24,12 @@ export default function GamePage() {
   const user2lose = parseInt(state?.user2lose, 10);
   const { handle } = useSelector((state) => state.user.user);
   const { roomId } = useParams();
+  const [startTime, setStartTime] = useState(() => {
+    const savedStartTime = localStorage.getItem("initialStartTime");
+    return savedStartTime ? parseInt(savedStartTime, 10) : Date.now();
+  });
   const [time, setTime] = useState(() => {
-    const savedTime = sessionStorage.getItem("timer");
+    const savedTime = localStorage.getItem("timer");
     return savedTime ? Number(savedTime) : 60 * 60;
   });
 
@@ -34,6 +38,7 @@ export default function GamePage() {
   const getBackgroundColor = (condition) => {
     return condition ? "#99ccff" : "hsl(336, 100%, 80%)";
   };
+
   const addCard = async (e) => {
     e.preventDefault();
     const encodedUser1Name = encodeURIComponent(user1Name);
@@ -75,13 +80,9 @@ export default function GamePage() {
 
         updatedCards.push(newCard);
 
-        console.log("두번?");
-        // 내가 채점을 하고 상대방에게 내 배열도 보내주고
         socket.emit("updatedCard", { updatedCards, roomId });
 
         return updatedCards;
-        // 1. emit으로 우리가 푼거를 전송을 하고 return
-        // 2. on으로 상대가 보낸거를 받고 그 배열을 return
       });
     } catch (error) {
       console.error("Error:", error.message);
@@ -89,7 +90,6 @@ export default function GamePage() {
   };
 
   socket.on("updatedCard", (data) => {
-    console.log("여기 오냐?");
     if (data && Array.isArray(data)) {
       setCards(data);
     }
@@ -121,11 +121,12 @@ export default function GamePage() {
       }, 300);
     }
   }, [cards]);
+
   useEffect(() => {
     const finishGameHandler = (winner) => {
       alert("문제를 푼 플레이어가 있어 게임이 끝났습니다!");
-      sessionStorage.removeItem("timer");
-
+      localStorage.removeItem("timer");
+      localStorage.removeItem("initialStartTime");
       const newuser1win = winner == 1 ? user1win + 1 : user1win;
       const newuser1lose = winner == 1 ? user1lose : user1lose + 1;
       const newuser2win = winner == 2 ? user2win + 1 : user2win;
@@ -152,6 +153,7 @@ export default function GamePage() {
       socket.off("finishGame", finishGameHandler);
     };
   }, [user1win, user1lose, user2win, user2lose, roomId, navigate]);
+
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -160,25 +162,27 @@ export default function GamePage() {
     }, 50);
 
     const timerID = setInterval(() => {
-      setTime((prevTime) => {
-        if (prevTime === 0) {
-          alert("시간이 지나 게임이 끝났습니다");
-          clearInterval(timerID);
-          sessionStorage.removeItem("timer");
-          navigate("/");
-        } else {
-          const nextTime = prevTime - 1;
-          sessionStorage.setItem("timer", nextTime);
-          return nextTime;
-        }
-      });
+      const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+      const remainingTime = 3600 - elapsedTime;
+
+      if (remainingTime <= 0) {
+        alert("시간이 지나 게임이 끝났습니다");
+        clearInterval(timerID);
+        localStorage.removeItem("timer");
+        localStorage.removeItem("initialStartTime");
+        navigate("/");
+      } else {
+        localStorage.setItem("timer", remainingTime);
+        localStorage.setItem("initialStartTime", startTime.toString());
+        setTime(remainingTime);
+      }
     }, 1000);
 
     return () => {
       clearInterval(rotationIntervalId);
       clearInterval(timerID);
     };
-  }, [time, navigate]);
+  }, [startTime, navigate]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -189,6 +193,7 @@ export default function GamePage() {
       "0"
     )}`;
   };
+
   const handleBack = async () => {
     const exituser = handle === user1Name ? user1Name : user2Name;
     const result = exituser === user1Name ? 2 : 1;
@@ -197,9 +202,8 @@ export default function GamePage() {
       user2: user2Name,
       result: result.toString(),
     });
-
-    setTime(60 * 60);
-    sessionStorage.setItem("timer", 60 * 60);
+    localStorage.removeItem("timer");
+    localStorage.removeItem("initialStartTime");
 
     socket.emit("exitGame", roomId);
     navigate("/");
@@ -209,15 +213,14 @@ export default function GamePage() {
     const exitGameHandler = (data) => {
       const roomId = data;
       alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
-      setTime(60 * 60);
-      sessionStorage.setItem("timer", 60 * 60);
+      localStorage.removeItem("timer");
+      localStorage.removeItem("initialStartTime");
       socket.emit("leaveGame", roomId);
       navigate("/");
     };
 
     socket.on("exitGame", exitGameHandler);
 
-    // Clean up function
     return () => {
       socket.off("exitGame", exitGameHandler);
     };
