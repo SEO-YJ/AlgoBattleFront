@@ -17,6 +17,7 @@ import { fetchUser } from "../store/reducers/user";
 import { getProblem } from "~/lib/apis/problem";
 import { algorithmList } from "../modal/room/create/algorithmList";
 import { levelList } from "../modal/room/create/levelList";
+import { changeRoomCondition } from "./changeCondition";
 export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
   // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는
@@ -108,13 +109,13 @@ export default function RoomPage() {
   //   socket.on("receiveChangeAlgo");
   // });
 
-  const changeRoom = () => {
+  const changeRoom = (changeLevel, changeAlgorithm) => {
     socket.emit("sendChangeAlgo", {
       roomId: roomId,
-      level: roomTier,
-      algorithm: algoName,
+      level: changeLevel,
+      algorithm: changeAlgorithm,
     });
-    setActiveModify(false);
+    // setActiveModify(false);
   };
 
   useEffect(() => {
@@ -166,8 +167,7 @@ export default function RoomPage() {
               });
               navigateToGame(state);
             } else {
-              //TODO 문제 조건 수정할 수 있게 고치자
-              alert("문제를 가져오는 중에 오류가 발생했어요.");
+              changeRoomCondition(changeRoom);
             }
           })
           .catch((err) => {
@@ -217,57 +217,18 @@ export default function RoomPage() {
     <Container className="text-center container-margin-top">
       <Row className="flex-column align-items-center">
         <Col className="mb-2 d-flex justify-content-center">
-          <Button
-            size="xs"
-            className="button-size"
-            onClick={() => setActiveModify(true)}
-          >
+          <div style={{width:"60px", marginTop:"20px"}}>
             <Image src={imageUrl} alt="error" className="image-size" />
-          </Button>
-        </Col>
-        <Col className="d-flex justify-content-center">
-          {activeModify ? (
-            <FormSelect
-              onChange={(e) => {
-                setRoomTier(e.target.value);
-              }}
-            >
-              {levelList.map((level) => (
-                <option value={level.value} key={level.value}>
-                  {level.name}
-                  {console.log(levelList)}
-                </option>
-              ))}
-            </FormSelect>
-          ) : (
-            <></>
-          )}
+          </div>
         </Col>
         <Col className="d-flex justify-content-center">
           <div className="font-bold-large mt-2">{roomName}</div>
         </Col>
         <Col className="d-flex justify-content-center">
-          <FormSelect
-            onChange={(e) => {
-              setActiveModify(true);
-              setAlgoName(e.target.value);
-            }}
-          >
-            <option value={""}>{algoName}</option>
-            {algorithmList.map((level, index) =>
-              level.name !== algoName ? (
-                <option value={level.name} key={index}>
-                  {level.name}
-                </option>
-              ) : (
-                <></>
-              )
-            )}
-          </FormSelect>
 
-          {/* <Button className="algoBtn" variant="primary">
+          <Button className="algoBtn" variant="primary">
             {algoName}
-          </Button> */}
+          </Button>
         </Col>
 
         <Row className="mt-4 w-100">
@@ -343,17 +304,14 @@ export default function RoomPage() {
               Back
             </Button>
           </Col>
-          <Col
-            className="d-flex justify-content-end"
-            style={{ display: "flex", gap: "5%" }}
-          >
-            {activeModify ? (
+          <Col className="d-flex justify-content-end">
+            {/* {activeModify ? (
               <Button className="" onClick={changeRoom}>
                 수정하기
               </Button>
             ) : (
               <></>
-            )}
+            )} */}
             <Button className="readyBtn" onClick={handleReady}>
               Ready
             </Button>

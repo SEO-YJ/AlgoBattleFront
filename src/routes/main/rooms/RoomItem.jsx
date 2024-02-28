@@ -65,7 +65,7 @@ export default function RoomItem({room}) {
             : <></>} */}
           </div>
           {room.password === '' || !room.password ?
-            <img src='/src/assets/imgs/unlock.png' style={{width:"20px", height:"25px"}}/>:
+            <></>:
             <img src='/src/assets/imgs/lock.png' style={{width:"20px", height:"25px"}}/>
           }
         </div>
