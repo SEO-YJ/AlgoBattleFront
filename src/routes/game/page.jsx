@@ -152,7 +152,7 @@ export default function GamePage() {
     return () => {
       socket.off("finishGame", finishGameHandler);
     };
-  }, [user1win, user1lose, user2win, user2lose, roomId, navigate]);
+  }, [navigate]);
 
   const [rotation, setRotation] = useState(0);
 
@@ -212,7 +212,16 @@ export default function GamePage() {
   useEffect(() => {
     const exitGameHandler = (data) => {
       const roomId = data;
-      alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+      // alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+      // 위의 alert를 주석 처리하고 아래의 코드로 대체합니다.
+      const exitAlert = () => {
+        alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+      };
+
+      // setTimeout을 통해 알림 창이 화면에 나타나고 나서 페이지가 이동하도록 설정합니다.
+      setTimeout(() => {
+        exitAlert();
+      }, 500);
       localStorage.removeItem("timer");
       localStorage.removeItem("initialStartTime");
       socket.emit("leaveGame", roomId);
