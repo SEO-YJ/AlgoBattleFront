@@ -47,7 +47,7 @@ export default function GamePage() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/users/${userName}/solvedStatus`
+        `/api/users/${userName}/solvedStatus`
       );
 
       if (!response.ok) {
@@ -102,7 +102,7 @@ export default function GamePage() {
         const winner = lastCard.userid === user1Name ? 1 : 2;
         try {
           const response = await fetch(
-            `http://localhost:3000/api/users/${lastCard.userid}`,
+            `/api/users/${lastCard.userid}`,
             {
               method: "POST",
             }
@@ -197,7 +197,7 @@ export default function GamePage() {
   const handleBack = async () => {
     const exituser = handle === user1Name ? user1Name : user2Name;
     const result = exituser === user1Name ? 2 : 1;
-    await axios.put("http://localhost:3000/api/users/updateResult", {
+    await axios.put("/api/users/updateResult", {
       user1: user1Name,
       user2: user2Name,
       result: result.toString(),

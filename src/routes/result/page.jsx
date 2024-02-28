@@ -27,7 +27,7 @@ const ResultPage = () => {
     const updateResultAndRedirect = async () => {
       try {
         if (handle === user1Name) {
-          await axios.put("http://localhost:3000/api/users/updateResult", {
+          await axios.put("/api/users/updateResult", {
             user1: user1Name,
             user2: user2Name,
             result: winner.toString(),
