@@ -15,6 +15,7 @@ import { algorithmList } from "./algorithmList";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import socket from "~/lib/sockets/socket";
+import Swal from "sweetalert2";
 
 const createRoom = (room, player1Id) => {
   socket.emit("createRoom", {
@@ -45,7 +46,10 @@ export default function CreateRoom({ show, cancelShow }) {
       room.algorithm === "" ||
       (!isOpenFree && room.password === "")
     ) {
-      alert("전부 선택해주세요");
+      Swal.fire({
+        icon:"error",
+        title: "모든 요소를 선택해주세요",
+      })
       return;
     }
     createRoom(room, playerId);

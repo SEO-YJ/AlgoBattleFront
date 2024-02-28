@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import { Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import socket from "~/lib/sockets/socket";
 import EnterRoom from "~/routes/modal/room/enter/enter";
 
@@ -18,7 +19,10 @@ export default function RoomItem({ room }) {
 
   const enterGame = useCallback(() => {
     if (!handle) {
-      alert("로그인하여 주세요!");
+      Swal.fire({
+        icon:"error",
+        title: "로그인을 먼저 진행해 주세요.",
+      })
       return;
     }
     if (room.player1.handle === handle) {
@@ -30,7 +34,10 @@ export default function RoomItem({ room }) {
         navigate(`/room/${room._id}`);
         return;
       }
-      alert("제한 인원 초과입니다.");
+      Swal.fire({
+        icon:"error",
+        title: "인원 수 초과입니다.",
+      })
       return;
     }
     if (room.password) {

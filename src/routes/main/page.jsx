@@ -5,6 +5,7 @@ import RoomList from "./rooms/RoomList";
 import { useSelector } from "react-redux";
 import CreateRoom from "../modal/room/create/create";
 import socket from "~/lib/sockets/socket";
+import Swal from "sweetalert2";
 
 export default function MainPage() {
   const [roomList, setRoomList] = useState([]);
@@ -53,7 +54,10 @@ export default function MainPage() {
 
   const onClickCreateRoom = useCallback(() => {
     if (!handle) {
-      alert("로그인하여 주세요!");
+      Swal.fire({
+        icon:"error",
+        title: "로그인을 먼저 진행해 주세요",
+      })
       return;
     }
     setShow(true);
