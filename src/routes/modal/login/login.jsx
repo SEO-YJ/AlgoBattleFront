@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { handleClose } from "../../store/reducers/login";
 import { clientLogin, initClient } from "../../store/reducers/user";
+import Swal from "sweetalert2";
 
 export default function ModalLogin() {
   const { loading } = useSelector((state) => state.user);
@@ -27,7 +28,10 @@ export default function ModalLogin() {
         dispatch(handleClose());
       })
       .catch((err) => {
-        alert("백준에 아이디가 존재하지 않습니다.");
+        Swal.fire({
+          icon:"error",
+          title: "백준에 아이디가 존재하지 않습니다.",
+        })
         dispatch(initClient());
       });
   };

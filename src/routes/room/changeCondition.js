@@ -1,4 +1,3 @@
-import './changeCondition.css'
 import Swal from "sweetalert2"
 import { levelList } from '../modal/room/create/levelList';
 import { algorithmList } from '../modal/room/create/algorithmList';
@@ -39,6 +38,7 @@ export const changeRoomCondition = async (changeRoom) => {
             }
         }
     });
+    if(!result.isConfirmed) return;
     const selectedLevel = result.value;
     const result2 = await Swal.fire({
         icon: 'error',

@@ -18,6 +18,7 @@ import { getProblem } from "~/lib/apis/problem";
 import { algorithmList } from "../modal/room/create/algorithmList";
 import { levelList } from "../modal/room/create/levelList";
 import { changeRoomCondition } from "./changeCondition";
+import Swal from "sweetalert2";
 export default function RoomPage() {
   //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
   // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는
@@ -174,11 +175,17 @@ export default function RoomPage() {
             console.log(err);
           });
       } catch (error) {
-        console.error("오류 발생!:", error);
-        alert("문제가 발생했어요.");
+        // console.error("오류 발생!:", error);
+        Swal.fire({
+          icon:"error",
+          title: "알 수 없는 에러가 발생했습니다.",
+        })
       }
     } else {
-      alert("플레이어가 레디 상태가 아닙니다.");
+      Swal.fire({
+        icon:"error",
+        title: "플레이어들이 레디 상태가 아닙니다",
+      })
     }
   };
 
@@ -201,14 +208,20 @@ export default function RoomPage() {
   useEffect(() => {
     socket.on("receiveLeavePlayer1", (player) => {
       if (player !== handle) {
-        alert("방이 없어졌습니다.");
+        Swal.fire({
+          icon:"error",
+          title: "방이 없어졌습니다."
+        })
       }
       navigateTo("/");
       socket.leave(roomId);
     });
     socket.on("receiveLeavePlayer2", (player) => {
       if (player !== handle) {
-        alert("상대방이 방이 나갔습니다.");
+        Swal.fire({
+          icon:"error",
+          title: "상대방이 방을 나갔습니다."
+        })
       }
     });
   }, []);

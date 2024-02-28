@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import socket from "~/lib/sockets/socket";
 import { Col, Button } from "react-bootstrap";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function GamePage() {
   const [cards, setCards] = useState([]);
@@ -124,7 +125,10 @@ export default function GamePage() {
 
   useEffect(() => {
     const finishGameHandler = (winner) => {
-      alert("문제를 푼 플레이어가 있어 게임이 끝났습니다!");
+      Swal.fire({
+        icon:"error",
+        title: "문제를 푼 플레이어가 있어 게임이 끝났습니다.",
+      })
       localStorage.removeItem("timer");
       localStorage.removeItem("initialStartTime");
       const newuser1win = winner == 1 ? user1win + 1 : user1win;
@@ -166,7 +170,10 @@ export default function GamePage() {
       const remainingTime = 3600 - elapsedTime;
 
       if (remainingTime <= 0) {
-        alert("시간이 지나 게임이 끝났습니다");
+        Swal.fire({
+          icon:"error",
+          title: "시간이 지나 게임이 끝났습니다",
+        })
         clearInterval(timerID);
         localStorage.removeItem("timer");
         localStorage.removeItem("initialStartTime");
@@ -213,7 +220,11 @@ export default function GamePage() {
     const exitGameHandler = (data) => {
       const roomId = data;
       const exitAlert = () => {
-        alert("상대방이 나갔습니다! 승패는 반영되니 안심하세요");
+        Swal.fire({
+          icon:"error",
+          title: "상대방이 나갔습니다",
+          text:"승패는 반영되니 안심하세요",
+        })
       };
 
       setTimeout(() => {
@@ -237,7 +248,7 @@ export default function GamePage() {
       <div className="row">
         <div className="col-lg-8 game-container">
           <img
-            src="/src/assets/imgs/sample_logo_transparent.png"
+            src="https://raw.githubusercontent.com/jkl0124/AlgoBattleFront/main/src/assets/imgs/sample_logo_transparent.png"
             alt="Rotating"
             className="rotating-image"
             style={{

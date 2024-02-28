@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import socket from '~/lib/sockets/socket';
 
 export default function EnterRoom({show, roomPassword, cancelShow, roomId}) {
@@ -12,8 +13,12 @@ export default function EnterRoom({show, roomPassword, cancelShow, roomId}) {
 
   const onEnter = () => {
     if(roomPassword !== inputPassword){
-        alert("비밀번호가 틀립니다. 다시 입력해주세요.");
-        return;
+      Swal.fire({
+        icon:"error",
+        title: "비밀번호가 틀립니다",
+        text:"다시 입력해주세요",
+      })
+      return;
     }
     socket.emit("enterPlayer", {
       roomId : roomId,
