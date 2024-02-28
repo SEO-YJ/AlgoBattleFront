@@ -56,7 +56,11 @@ const ResultPage = () => {
           <Col xs={5} className="d-flex justify-content-start">
             <Card className="p-3 card-custom card-margin-right">
               <div className="d-flex align-items-center mb-3 background-color: white">
-                <Image className="image-user" src={imageUrlleft} alt="User 1" />
+                <Image
+                  className="image-user"
+                  src={winner == 1 ? `${imageUrlleft}` : `${imageUrlright}`}
+                  alt="User 1"
+                />
                 <div className="background-color: white">
                   <Card.Title className="card-title-large">
                     {winner == 1 ? `${user1Name}` : `${user2Name}`}
@@ -88,7 +92,7 @@ const ResultPage = () => {
               <div className="d-flex align-items-center mb-3 background-color: white">
                 <Image
                   className="image-user"
-                  src={imageUrlright}
+                  src={winner == 1 ? `${imageUrlright}` : `${imageUrlleft}`}
                   alt="User 2"
                 />
                 <div className="background-color: white">
