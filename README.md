@@ -66,5 +66,11 @@ AlgoBattle은 긴장감 넘치는 코딩테스트를 통해 알고리즘 실력 
 ### ⭐️ Web Socket 기능
 - socket.io room 기능을 활용하여 게임에 참여 중인 플레이어 간에 행동이 실시간으로 확인 가능
 
+## 개발 과정 중 이슈
+
+### 배포
+- 문제 사항 : AWS을 통해서 EC2을 이용한 배포를 진행했는데, 백준 아이디를 연동할 때 서버로는 데이터를 보냈는데 서버에서 외부 api을 가져오지 못한다는 문제가 있었음
+- 해결 방안 : 초반 배포 설정을 했을 때, npm과 node 버전이 너무 낮게 설정해서 문제였음. 그래서 npm과 node의 버전을 최신 버전으로 업그레이드를 해서 문제를 해결했음.
+
 ## Architecture
 <img width="500" alt="AlgoBattle_Architecture" src="https://github.com/jkl0124/AlgoBattleFront/assets/99806443/9f08cb35-be0a-40c3-aa45-563d331a7fca">
