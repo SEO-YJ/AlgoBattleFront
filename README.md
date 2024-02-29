@@ -8,13 +8,36 @@
 > Back-end Github : <https://github.com/SEO-YJ/AlgoBattleBack> <br/>
 
 ## 팀원 소개
-|권기현|김현수|서유진|허상진|
+|권기현|김현수|서유준|허상진|
 |:---:|:---:|:---:|:---:|
 |<img width="160px" src="https://avatars.githubusercontent.com/u/99806443?v=4"/> |<img width="160px" src="https://avatars.githubusercontent.com/u/122847760?v=4" />|<img width="160px" src="https://avatars.githubusercontent.com/u/76039485?v=4" />|<img width="160px" src="https://avatars.githubusercontent.com/u/128025654?v=4" />|
 |[@kkh0331](https://github.com/kkh0331)|[@jkl0124](https://github.com/jkl0124)|[@SEO-YJ](https://github.com/SEO-YJ)|[@bookeers](https://github.com/bookeers)|
 
 ## 프로젝트 소개
 AlgoBattle은 긴장감 넘치는 코딩테스트를 통해 알고리즘 실력 향상을 도모하는 게임이다. 사용자는 원하는 알고리즘 유형과 난이도를 선택하여 상대와의 실시간 경쟁을 즐길 수 있다. 랜덤으로 주어지는 문제를 풀고, 시간 내에 해결하지 못하거나 상대방에게 먼저 정답을 제출한 경우 게임이 종료된다. 이를 통해 사용자는 다양한 알고리즘 경험을 쌓을 뿐만 아니라, 푼 문제는 다시 출제되지 않아 새로운 도전을 계속할 수 있다.
+
+## 시작 가이드
+### Requirements
+- [nodejs 20.11.1](https://nodejs.org/en/blog/release/v20.11.1)
+- [npm 10.2.4](https://www.npmjs.com/package/npm/v/10.2.4)
+
+### Front-end
+```bash
+$ git clone https://github.com/jkl0124/AlgoBattleFront.git
+$ cd AlgoBattleFront
+
+$ npm install 
+$ npm run dev
+```
+
+### Back-end
+```bash
+$ git clone https://github.com/SEO-YJ/AlgoBattleBack.git
+$ cd AlgoBattleBack/AlgoBattleBack
+
+$ npm install 
+$ npm run dev
+```
 
 ## 주요 기능
 
