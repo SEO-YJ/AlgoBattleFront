@@ -20,8 +20,6 @@ import { levelList } from "../modal/room/create/levelList";
 import { changeRoomCondition } from "./changeCondition";
 import Swal from "sweetalert2";
 export default function RoomPage() {
-  //const roomId: main라우터대로 주소를 바꾸면 이것도 받아오는게 맞는거같음
-  // [1]: 한번만 받아줘도 되는 값 / [2]: 실시간으로 갱신해줘야하는
   const { roomId } = useParams();
   const { handle } = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -33,24 +31,22 @@ export default function RoomPage() {
   const [user1win, setUser1win] = useState("0");
   const [user1lose, setUser1lose] = useState("0");
   const [user1Tier, setUser1Tier] = useState("0");
-  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`; // [1]
-  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`; // [1]
+  const imageUrl = `https://d2gd6pc034wcta.cloudfront.net/tier/${roomTier}.svg`;
+  const imageUrlleft = `https://d2gd6pc034wcta.cloudfront.net/tier/${user1Tier}.svg`;
 
-  const [user2Tier, setUser2Tier] = useState(0); // [2]
-  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`; // [2]
-  const [user2Name, setUser2Name] = useState(null); // [2] TODO: 받는 방식 협의
-  const [user2win, setUser2win] = useState("0"); // [2]
-  const [user2lose, setUser2lose] = useState("0"); // [2]
+  const [user2Tier, setUser2Tier] = useState(0);
+  const imageUrlright = `https://d2gd6pc034wcta.cloudfront.net/tier/${user2Tier}.svg`;
+  const [user2Name, setUser2Name] = useState(null);
+  const [user2win, setUser2win] = useState("0");
+  const [user2lose, setUser2lose] = useState("0");
 
   const navigateTo = useNavigate();
   const [player1Ready, setPlayer1Ready] = useState(false);
-  const [player2Ready, setPlayer2Ready] = useState(false); //commit할때 false로 수정. 안되어있으면 바꿔주세요 ㅎㅎ!
-
+  const [player2Ready, setPlayer2Ready] = useState(false);
   useEffect(() => {
     socket.emit("joinRoom", { roomId: roomId });
 
     socket.on("getRoom", (data) => {
-      // console.log("data : ", data);
       setRoomName(data.name);
       setAlgoName(data.algorithm);
       setRoomTier(data.level);
@@ -145,8 +141,7 @@ export default function RoomPage() {
         getProblem(queryString, roomTier, users)
           .then((data) => {
             if ((typeof data).toString() === "object") {
-              // console.log(data);
-              const randomProblem = data.ploblem; // 'problem'이 올바른 속성 이름인 것으로 가정합니다.
+              const randomProblem = data.ploblem;
               const probNum = data.ploblemId;
               const qTier = data.level;
               const state = {
@@ -175,17 +170,16 @@ export default function RoomPage() {
             console.log(err);
           });
       } catch (error) {
-        // console.error("오류 발생!:", error);
         Swal.fire({
-          icon:"error",
+          icon: "error",
           title: "알 수 없는 에러가 발생했습니다.",
-        })
+        });
       }
     } else {
       Swal.fire({
-        icon:"error",
+        icon: "error",
         title: "플레이어들이 레디 상태가 아닙니다",
-      })
+      });
     }
   };
 
@@ -209,9 +203,9 @@ export default function RoomPage() {
     socket.on("receiveLeavePlayer1", (player) => {
       if (player !== handle) {
         Swal.fire({
-          icon:"error",
-          title: "방이 없어졌습니다."
-        })
+          icon: "error",
+          title: "방이 없어졌습니다.",
+        });
       }
       navigateTo("/");
       socket.leave(roomId);
@@ -219,9 +213,9 @@ export default function RoomPage() {
     socket.on("receiveLeavePlayer2", (player) => {
       if (player !== handle) {
         Swal.fire({
-          icon:"error",
-          title: "상대방이 방을 나갔습니다."
-        })
+          icon: "error",
+          title: "상대방이 방을 나갔습니다.",
+        });
       }
     });
   }, []);
@@ -230,7 +224,7 @@ export default function RoomPage() {
     <Container className="text-center container-margin-top">
       <Row className="flex-column align-items-center">
         <Col className="mb-2 d-flex justify-content-center">
-          <div style={{width:"60px", marginTop:"20px"}}>
+          <div style={{ width: "60px", marginTop: "20px" }}>
             <Image src={imageUrl} alt="error" className="image-size" />
           </div>
         </Col>
@@ -238,7 +232,6 @@ export default function RoomPage() {
           <div className="font-bold-large mt-2">{roomName}</div>
         </Col>
         <Col className="d-flex justify-content-center">
-
           <Button className="algoBtn" variant="primary">
             {algoName}
           </Button>
@@ -312,7 +305,6 @@ export default function RoomPage() {
 
         <Row className="mt-4 w-100">
           <Col className="d-flex justify-content-start">
-            {/* <Link to="/"> */}
             <Button className="backBtn" onClick={() => leaveRoom()}>
               Back
             </Button>

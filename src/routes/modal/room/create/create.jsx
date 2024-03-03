@@ -19,13 +19,13 @@ import Swal from "sweetalert2";
 
 const createRoom = (room, player1Id) => {
   socket.emit("createRoom", {
-    player1_id : player1Id,
-    name : room.name,
-    password : room.password,
-    level : room.level,
-    algorithm : room.algorithm,
-  })
-}
+    player1_id: player1Id,
+    name: room.name,
+    password: room.password,
+    level: room.level,
+    algorithm: room.algorithm,
+  });
+};
 
 export default function CreateRoom({ show, cancelShow }) {
   const playerId = useSelector((state) => state.user.user._id);
@@ -47,19 +47,16 @@ export default function CreateRoom({ show, cancelShow }) {
       (!isOpenFree && room.password === "")
     ) {
       Swal.fire({
-        icon:"error",
+        icon: "error",
         title: "모든 요소를 선택해주세요",
-      })
+      });
       return;
     }
     createRoom(room, playerId);
     cancelShow();
     socket.on("getRoomId", (roomId) => {
-      // console.log(rooms);
       navigate(`/room/${roomId}`);
     });
-    // getRoomId
-    // console.log(room, playerId);
   };
 
   return (

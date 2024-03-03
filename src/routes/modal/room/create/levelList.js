@@ -1,4 +1,4 @@
-//TODO 팀원들과 난이도 상의 후에 추가할 사항 있으면 추가하기
+
 export const levelList = [
     {value : 0, name : "All"},
     {value : 1, name : "Bronze V"},

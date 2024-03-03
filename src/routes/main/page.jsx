@@ -9,44 +9,48 @@ import Swal from "sweetalert2";
 
 export default function MainPage() {
   const [roomList, setRoomList] = useState([]);
-  const {handle} = useSelector((state) => state.user.user);
+  const { handle } = useSelector((state) => state.user.user);
   const [show, setShow] = useState(false);
   const [searchCondition, setSearchCondition] = useState({
-    status : "",
-    algorithm : ""
-  })
+    status: "",
+    algorithm: "",
+  });
   const [viewRoomList, setViewRoomList] = useState([]);
 
   useEffect(() => {
     socket.emit("getRooms");
 
     socket.on("getsRooms", (rooms) => {
-      // console.log(rooms);
       setRoomList(rooms);
     });
 
     return () => {
       socket.off("getRooms");
-    }
+    };
   }, []);
 
   const changeSearchCondition = (condition) => {
     setSearchCondition(condition);
-  }
+  };
 
-  useEffect(()=>{
-    setViewRoomList(roomList.filter(room => {
-      if(searchCondition.status === "" && searchCondition.algorithm === ""){
-        return room;
-      } else if(searchCondition.status === ""){
-        return room.algorithm === searchCondition.algorithm
-      } else if(searchCondition.algorithm === ""){
-        return room.status === searchCondition.status
-      } else {
-        return room.algorithm === searchCondition.algorithm && room.status === searchCondition.status
-      }
-    }))
-  },[roomList, searchCondition])
+  useEffect(() => {
+    setViewRoomList(
+      roomList.filter((room) => {
+        if (searchCondition.status === "" && searchCondition.algorithm === "") {
+          return room;
+        } else if (searchCondition.status === "") {
+          return room.algorithm === searchCondition.algorithm;
+        } else if (searchCondition.algorithm === "") {
+          return room.status === searchCondition.status;
+        } else {
+          return (
+            room.algorithm === searchCondition.algorithm &&
+            room.status === searchCondition.status
+          );
+        }
+      })
+    );
+  }, [roomList, searchCondition]);
 
   const cancelShow = useCallback(() => {
     setShow(false);
@@ -55,9 +59,9 @@ export default function MainPage() {
   const onClickCreateRoom = useCallback(() => {
     if (!handle) {
       Swal.fire({
-        icon:"error",
+        icon: "error",
         title: "로그인을 먼저 진행해 주세요",
-      })
+      });
       return;
     }
     setShow(true);
@@ -65,12 +69,16 @@ export default function MainPage() {
 
   return (
     <div className="mainPage">
-      <Search changeSearchCondition={changeSearchCondition}/>
+      <Search changeSearchCondition={changeSearchCondition} />
       <RoomList roomList={viewRoomList} />
-      <div className="createRoom" onClick={()=>onClickCreateRoom()}>방 생성</div>
-      {show ? 
-        <CreateRoom show={show} cancelShow={cancelShow}></CreateRoom> 
-      : <></>}
+      <div className="createRoom" onClick={() => onClickCreateRoom()}>
+        방 생성
+      </div>
+      {show ? (
+        <CreateRoom show={show} cancelShow={cancelShow}></CreateRoom>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

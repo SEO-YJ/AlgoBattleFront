@@ -19,8 +19,6 @@ export default function TotalNavbar() {
   const onLogout = () => {
     const action = initClient();
     dispatch(action);
-    //TODO 경로 수정할 시 아래 경로 수정
-    // 아래 기능은 만일 게임 중에 로그아웃을 할 경우에는 메인 페이지로 향하는 것
     if (pathname.startsWith("/room")) {
       navigate("/");
     }
