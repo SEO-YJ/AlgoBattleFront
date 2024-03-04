@@ -155,7 +155,7 @@ export default function RoomPage() {
                 user1win,
                 user1lose,
                 user2win,
-                user2lose,
+                user2lose, // 승패 업데이트하고 유저 정보를 다시 불러오는 api가 있는데 왜 넘겼냐? -> 속도를 위해 (발표 시 설명)
               };
               socket.emit("sendGameInfo", {
                 roomId: roomId,

@@ -27,7 +27,7 @@ export default function GamePage() {
   const { roomId } = useParams();
   const [startTime, setStartTime] = useState(() => {
     const savedStartTime = localStorage.getItem("initialStartTime");
-    return savedStartTime ? parseInt(savedStartTime, 10) : Date.now();
+    return savedStartTime ? parseInt(savedStartTime, 10) : Date.now(); // 최초 세션이였다가, 수정
   });
   const [time, setTime] = useState(() => {
     const savedTime = localStorage.getItem("timer");
@@ -47,9 +47,7 @@ export default function GamePage() {
     const userName = handle === user1Name ? encodedUser1Name : encodedUser2Name;
 
     try {
-      const response = await fetch(
-        `/api/users/${userName}/solvedStatus`
-      );
+      const response = await fetch(`/api/users/${userName}/solvedStatus`);
 
       if (!response.ok) {
         throw new Error(`채점에 오류가 발생했어요`);
@@ -102,12 +100,9 @@ export default function GamePage() {
       setTimeout(async () => {
         const winner = lastCard.userid === user1Name ? 1 : 2;
         try {
-          const response = await fetch(
-            `/api/users/${lastCard.userid}`,
-            {
-              method: "POST",
-            }
-          );
+          const response = await fetch(`/api/users/${lastCard.userid}`, {
+            method: "POST",
+          });
 
           if (!response.ok) {
             throw new Error(`사용자 정보 업데이트에 오류가 발생했어요`);
@@ -126,15 +121,19 @@ export default function GamePage() {
   useEffect(() => {
     const finishGameHandler = (winner) => {
       Swal.fire({
-        icon:"error",
+        icon: "error",
         title: "문제를 푼 플레이어가 있어 게임이 끝났습니다.",
-      })
+      });
       localStorage.removeItem("timer");
       localStorage.removeItem("initialStartTime");
       const newuser1win = winner == 1 ? user1win + 1 : user1win;
       const newuser1lose = winner == 1 ? user1lose : user1lose + 1;
       const newuser2win = winner == 2 ? user2win + 1 : user2win;
-      const newuser2lose = winner == 2 ? user2lose : user2lose + 1;
+      const newuser2lose =
+        winner == 2
+          ? user2lose
+          : user2lose + 1; /* 결과값을 보여주기만 위한 용도. 결과창에서 
+      선 렌더링 후 원래 존재하는 지연 시간을 통해 api에 업데이트. */
 
       navigate(`/room/${roomId}/result`, {
         state: {
@@ -171,9 +170,9 @@ export default function GamePage() {
 
       if (remainingTime <= 0) {
         Swal.fire({
-          icon:"error",
+          icon: "error",
           title: "시간이 지나 게임이 끝났습니다",
-        })
+        });
         clearInterval(timerID);
         localStorage.removeItem("timer");
         localStorage.removeItem("initialStartTime");
@@ -221,10 +220,10 @@ export default function GamePage() {
       const roomId = data;
       const exitAlert = () => {
         Swal.fire({
-          icon:"error",
+          icon: "error",
           title: "상대방이 나갔습니다",
-          text:"승패는 반영되니 안심하세요",
-        })
+          text: "승패는 반영되니 안심하세요",
+        });
       };
 
       setTimeout(() => {

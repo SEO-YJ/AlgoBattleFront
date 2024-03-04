@@ -36,7 +36,7 @@ const ResultPage = () => {
 
         setTimeout(() => {
           navigate(`/room/${roomId}`);
-        }, 5000);
+        }, 5000); // 이 지연 시간 동안 api로 업데이트
       } catch (error) {
         console.error("Error updating result:", error);
       }
@@ -75,7 +75,8 @@ const ResultPage = () => {
               </Card.Text>
               <div style={{ marginBottom: "20px" }}>
                 전적: {winner == 1 ? `${user1win}` : `${user2win}`} 승{" "}
-                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패
+                {winner == 1 ? `${user1lose}` : `${user2lose}`} 패{" "}
+                {/* 여기서는 아까 계산한 값을 단순출력 */}
               </div>
             </Card>
           </Col>
